@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>HTML5 Boilerplate</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="author" content="" />
+<meta name="robots" content="index, follow" />
+<meta name="viewport" content="width=device-width" />
+<link rel="shortcut icon" href="favicon.ico" />
+<!--
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" media="screen" />
+-->
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+
+<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+<!--
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+-->
+<script type="text/javascript" src="js/loql.js"></script>
+<script type="text/javascript" src="js/topodog.js"></script>
+</head>
+
+<div id="scenario">
+	<div id="grid">
+	</div>
+</div>
+
+<div class="clear">
+<h4>Textures</h4>
+<a href="javascript:;" onclick="topoDog.selectedTessel='0';topoDog.mode='tessel';topoDog.modeSwitch()">WATER</a>
+<a href="javascript:;" onclick="topoDog.selectedTessel='1';topoDog.mode='tessel';topoDog.modeSwitch()">GROUND</a>
+<a href="javascript:;" onclick="topoDog.selectedTessel='2';topoDog.mode='tessel';topoDog.modeSwitch()">GRASS</a>
+<a href="javascript:;" onclick="topoDog.mode='erase';topoDog.modeSwitch()">ERASE</a>
+</div>
+
+<div class="clear">
+<h4>Objects</h4>
+<a href="javascript:;" onclick="topoDog.selectedObject='0';topoDog.mode='insertItems';topoDog.modeSwitch()">OBJECT</a>
+</div>
+
+<div class="clear">
+<h4>Actions</h4>
+<a href="javascript:;" onclick="topoDog.selectedAction='0';topoDog.mode='insertActions';topoDog.modeSwitch()">ACTION</a>
+</div>
+
+</body>
+
+</html>
