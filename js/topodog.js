@@ -125,11 +125,16 @@ topoDog = { // Oggetto base con parametri fondamentali
 	},
 	
 	tdExport: function(){
-	
+		var content = JSON.stringify(localStorage);
+		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
+		newWindow=window.open(uriContent);
 	},
 	
-	tdImport: function(tiles,objects,beings,actions){
-	
+	tdImport: function(file){
+		var content = JSON.parse(file);
+		for(var k in content){
+			localStorage.setItem(k, content[k]);
+		}
 	},
 	
 	clear: function(){
