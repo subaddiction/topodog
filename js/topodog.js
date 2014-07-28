@@ -127,7 +127,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	tdExport: function(){
 		var content = JSON.stringify(localStorage);
 		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
-		newWindow=window.open(uriContent);
+		exportWindow = window.open(uriContent);
 	},
 	
 	tdImport: function(file){
