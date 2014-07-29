@@ -23,9 +23,17 @@
 <script type="text/javascript" src="js/topodog.js"></script>
 </head>
 
+<svg id="patterns" class="pattern" viewBox="0 0" version = "1.1">
+</svg>
+
 <div id="scenario">
 	<div id="grid">
 	</div>
+</div>
+
+<div class="clear">
+<h4>Patterns</h4>
+<a href="javascript:;" onclick="topoDog.mode='insertPath';topoDog.modeSwitch()">PATTERN</a>
 </div>
 
 <div class="clear">
@@ -47,10 +55,16 @@
 </div>
 
 
+
+
 <div class="clear">
 <h4>Import/Export</h4>
 <a id="export" href="" download="" onclick="topoDog.tdExport()">EXPORT</a>
 </div>
+
+<svg version = "1.1">
+    <path id = "s3" d = "M 0 0 L 0 100 L 100 100 L 100 0 L 0 0" fill="green" stroke="black" stroke-width="1"/>
+</svg>
 
 </body>
 

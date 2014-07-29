@@ -50,8 +50,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var col = 0;
 		for(col=0;col<=this.h;col++){
 			for(row=0;row<=this.w;row++){
-				$('#'+this.tilesId).append('<div id="tile-'+row+'-'+col+'" class="mapTile" tessel="" tilex="'+row+'" tiley="'+col+'"></div>');
-				//this.tessels[row+'-'+col] = '';
+				$('#'+this.tilesId).append('<div id="tile-'+row+'-'+col+'" class="mapTile" tessel="false" tilex="'+row+'" tiley="'+col+'"></div>');
+				//this.tessels[row+'-'+col] = 'false';
 			}
 			$('#'+this.tilesId).append('<div class="clear" tilex="'+row+'" tilex="'+col+'"></div>');
 		}
@@ -73,7 +73,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 			switch(topoDog.mode){
 				case 'erase':
 					$('.mapTile').mousemove(function(e){
-						if(e.buttons==1){
+						var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+						if(button==1){
 							var X = $(this).attr('tilex');
 							var Y = ($(this).attr('tiley'));
 							tesselate('erase',X,Y);
@@ -83,9 +84,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'tessel':
 					$('.mapTile').mousemove(function(e){
+						
+						var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+						if(button==1){
 							var X = $(this).attr('tilex');
 							var Y = ($(this).attr('tiley'));
-						if(e.buttons==1){
 							var theTessel = loql.select('tessels', topoDog.selectedTessel.toString());
 							tesselate(theTessel.name,X,Y);
 						}
@@ -94,7 +97,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'insertItems':
 					$('.mapTile').click(function(e){
-						if(e.buttons==1){
+						var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+						if(button==1){
 							var X = $(this).attr('tilex');
 							var Y = ($(this).attr('tiley'));
 							var theObject = loql.select('objects', topoDog.selectedObject.toString());
@@ -105,11 +109,35 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'insertActions':
 					$('.mapTile').click(function(e){
-						if(e.buttons==1){
+						var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+						if(button==1){
 							var X = $(this).attr('tilex');
 							var Y = ($(this).attr('tiley'));
 							var theAction = loql.select('actions', topoDog.selectedAction.toString());
 							newAction(topoDog.selectedAction,X,Y);
+						}
+					});
+				break;
+				
+				case 'insertPath':
+					$('.mapTile').click(function(e){
+						var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+						if(button==1){
+							var X = $(this).attr('tilex');
+							var Y = ($(this).attr('tiley'));
+							
+							
+							//var svg = '<svg class="pattern" version = \"1.1\">';
+							var svg = '<path id = "'+'testPath'+'"';
+							svg += 'd="';
+							svg += 'M '+Y*12+' '+X*12; 
+							svg += ' L '+(Y*12)+' '+(X*12);
+							svg += ' L '+(Y*12)+' '+(X*12 +12);
+							svg += '"';
+							svg += ' fill="green" stroke="black" stroke-width="4"/>';
+							//svg +='</svg>';
+							
+							$('#patterns').prepend(svg);
 						}
 					});
 				break;
@@ -126,6 +154,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	tdExport: function(){
 		var content = JSON.stringify(localStorage);
+
+//		var content = JSON.stringify(localStorage,function(k, v) {
+//		    //console.log(typeof(k));
+//		    //console.log(typeof(v));
+//		    return (typeof(v) === 'object') ? JSON.stringify(v) : v;
+//		});
+		
 		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
 		
 		var now = new Date();
@@ -169,10 +204,10 @@ function tesselate(name,x,y){
 		$('#tile-'+x+'-'+y).attr('tessel', name);
 		
 	} else {
-		topoDog.tessels[x+'-'+y] = "";
+		topoDog.tessels[x+'-'+y] = "false";
 		//$('#tile-'+x+'-'+y).css('background','transparent');
 		//console.log('#tile-'+x+'-'+y);
-		$('#tile-'+x+'-'+y).attr('tessel', '');
+		$('#tile-'+x+'-'+y).attr('tessel', 'false');
 	}
 }
 
@@ -272,6 +307,24 @@ function newActionElement(id,time,type,x,y,object,type){
 
 function deleteActionElement(id){
 
+}
+
+function zoomField(value){
+	$('.mapTile').css({'width':$('.mapTile').width()*value, 'height':$('.mapTile').height()*value});
+	
+	$('.object').css({
+		'width':$('.object').width()*value,
+		'height':$('.object').height()*value,
+		'margin-top':parseInt($('.object').css('margin-top'))*value +'px',
+		'margin-left':parseInt($('.object').css('margin-left'))*value +'px'
+		});
+	
+	$('.action').css({
+		'width':$('.action').width()*value,
+		'height':$('.action').height()*value,
+		'margin-top':parseInt($('.action').css('margin-top'))*value +'px',
+		'margin-left':parseInt($('.action').css('margin-left'))*value +'px'
+		});
 }
 
 /*
