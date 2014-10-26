@@ -2,69 +2,208 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>HTML5 Boilerplate</title>
+<title>TopoDog</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
-<meta name="author" content="" />
+<meta name="author" content="Marco Bertocco" />
 <meta name="robots" content="index, follow" />
-<meta name="viewport" content="width=device-width" />
+<meta name="viewport" content="width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 <link rel="shortcut icon" href="favicon.ico" />
 <!--
-<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
+
 <link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css" media="screen" />
 -->
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 
 <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
+
 <!--
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 -->
 <script type="text/javascript" src="js/loql.js"></script>
-<script type="text/javascript" src="js/topodog.js"></script>
+<!--<script type="text/javascript" src="js/raphael.min.js"></script>-->
+<!--<script type="text/javascript" src="js/raphael.polyline.js"></script>-->
+<script type="text/javascript" src="js/jquerypp.min.js"></script>
+<!--<script type="text/javascript" src="js/topodog.js"></script>-->
+<script type="text/javascript" src="js/topodog-nogrid.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
 </head>
-
+<!--
 <svg id="patterns" class="pattern" viewBox="0 0" version = "1.1">
 </svg>
+-->
+
+<div id="modeControls">
+	<ul id="stateControls">
+		<li>
+			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('tessel')">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertItems')">
+				<span class="glyphicon glyphicon-tree-deciduous"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertActions')">
+				<span class="glyphicon glyphicon-screenshot"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('editActions')">
+				<span class="glyphicon glyphicon-remove-circle"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('manageData');">
+				<span class="glyphicon glyphicon-transfer"></span>
+			</a>
+		</li>
+		
+	</ul>
+	
+	<ul id="beingsControls">
+		<li>
+			<a href="javascript:;" onclick="topoDog.newDogForm();">
+				<span class="glyphicon glyphicon-plus-sign"></span>
+			</a>
+		</li>
+		
+	</ul>
+	
+	<ul id="viewControls">
+		<li>
+			<a href="javascript:;" onclick="if(topoDog.mode != 'view3d'){$('#presentation').click();}zoomField(2)">
+				<span class="glyphicon glyphicon-zoom-in"></span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" onclick="if(topoDog.mode != 'view3d'){$('#presentation').click();}zoomField(.5)">
+				<span class="glyphicon glyphicon-zoom-out"></span>
+			</a>
+		</li>
+		
+		<li>
+			<a id="presentation" class="mode" href="javascript:;" onclick="topoDog.modeSwitch('view3d')">
+				<span class="glyphicon glyphicon-plane"></span>
+			</a>
+		</li>
+
+	</ul>
+	
+	
+</div>
 
 <div id="scenario">
+	<a id="pandown" href="javascript:;" onclick="gridPan(0,-48)"></a>
+
+	<a id="panup" href="javascript:;" onclick="gridPan(0,48)"></a>
+
+	<a id="panleft" href="javascript:;" onclick="gridPan(48,0)"></a>
+
+	<a id="panright" href="javascript:;" onclick="gridPan(-48,0)"></a>
+
 	<div id="grid">
+	<canvas id="bgCanvas"></canvas>
 	</div>
 </div>
 
-<div class="clear">
-<h4>Patterns</h4>
-<a href="javascript:;" onclick="topoDog.mode='insertPath';topoDog.modeSwitch()">PATTERN</a>
+<div id="bottomControls">
+	<div id="tesselControls" class="clear">
+		<div id="tessels" class="clear">
+		</div>
+		<div id="sizes">
+		<a href="javascript:;" onclick="topoDog.setPaintSize(0.166666667, this);">1px</a>
+		<a href="javascript:;" onclick="topoDog.setPaintSize(0.25, this);">3px</a>
+		<a href="javascript:;" onclick="topoDog.setPaintSize(0.5, this);">6px</a>
+		<a href="javascript:;" onclick="topoDog.setPaintSize(1, this);">12px</a>
+		<a href="javascript:;" onclick="topoDog.setPaintSize(2, this);">24px</a>
+		<a href="javascript:;" onclick="topoDog.setPaintSize(4, this);">48px</a>
+		</div>
+	</div>
+
+	
+
+
+
+	<div id="itemsControls" class="clear">
+		<a href="javascript:;" onclick="topoDog.selectedObject='0';">Ciotola</a>
+		<a href="javascript:;" onclick="topoDog.selectedObject='1';">Albero</a>
+		<a href="javascript:;" onclick="topoDog.selectedObject='2';">Cespuglio</a>
+	</div>
+
+	<div id="actionsControls">
+
+		<div id="actions">
+		</div>
+		<div id="beings">
+		</div>
+
+	</div>
+	
+	<div id="editControls">
+		<h3>Premi a lungo su una azione per cancellarla.</h3>
+	</div>
+	
+	<div id="dataControls" class="clear">
+		<a id="export" class="control" href="" download="" onclick="topoDog.tdExport()">
+			<span class="glyphicon glyphicon-floppy-save"></span>
+		</a>
+		
+		<a id="import" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler IMPORTARE una nuova scena?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdImportDialog(); }">
+			<span class="glyphicon glyphicon-floppy-open"></span>
+		</a>
+		<input id="filechooser" type="file" style="display:none;" />
+		
+		<a id="resetScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</a>
+		
+		<a id="resetScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE TopoDog?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdReset(true); }">
+			<span class="glyphicon glyphicon-fire"></span>
+		</a>
+		
+		
+	</div>
+	
+	<div id="timeline">
+	</div>
+
+	
+	
 </div>
 
-<div class="clear">
-<h4>Textures</h4>
-<a href="javascript:;" onclick="topoDog.selectedTessel='0';topoDog.mode='tessel';topoDog.modeSwitch()">WATER</a>
-<a href="javascript:;" onclick="topoDog.selectedTessel='1';topoDog.mode='tessel';topoDog.modeSwitch()">GROUND</a>
-<a href="javascript:;" onclick="topoDog.selectedTessel='2';topoDog.mode='tessel';topoDog.modeSwitch()">GRASS</a>
-<a href="javascript:;" onclick="topoDog.mode='erase';topoDog.modeSwitch()">ERASE</a>
+
+
+<div id="newDog">
+	<form onsubmit="return false">
+		<h3>Nome:</h3>
+		<input id="newDog_name" type="text" placeholder="Nome del cane" />
+		<h3>Colore:</h3>
+		<span class="colorSelect" data-color="#ff0000"></span>
+		<span class="colorSelect" data-color="#00ff00"></span>
+		<span class="colorSelect" data-color="#0000ff"></span>
+		<span class="colorSelect" data-color="#ffff00"></span>
+		<span class="colorSelect" data-color="#00ffff"></span>
+		<span class="colorSelect" data-color="#ff00ff"></span>
+		<input id="newDog_color" type="hidden" />
+		<br /><br />
+		<input id="newDog_type" type="hidden" value="dog" />
+		<input id="newDog_image" type="hidden" value="" />
+		
+		<a class="control" href="javascript:;" onclick="$('#newDog').hide(0);">
+			<span class="glyphicon glyphicon-remove"></span>
+		</a>
+		
+		<a class="control" href="javascript:;" onclick="topoDog.insertBeing();">
+			<span class="glyphicon glyphicon-ok"></span>
+		</a>
+		
+	</form>
 </div>
-
-<div class="clear">
-<h4>Objects</h4>
-<a href="javascript:;" onclick="topoDog.selectedObject='0';topoDog.mode='insertItems';topoDog.modeSwitch()">OBJECT</a>
-</div>
-
-<div class="clear">
-<h4>Actions</h4>
-<a href="javascript:;" onclick="topoDog.selectedAction='0';topoDog.mode='insertActions';topoDog.modeSwitch()">ACTION</a>
-</div>
-
-
-
-
-<div class="clear">
-<h4>Import/Export</h4>
-<a id="export" href="" download="" onclick="topoDog.tdExport()">EXPORT</a>
-</div>
-
-<svg version = "1.1">
-    <path id = "s3" d = "M 0 0 L 0 100 L 100 100 L 100 0 L 0 0" fill="green" stroke="black" stroke-width="1"/>
-</svg>
 
 </body>
 
