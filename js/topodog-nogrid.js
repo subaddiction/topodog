@@ -1064,6 +1064,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		if(nodb != false){
 			var theID = nodb;
 			var currentAction = loql.select('action', theID);
+			var actionNote = currentAction.n;
 		} else {
 		
 			var values = {
@@ -1111,8 +1112,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$('#action-'+theID+' svg path').css('fill', theBeing.color);
 				$('#action-'+theID).children('svg').attr('data-rot', rotation);
 				//console.log(rotation);
-				if(currentAction.n){
-					console.log(currentAction.n);
+				if(actionNote){
 					$('#action-'+theID).prepend( '<span class="noteLabel glyphicon glyphicon-comment"></span>');
 				}
 			
@@ -1125,17 +1125,3 @@ topoDog = { // Oggetto base con parametri fondamentali
 }
 
 // FINE CLASSE TOPODOG
-
-
-
-
-
-
-
-
-
-
-
-
-
-
