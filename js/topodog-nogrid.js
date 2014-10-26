@@ -579,10 +579,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 						'taphold': function(){
 							//alert('muovi,ruota,elimina');
 							var objectID = $(this).attr('data-id');
-							if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
-								$(this).remove();
+							//if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
+								
 								loql.del('object', objectID);
-							}
+								$(this).remove();
+							//}
 						}
 					});
 				
@@ -590,10 +591,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 						'taphold': function(){
 							//alert('muovi,ruota,elimina');
 							var actionID = $(this).attr('data-id');
-							if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
-								$(this).remove();
+							//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
+								
 								loql.del('action', actionID);
-							}
+								$(this).remove();
+							//}
 						}
 					});
 				break;
@@ -998,6 +1000,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		this.drawTexture();
 		this.loadBeings();
+		this.loadActions(1, false);
 		this.drawActions();
 		
 	},
