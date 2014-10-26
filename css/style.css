@@ -379,6 +379,44 @@ z-index:9;
 position:absolute;
 }
 
+#noteForm
+{
+position:absolute;
+z-index:999999;
+background:#ffffff;
+border:1px solid #cccccc;
+border-radius:8px;
+padding:8px;
+box-shadow:0 0 4px #000000;
+font-size:11px;
+overflow:hidden;
+}
+
+#saveNote
+{
+display:block;
+float:right;
+font-size:36px;
+margin:8px 0 0 0;
+padding:8px;
+background:#000000;
+color:#ffffff;
+border-radius:8px;
+}
+
+#saveNote span
+{
+display:block;
+}
+
+.noteLabel
+{
+position:absolute;
+right:-10px;
+display:block;
+font-size:13px;
+}
+
 #patterns
 {
 position:absolute;

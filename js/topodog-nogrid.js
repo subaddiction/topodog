@@ -182,6 +182,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 			//console.log(currentAction);
 			//ATTENZIONE PASSARE COME ULTIMO PARAMETRO id AZIONE PER NON REINSERIRE NEL DB!
 			this.newAction(currentAction.aid,currentAction.bid,currentAction.x,currentAction.y,currentAction.r,actions[i].toString());
+			
+			//console.log(currentAction.n);
+			
 			//console.log(actions[i].toString());
 			
 		}	
@@ -706,6 +709,35 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				break;
 				
+				case 'notes':
+					$('.action').on({
+						'taphold': function(){
+							$('#noteForm').remove();
+						
+							//alert('muovi,ruota,elimina');
+							var actionID = $(this).attr('data-id');
+							var noteAction = loql.select('action', actionID);
+							if(noteAction.n){
+								var currentNote = noteAction.n;
+							} else {
+								var currentNote = '';
+							}
+							
+							var leftOffset = $(this).width()/2;
+							var topOffset = $(this).height()/2;
+							var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+							noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
+							noteForm += '<a id="saveNote" href="javascript:;" onclick="topoDog.addNote('+actionID+')">';
+							noteForm += '<span class="glyphicon glyphicon-ok"></span>';
+							noteForm += '</a>';
+							noteForm += '</div>';
+							
+							$('#action-'+actionID).prepend(noteForm);
+						}
+					});
+				
+				break;
+				
 				
 			}
 			
@@ -714,6 +746,26 @@ topoDog = { // Oggetto base con parametri fondamentali
 			
 		});
 	
+	},
+	
+	addNote: function(actionID){
+		
+		
+		var label = $('#action-'+actionID).children('.noteLabel').html();
+		if(!label){
+			$('#action-'+actionID).prepend('<span class="noteLabel glyphicon glyphicon-comment"></span>');
+		}
+		
+		var noteAction = loql.select('action', actionID);
+		noteAction.n = $('#noteForm textarea').val();
+		
+		if(!noteAction.n){
+			$('#action-'+actionID).children('.noteLabel').remove();
+		}
+		
+		//console.log(noteAction);
+		loql.set('action', actionID, noteAction);
+		$('#noteForm').remove();
 	},
 	
 	setPaintSize: function(size, elem){
@@ -1011,6 +1063,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 		if(nodb != false){
 			var theID = nodb;
+			var currentAction = loql.select('action', theID);
 		} else {
 		
 			var values = {
@@ -1033,9 +1086,19 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var AmarginTop = y - (Asize/2);
 		var AmarginLeft = x - (Asize/2);
 		// inserisci oggetto nella DOM
-	
-	
-		$('#grid').append('<div id="action-'+theID+'" class="action" data-id="'+theID+'" data-bid="'+bid+'" data-action="'+theAction.name+'" style="position:absolute;width:'+Asize+'px;height:'+Asize+'px;margin-top:'+AmarginTop+'px;margin-left:'+AmarginLeft+'px;"></div>');
+		
+		var actionMarkup = '<div id="action-'+theID+'" class="action" data-id="'+theID+'" data-bid="'+bid+'" data-action="'+theAction.name+'" style="position:absolute;width:'+Asize+'px;height:'+Asize+'px;margin-top:'+AmarginTop+'px;margin-left:'+AmarginLeft+'px;">';
+			
+
+		actionMarkup += '</div>';
+		
+		
+		//INSERISCO ACTION NELLA DOM
+		$('#grid').append(actionMarkup);
+		
+		
+
+			
 	
 	
 		var theBeing = loql.select('beings', bid);
@@ -1048,6 +1111,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$('#action-'+theID+' svg path').css('fill', theBeing.color);
 				$('#action-'+theID).children('svg').attr('data-rot', rotation);
 				//console.log(rotation);
+				if(currentAction.n){
+					console.log(currentAction.n);
+					$('#action-'+theID).prepend( '<span class="noteLabel glyphicon glyphicon-comment"></span>');
+				}
 			
 			});
 		}
