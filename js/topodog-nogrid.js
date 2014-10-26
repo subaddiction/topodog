@@ -13,7 +13,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	paintSize: 1,
 	
 	mode: 'tessel', //tessel, erase, insert, editItems, editActions
-	pathMode: 'new', //new, addPoint, edit
+	//pathMode: 'new', //new, addPoint, edit
 	selectedObject: 0,
 	selectedTessel: 0,
 	selectedItem: 0,
@@ -79,6 +79,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 			var currentBeing = loql.select('beings', beings[i]);
 			//console.log(currentBeing);
 			
+			//
+			if(currentBeing.active < 1){
+				//Usare campo active per farlo vedere o no
+				//continue;
+			}
+			
 			var tag = '<a class="being" href="javascript:;" data-id="'+currentBeing.id+'" data-color="'+currentBeing.color+'" style="background:'+currentBeing.color+';border:3px solid '+currentBeing.color+'">'+currentBeing.name+'</a>';
 			$('#beings').append(tag);
 		}
@@ -126,6 +132,24 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		
 		
+	},
+	
+	drawActions: function(){
+		
+		var actions = loql.select('action');
+		if(!actions){
+			return;
+		}
+		
+		for(i=1;i<actions.length;i++){
+			var currentAction = loql.select('action', actions[i]);
+			//console.log(currentAction);
+			//ATTENZIONE PASSARE COME ULTIMO PARAMETRO id AZIONE PER NON REINSERIRE NEL DB!
+			this.newAction(currentAction.aid,currentAction.bid,currentAction.x,currentAction.y,currentAction.r,actions[i].toString());
+			//console.log(actions[i].toString());
+			
+		}	
+	
 	},
 	
 	init: function(){
@@ -182,12 +206,21 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		
 		// Load all tiles, objects, beings actions
+		this.drawTexture();
 		this.loadTessels();
 		this.loadBeings();
 		this.loadActions(1,false);
+		
+		this.drawActions();
 	},
 	
 	modeSwitch: function(mode){
+		
+		if(this.mode == 'tessel' && mode != 'tessel'){
+			//Salvo texture
+			this.saveTexture();
+		}
+		
 		if(mode){
 			topoDog.mode = mode;
 		}
@@ -202,6 +235,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				'transform':'rotate3d(1, 0, 0, 0deg) rotate(0deg)',
 			});
 		}
+		
+		
 		
 		$('#tesselControls').hide(0);
 		$('#itemsControls').hide(0);
@@ -319,7 +354,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 								var X = touch.pageX - ($(this).offset().left);
 								var Y = touch.pageY - ($(this).offset().top);
 								
-								newItem(topoDog.selectedObject,X,Y);
+								topoDog.newItem(topoDog.selectedObject,X,Y);
 								
 							} else {
 								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
@@ -328,7 +363,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 									var X = touch.clientX - ($(this).offset().left);
 									var Y = touch.clientY - ($(this).offset().top);
 									
-									newItem(topoDog.selectedObject,X,Y);
+									topoDog.newItem(topoDog.selectedObject,X,Y);
 								}
 							}
 						
@@ -381,7 +416,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							if(topoDog.theNewAction == false){
 								
 								var theAction = loql.select('actions', topoDog.selectedAction.toString());
-								topoDog.theNewAction = newAction(topoDog.selectedAction,topoDog.activeBeing.id,X,Y,rotation,false);
+								topoDog.theNewAction = topoDog.newAction(topoDog.selectedAction,topoDog.activeBeing.id,X,Y,rotation,false);
 								
 								
 							}
@@ -677,19 +712,48 @@ topoDog = { // Oggetto base con parametri fondamentali
 			alert('Please select a color!');
 			return false;
 		}
-		newBeingElement(color, name, type, image);
+		this.newBeingElement(color, name, type, image);
 		$('#newDog').hide(0);
 	},
 	
-	save:function(){
-		// Save tiles, objects, beings, actions to files
+	newBeingElement: function(color, name, type, image){
+		// insert new being in topoDog.beings
+	
+		// insert new being_id in localstorage
+		newBeing = {
+			'color':color,
+			'name':name,
+			'type':type,
+			'image':image,
+		}
+		var newBeingID = loql.insert('beings', newBeing);
+		topoDog.loadBeings();
+		return newBeingID;
+	},
+
+	
+	saveTexture:function(){
+		var canvas = document.getElementById('bgCanvas');
+		var imgData = canvas.toDataURL();
+		loql.set('savedtexture', '0', imgData);
+	},
+	
+	drawTexture: function(){
+		var tesselSource = loql.select('savedtexture', '0');
+		var canvas = document.getElementById('bgCanvas');
+		var context = canvas.getContext('2d');
+		var imageObj = new Image();
+
+		imageObj.onload = function() {
+			context.drawImage(imageObj, 0, 0);
+		};
+		
+		imageObj.src = tesselSource;
 	},
 	
 	tdExport: function(){
 		
-		var canvas = document.getElementById('bgCanvas');
-		var imgData = canvas.toDataURL();
-		loql.set('savedtexture', '0', imgData);
+		this.saveTexture();
 	
 		var content = JSON.stringify(localStorage);
 
@@ -827,36 +891,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 		}
 		
 		
-		//Draw textures
-		var tesselSource = loql.select('savedtexture', '0');
-		var canvas = document.getElementById('bgCanvas');
-		var context = canvas.getContext('2d');
-		var imageObj = new Image();
-
-		imageObj.onload = function() {
-			context.drawImage(imageObj, 0, 0);
-		};
-		
-		imageObj.src = tesselSource;
-		
-		//Draw objects
-		
-		//Draw actions
-		var actions = loql.select('action');
-		if(!actions){
-			return;
-		}
-		
-		for(i=1;i<actions.length;i++){
-			var currentAction = loql.select('action', actions[i]);
-			//console.log(currentAction);
-			//ATTENZIONE PASSARE COME ULTIMO PARAMETRO id AZIONE PER NON REINSERIRE NEL DB!
-			newAction(currentAction.aid,currentAction.bid,currentAction.x,currentAction.y,currentAction.r,actions[i].toString());
-			//console.log(actions[i].toString());
-			
-		}
-		
-		topoDog.loadBeings();
+		this.drawTexture();
+		this.loadBeings();
+		this.drawActions();
 		
 	},
 	
@@ -880,481 +917,94 @@ topoDog = { // Oggetto base con parametri fondamentali
 		if(resetCanvas){
 			topoDogLauncher();
 		} else {
-			newAction(0,0,0,0,0,false);
+			this.newAction(0,0,0,0,0,false);
 		}
-	}
+	},
 	
-}
-
-tileElement = { // elementi disegnabili a tasselli
-	name:'',
-	image:'',
-	size:'',
-}
-
-function newTileElement(name, image, size){
-
-}
-
-objElement = { //elementi inseribili su livello oggetti
-	type:'',
-	size:'', // in tasselli^2
-	name:'',
-	shape:'',
-	direction:'',
-}
-
-function newObjElement(type,size,name,shape,direction){
-
-}
-
-function newItem(objectID,x,y){
+	newItem: function(objectID,x,y){
 	
-	var values = {
-		'oid':objectID,
-		'x':x,
-		'y':y
-	}
-	var theID = loql.insert('object', values);
-	
-	var theItem = loql.select('objects', objectID);
-	
-	
-	var Isize = theItem.size*topoDog.tileSize;
-	/***
-	var Imargin = (Isize/2)-(topoDog.tileSize/2);
-	// inserisci oggetto nella DOM 
-	$('#tile-'+x+'-'+y).append('<div class="object '+theItem.name+'" style="width:'+Isize+'px;height:'+Isize+'px;margin-top:-'+Imargin+'px;margin-left:-'+Imargin+'px;"></div>');
-	
-	***/
-	
-	var ImarginTop = y - (Isize/2);
-	var ImarginLeft = x - (Isize/2);
-	$('#grid').append('<div id="object-'+theID+'" class="object '+theItem.name+'" data-id="'+theID+'" style="position:absolute;width:'+Isize+'px;height:'+Isize+'px;margin-top:'+ImarginTop+'px;margin-left:'+ImarginLeft+'px;"></div>');
-	
-	$('#action-'+theID).load('./svg/'+theItem.shape);
-	
-	
-	
-	
-}
-
-function moveItem(objectID,x,y){
-
-
-}
-
-function deleteItem(objectID,x,y){
-
-}
-
-
-
-function newAction(actionID,bid,x,y,rotation,nodb){
-	
-	if(nodb != false){
-		var theID = nodb;
-	} else {
-		
 		var values = {
-			'aid':actionID,
-			//'bid':topoDog.activeBeing.id,
-			'bid':bid,
+			'oid':objectID,
 			'x':x,
-			'y':y,
-			'r':rotation,
-			't':topoDog.timestamp()
+			'y':y
+		}
+		var theID = loql.insert('object', values);
+	
+		var theItem = loql.select('objects', objectID);
+	
+	
+		var Isize = theItem.size*topoDog.tileSize;
+		/***
+		var Imargin = (Isize/2)-(topoDog.tileSize/2);
+		// inserisci oggetto nella DOM 
+		$('#tile-'+x+'-'+y).append('<div class="object '+theItem.name+'" style="width:'+Isize+'px;height:'+Isize+'px;margin-top:-'+Imargin+'px;margin-left:-'+Imargin+'px;"></div>');
+	
+		***/
+	
+		var ImarginTop = y - (Isize/2);
+		var ImarginLeft = x - (Isize/2);
+		$('#grid').append('<div id="object-'+theID+'" class="object '+theItem.name+'" data-id="'+theID+'" style="position:absolute;width:'+Isize+'px;height:'+Isize+'px;margin-top:'+ImarginTop+'px;margin-left:'+ImarginLeft+'px;"></div>');
+	
+		$('#action-'+theID).load('./svg/'+theItem.shape);
+	
+	
+	
+	
+	},
+
+
+
+ 	newAction: function(actionID,bid,x,y,rotation,nodb){
+	
+		if(nodb != false){
+			var theID = nodb;
+		} else {
+		
+			var values = {
+				'aid':actionID,
+				//'bid':topoDog.activeBeing.id,
+				'bid':bid,
+				'x':x,
+				'y':y,
+				'r':rotation,
+				't':topoDog.timestamp()
+			}
+	
+			var theID = loql.insert('action', values);
+			//console.log('INSERT');
+		}
+
+		var theAction = loql.select('actions', actionID);
+		var Asize = theAction.size*topoDog.tileSize;
+	
+		var AmarginTop = y - (Asize/2);
+		var AmarginLeft = x - (Asize/2);
+		// inserisci oggetto nella DOM
+	
+	
+		$('#grid').append('<div id="action-'+theID+'" class="action" data-id="'+theID+'" data-bid="'+bid+'" data-action="'+theAction.name+'" style="position:absolute;width:'+Asize+'px;height:'+Asize+'px;margin-top:'+AmarginTop+'px;margin-left:'+AmarginLeft+'px;"></div>');
+	
+	
+		var theBeing = loql.select('beings', bid);
+	
+		if(theBeing){
+			$('#action-'+theID).load('./svg/'+theAction.shape, function(){
+		
+				$('#action-'+theID).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+				//$('#action-'+theID+' svg path').css('fill', topoDog.activeBeing.color);
+				$('#action-'+theID+' svg path').css('fill', theBeing.color);
+				$('#action-'+theID).children('svg').attr('data-rot', rotation);
+				//console.log(rotation);
+			
+			});
 		}
 	
-		var theID = loql.insert('action', values);
-		//console.log('INSERT');
-	}
-
-	var theAction = loql.select('actions', actionID);
-	var Asize = theAction.size*topoDog.tileSize;
-	
-	var AmarginTop = y - (Asize/2);
-	var AmarginLeft = x - (Asize/2);
-	// inserisci oggetto nella DOM
-	
-	
-	$('#grid').append('<div id="action-'+theID+'" class="action" data-id="'+theID+'" data-bid="'+bid+'" data-action="'+theAction.name+'" style="position:absolute;width:'+Asize+'px;height:'+Asize+'px;margin-top:'+AmarginTop+'px;margin-left:'+AmarginLeft+'px;"></div>');
-	
-	
-	var theBeing = loql.select('beings', bid);
-	
-	if(theBeing){
-		$('#action-'+theID).load('./svg/'+theAction.shape, function(){
-		
-			$('#action-'+theID).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
-			//$('#action-'+theID+' svg path').css('fill', topoDog.activeBeing.color);
-			$('#action-'+theID+' svg path').css('fill', theBeing.color);
-			$('#action-'+theID).children('svg').attr('data-rot', rotation);
-			//console.log(rotation);
-			
-		});
-	}
-	
-	return theID;
-}
-
-function moveAction(objectID,x,y){
-
-
-}
-
-function deleteAction(objectID,x,y){
-
-}
-
-
-beingElement = {
-	id: '',
-	color: '',
-	name: '',
-	type: '', //person | dog
-	image: '',
-}
-
-function newBeingElement(color, name, type, image){
-	// insert new being in topoDog.beings
-	
-	// insert new being_id in localstorage
-	newBeing = {
-		'color':color,
-		'name':name,
-		'type':type,
-		'image':image,
-	}
-	var newBeingID = loql.insert('beings', newBeing);
-	topoDog.loadBeings();
-	return newBeingID;
-}
-
-actionElement = {
-	id: '',
-	time: '',
-	type: '',
-	x: '',
-	y: '',
-	object: '',
-	toType: '', //object or being
-	toId: ''
-}
-
-function newActionElement(id,time,type,x,y,object,type){
-	
-}
-
-function deleteActionElement(id){
-
-}
-
-function gridPan(X,Y){
-	$('#grid').css('margin-top', (parseInt($('#grid').css('margin-top')) + Y)+'px');
-	$('#grid').css('margin-left', (parseInt($('#grid').css('margin-left')) + X)+'px');
-}
-
-function zoomField(value){
-	//$('.mapTile').css({'width':$('.mapTile').width()*value, 'height':$('.mapTile').height()*value});
-			
-	if(topoDog.tileSize < 1 && value < 1){
-		return;
-		//value=2;
-	}
-	
-	if(topoDog.tileSize > 48 && value > 1){
-		return;
-		//value=0.5;
-	}
-	
-	var originalMarginTop = parseInt($('#grid').css('margin-top'));
-	var originalMarginLeft = parseInt($('#grid').css('margin-left'));
-	
-	var originalGridW = parseInt($('#grid').width());
-	var originalGridH = parseInt($('#grid').height());
-	
-	var newGridW = originalGridW*value;
-	var newGridH = originalGridH*value;
-
-	
-	var midH = $(document).height()/2;
-	var DH0 = midH - originalMarginTop;
-	var DH1 = DH0*value;
-	
-	var newMarginTop = midH - DH1;
-	
-	
-	var midW = $(document).width()/2;
-	var DW0 = midW - originalMarginLeft;
-	var DW1 = DW0*value;
-	
-	var newMarginLeft = midW - DW1;
-
-	
-	$('#grid').css({
-		'margin-top':(newMarginTop)+'px',
-		'margin-left':(newMarginLeft)+'px',
-		'width':(newGridW)+'px',
-		'height':(newGridH)+'px'
-		});
-	
-	$('#bgCanvas').css({
-		'margin-bottom':-$('#bgCanvas').height()*value,
-		'width':$('#bgCanvas').width()*value,
-		'height':$('#bgCanvas').height()*value
-	});
-
-	$('.object').each(function(){
-		$(this).css({
-		'width':$(this).width()*value,
-		'height':$(this).height()*value,
-		'margin-top':parseInt($(this).css('margin-top'))*value +'px',
-		'margin-left':parseInt($(this).css('margin-left'))*value +'px'
-		});
-	});
-
-	$('.action').each(function(){
-		$(this).css({
-		'width':$(this).width()*value,
-		'height':$(this).height()*value,
-		'margin-top':parseInt($(this).css('margin-top'))*value +'px',
-		'margin-left':parseInt($(this).css('margin-left'))*value +'px'
-		});
-	});
-	
-	
-	topoDog.tileSize = topoDog.tileSize*value;
-	
-	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
-	//$('.object svg, .action svg').css('transform', 'scale('+topoDog.zoomFactor+')');
-	$('.action svg').each( function(){
-		var rotation = $(this).attr('data-rot');
-		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
-	});
-	
-}
-
-function zoomReset(){
-	var resetFactor = topoDog.tileSize / topoDog.originalTileSize;
-	//console.log(1/(resetFactor));
-	zoomField(1/(resetFactor));
-
-}
-
-
-function handleFileSelect(evt) {
-	
-	var result = '';
-	var files = evt.target.files; // FileList object
-
-	// Loop through the FileList and render image files as thumbnails.
-	for (var i = 0, f; f = files[i]; i++) {
-
-		var reader = new FileReader();
-		reader.onload = (function(theFile) {
-			return function(e) {
-			  //console.log (theFile);
-			  result = (e.target.result);
-			  topoDog.tdImport(result);
-			};
-		      })(f);
-		reader.readAsText(f);
-		
+		return theID;
 	}
 	
 }
 
-
-function topoDogAssets(){
-	var gomma = {
-		'name':'gomma',
-		'color':'#eeeeee',
-	}
-	loql.insert('tessels', gomma);
-	
-	var matita = {
-		'name':'matita',
-		'color':'#333333',
-	}
-	loql.insert('tessels', matita);
-	
-	var terra = {
-		'name':'terra',
-		'color':'#ffaa44',
-	}
-	loql.insert('tessels', terra);
-	
-	var erba = {
-		'name':'erba',
-		'color':'#99ff99',
-	}
-	loql.insert('tessels', erba);
-	
-	var acqua = {
-		'name':'acqua',
-		'color':'#3333ff',
-	}
-	loql.insert('tessels', acqua);
-	
-	//////////////////////////////
-	
-	
-	
-	var ciotola = {
-		'type':'object',
-		'name':'ciotola',
-		'size': 2,
-		'shape':'ciotola.svg',
-	}
-	loql.insert('objects', ciotola);
-	
-	
-	var albero = {
-		'type':'object',
-		'name':'albero',
-		'size': 3,
-		'shape':'albero.svg',
-	}
-	loql.insert('objects', albero);
-	
-	var cespuglio = {
-		'type':'object',
-		'name':'cespuglio',
-		'size': 2,
-		'shape':'cespuglio.svg',
-	}
-	loql.insert('objects', cespuglio);
-	
-	/*
-	var fido = {
-		'color':'#ff0000',
-		'name':'fido',
-		'type':'dog',
-		'image':,
-	}
-	*/
-	
-	var azioneDummy = {
-		'name':'dummy',
-		'size':'0',
-		'shape':'null.svg',
-	}
-	loql.insert('actions', azioneDummy);
-	
-	var pipi = {
-		'name':'pipi',
-		'size':'3',
-		'shape':'pipi.svg',
-	}
-	loql.insert('actions', pipi);
-	
-	var cacca = {
-		'name':'cacca',
-		'size':'3',
-		'shape':'cacca.svg',
-	}
-	loql.insert('actions', cacca);
-	
-	
-	var spalle = {
-		'name':'spalle',
-		'size':'3',
-		'shape':'spalle.svg',
-	}
-	loql.insert('actions', spalle);
-	
-	var inibita = {
-		'name':'inibita',
-		'size':'3',
-		'shape':'inibita.svg',
-	}
-	loql.insert('actions', inibita);
-	
-	var raspa = {
-		'name':'raspa',
-		'size':'3',
-		'shape':'raspa.svg',
-	}
-	loql.insert('actions', raspa);
-	
-	var buca = {
-		'name':'buca',
-		'size':'3',
-		'shape':'buca.svg',
-	}
-	loql.insert('actions', buca);
-	
-	var sicurezza = {
-		'name':'sicur.',
-		'size':'3',
-		'shape':'sicurezza.svg',
-	}
-	loql.insert('actions', sicurezza);
-	
-	var spallesu = {
-		'name':'spalle >',
-		'size':'3',
-		'shape':'spallesu.svg',
-	}
-	loql.insert('actions', spallesu);
-	
-	var esplora = {
-		'name':'esplora',
-		'size':'3',
-		'shape':'esplora.svg',
-	}
-	loql.insert('actions', esplora);
-	
-	var possessivita = {
-		'name':'poss.',
-		'size':'2',
-		'shape':'possessivita.svg',
-	}
-	loql.insert('actions', possessivita);
-	
-//	newBeingElement('#ff0000', 'fido', 'dog', '');
-//	newBeingElement('#00ff00', 'ettore', 'dog', '');
-//	newBeingElement('#0000ff', 'gunther', 'dog', '');
-	
-	
-}
-
-
-function topoDogLauncher(){
-	
-	//localStorage.clear();
-	
-	jQuery.event.swipe.min = 50;
-	jQuery.event.swipe.max = 800;
-//	jQuery.event.swipe.delay = 1000;
-	
-	//topoDog.w = ($(document).width()/topoDog.tileSize) -4;
-	//topoDog.h = (($(document).height() - $('#actionsControls').height() - $('#modeControls').height()) / topoDog.tileSize) -3;
-	
-	/***
-	var userWidth = prompt('Insert field width');
-	var userHeight = prompt('Insert field height');
-	topoDog.w = userWidth;
-	topoDog.h = userHeight;
-	***/
-	
-	topoDog.w = 100;
-	topoDog.h = 100;
-	
-	//document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
-	newAction(0,0,0,0,0,false);
-	topoDog.init();
-
-
-}
-
-
-$(document).ready(function(){
-	localStorage.clear();
-	topoDogAssets();
-	topoDogLauncher();
-});
+// FINE CLASSE TOPODOG
 
 
 

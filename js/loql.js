@@ -9,6 +9,14 @@ loql = {
 		}
 	},
 	
+	drop: function(table){
+		var records = this.select(table);
+		for(i=0;i<records.length;i++){
+			loql.del(table, records[i]);
+		}
+		localStorage.removeItem(table);
+	},
+	
 	insert: function(table, value){  //this does also update
 		
 		var targetIndex = JSON.parse(localStorage.getItem(table));
