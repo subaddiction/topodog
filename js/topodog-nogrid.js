@@ -89,11 +89,40 @@ topoDog = { // Oggetto base con parametri fondamentali
 			$('#beings').append(tag);
 		}
 		
-		$('#beings a').unbind('click');
-		$('#beings a').click(function(){
-			$('#actions a').css('background', $(this).attr('data-color'));
-			topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
+		var oneBeingW = $('#beings a').width();
+		var oneBeingM = parseInt($('#beings a').css('margin-right'));
+		var beingsW = (oneBeingW + (2 * oneBeingM)) * (beings.length + 1);
+		$('#beings').width(beingsW+'px');
+		
+		$('#beings a').off();
+//		$('#beings a').click(function(){
+//			$('#actions a').css('background', $(this).attr('data-color'));
+//			topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
+//		});
+		
+		$('#beings a').on({
+		
+			'click': function(){
+				$('#actions a').css('background', $(this).attr('data-color'));
+				topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
+			},
+			
+			'taphold': function(){
+				
+				var id = $(this).attr('data-id');
+				var color = $(this).attr('data-color');
+				
+				var showBeingModal = '<div id="showBeing" style="background:'+color+';">';
+				showBeingModal += '<a href="javascript:;" onclick="topoDog.showBeing('+id+')"><span class="glyphicon glyphicon-eye-open"></span></a>';
+				showBeingModal += '<br />';
+				showBeingModal += '<a href="javascript:;" onclick="topoDog.hideBeing('+id+')"><span class="glyphicon glyphicon-eye-close"></span></a>';
+				showBeingModal += '</div>';
+				$(this).prepend(showBeingModal);
+			}
+		
 		});
+		
+
 		
 		
 	},
@@ -128,6 +157,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 			
 			});
 			
+		} else {
+		
+			var oneActionW = $('#actions a').width();
+			var oneActionM = parseInt($('#actions a').css('margin-right'));
+			var beingsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
+			$('#actions').width(beingsW+'px');
+		
 		}
 		
 		
@@ -196,8 +232,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('.colorSelect').on({
 			'click': function(){
 				$('.colorSelect').css('outline', '0');
+				$('.colorSelect').css('opacity', '0.6');
+				$('.colorSelect').css('box-shadow', 'none');
 				$('#newDog_color').val($(this).attr('data-color'));
-				$(this).css('outline', '2px solid #000000');
+				$(this).css('outline', '8px solid #000000');
+				$(this).css('opacity', '1');
+				
+				
 			}
 		});
 		
@@ -725,12 +766,24 @@ topoDog = { // Oggetto base con parametri fondamentali
 			'name':name,
 			'type':type,
 			'image':image,
+			'show': 0,
 		}
 		var newBeingID = loql.insert('beings', newBeing);
 		topoDog.loadBeings();
 		return newBeingID;
 	},
-
+	
+	showBeing: function(id){
+		$('#beings > a[data-id='+id+']').show();
+		$('div[data-bid='+id+']').show();
+		$('#showBeing').remove();
+	},
+	
+	hideBeing: function(id){
+		$('#beings > a[data-id='+id+']').show();
+		$('div[data-bid='+id+']').hide();
+		$('#showBeing').remove();
+	},
 	
 	saveTexture:function(){
 		var canvas = document.getElementById('bgCanvas');

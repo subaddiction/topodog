@@ -135,7 +135,12 @@ function topoDogLauncher(){
 	topoDog.h = 100;
 	
 	//document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
-	topoDog.newAction(0,0,0,0,0,false);
+	
+	var firstAction = loql.select('action', '0');
+	if(firstAction == null){
+		topoDog.newAction(0,0,0,0,0,false);
+	}
+	
 	topoDog.init();
 
 

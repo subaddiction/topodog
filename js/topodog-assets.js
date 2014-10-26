@@ -13,7 +13,7 @@ function topoDogAssets(){
 	
 	var terra = {
 		'name':'terra',
-		'color':'#ffaa44',
+		'color':'#ffaa66',
 	}
 	loql.insert('tessels', terra);
 	
@@ -25,7 +25,7 @@ function topoDogAssets(){
 	
 	var acqua = {
 		'name':'acqua',
-		'color':'#3333ff',
+		'color':'#9999ff',
 	}
 	loql.insert('tessels', acqua);
 	
@@ -144,6 +144,13 @@ function topoDogAssets(){
 		'shape':'possessivita.svg',
 	}
 	loql.insert('actions', possessivita);
+	
+	var area = {
+		'name':'area',
+		'size':'2',
+		'shape':'area.svg',
+	}
+	loql.insert('actions', area);
 	
 //	newBeingElement('#ff0000', 'fido', 'dog', '');
 //	newBeingElement('#00ff00', 'ettore', 'dog', '');
