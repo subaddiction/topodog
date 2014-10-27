@@ -306,7 +306,7 @@ padding-top:0.2em;
 color:#333333;
 }
 
-#editControls
+#editControls, #noteControls
 {
 display:none;
 text-align:center;

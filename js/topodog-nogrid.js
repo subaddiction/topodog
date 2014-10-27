@@ -208,7 +208,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#bgCanvas').attr('height', (this.h*this.tileSize));
 		
 		$('#bgCanvas').css('margin-bottom', -(this.h*this.tileSize));
-
 		
 		$('body').on({
 			'mousemove touchmove': function(e){
@@ -288,6 +287,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#itemsControls').hide(0);
 		$('#actionsControls').hide(0);
 		$('#editControls').hide(0);
+		$('#noteControls').hide(0);
 		$('#dataControls').hide(0);
 		$('#timeline').hide(0);
 		
@@ -714,6 +714,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				break;
 				
 				case 'notes':
+				
+					$('#noteControls').show(0);
 					$('.action').on({
 						'taphold': function(){
 							$('#noteForm').remove();
@@ -980,7 +982,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		}
 		
 		//alert(fileData);
-		topoDog.tdImport(fileData);
+		this.tdImport(fileData);
+
 	
 	},
 	
@@ -988,9 +991,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	tdImport: function(fileData){
 		
-		topoDog.tdReset();
-		
-		//alert(fileData);
+		localStorage.clear();
 	
 		var content = JSON.parse(fileData);
 		
@@ -999,10 +1000,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 			localStorage.setItem(k, content[k]);
 		}
 		
-		
-		this.drawTexture();
-		this.loadBeings();
-		this.drawActions();
+		topoDogAssets();
+		topoDogLauncher();
 		
 	},
 	
@@ -1011,23 +1010,29 @@ topoDog = { // Oggetto base con parametri fondamentali
 		//Svuoto database locale
 		localStorage.clear();
 		
-		//Eliminare tutti i beings e tutte le actions
+		//Elimino tutti i beings e tutte le actions dalla DOM
 		$('.object').remove();
 		$('.action').remove();
 		
-		
-		//MANTENERE CANVAS
+		//Ricarico assets
 		topoDogAssets();
-		topoDog.loadBeings();
 		
-		
-		
-		//PER CANCELLARE CANVAS E BEINGS
-		if(resetCanvas){
-			topoDogLauncher();
-		} else {
-			this.newAction(0,0,0,0,0,false);
+		//Salvo texture se necessario
+		if(!resetCanvas){
+			this.saveTexture();
 		}
+		
+		// Reinizializzo
+		topoDogLauncher();
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	},
 	
 	newItem: function(objectID,x,y){
