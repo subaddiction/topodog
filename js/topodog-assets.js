@@ -58,14 +58,7 @@ function topoDogAssets(){
 	}
 	loql.insert('objects', cespuglio);
 	
-	/*
-	var fido = {
-		'color':'#ff0000',
-		'name':'fido',
-		'type':'dog',
-		'image':,
-	}
-	*/
+	/*** AZIONI ***/
 	
 	var azioneDummy = {
 		'name':'dummy',
@@ -74,10 +67,32 @@ function topoDogAssets(){
 	}
 	loql.insert('actions', azioneDummy);
 	
+	var ingresso = {
+		'name':'ingresso',
+		'size':'3',
+		'shape':'ingresso.svg',
+	}
+	loql.insert('actions', ingresso);
+	
+	var conduttore = {
+		'name':'conduttore',
+		'size':'3',
+		'shape':'conduttore.svg',
+	}
+	
+	loql.insert('actions', conduttore);
+	
 	var pipi = {
 		'name':'pipi',
 		'size':'3',
 		'shape':'pipi.svg',
+	}
+	loql.insert('actions', pipi);
+	
+	var pipiraspata = {
+		'name':'pipi+raspa',
+		'size':'3',
+		'shape':'pipiraspata.svg',
 	}
 	loql.insert('actions', pipi);
 	

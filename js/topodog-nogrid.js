@@ -175,7 +175,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var actions = loql.select('action');
 		if(!actions){
 			return;
+			//alert('no actions found!');
 		}
+		
+		//console.log(actions);
 		
 		for(i=1;i<actions.length;i++){
 			var currentAction = loql.select('action', actions[i]);
@@ -184,7 +187,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 			this.newAction(currentAction.aid,currentAction.bid,currentAction.x,currentAction.y,currentAction.r,actions[i].toString());
 			
 			//console.log(currentAction.n);
-			
 			//console.log(actions[i].toString());
 			
 		}	
@@ -1000,7 +1002,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		this.drawTexture();
 		this.loadBeings();
-		this.loadActions(1, false);
 		this.drawActions();
 		
 	},
@@ -1077,7 +1078,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				'x':x,
 				'y':y,
 				'r':rotation,
-				't':topoDog.timestamp()
+				't':topoDog.timestamp(),
+				'n':'',
 			}
 	
 			var theID = loql.insert('action', values);
