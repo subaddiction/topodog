@@ -143,5 +143,21 @@ function topoDogLauncher(){
 	
 	topoDog.init();
 
-
 }
+
+
+function scrollBars(){
+	var myScroll = new IScroll('#newDog', {
+		scrollbars: true
+	});
+	
+	/*
+	var myScroll2 = new IScroll('#tessels', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,	
+	});
+	*/
+	
+}
+

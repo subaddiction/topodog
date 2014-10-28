@@ -795,6 +795,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#newDog_type').val('');
 		$('#newDog_image').val('');
 		$('#newDog').show(0);
+		scrollBars();
 	},
 	
 	insertBeing:function(){
