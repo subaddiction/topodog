@@ -162,13 +162,25 @@ function scrollBars(){
 	});
 	
 	
-	scroll_tessels = new IScroll('#tessels', {
+	scroll_tesselsBox = new IScroll('#tesselsBox', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,	
+	});
+	
+	scroll_sizesBox = new IScroll('#sizesBox', {
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,	
 	});
 	
 	scroll_actionsBox = new IScroll('#actionsBox', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,	
+	});
+	
+	scroll_beingsBox = new IScroll('#beingsBox', {
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,	

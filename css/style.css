@@ -242,7 +242,7 @@ margin-top:-4px;
 text-align:center;
 }
 
-#beingsBox, #actionsBox
+#beingsBox, #actionsBox, #tesselsBox, #sizesBox
 {
 position:relative;
 width:100%;
@@ -251,7 +251,7 @@ overflow:hidden;
 height:60px;
 }
 
-#beings, #actions
+#beings, #actions, #tessels, #sizes
 {
 position:absolute;
 width:auto;

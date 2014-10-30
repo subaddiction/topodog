@@ -200,6 +200,16 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var controlsW = (oneControlW + (2 * oneControlM)) * ($('#modeControls li').length + 2);
 		$('#modeControls').width(controlsW+'px');
 		
+		var oneTesselW = $('#tessels a').width();
+		var oneTesselM = parseInt($('#tessels a').css('margin-right'));
+		var tesselsW = (oneTesselW + (2 * oneTesselM)) * ($('#tessels a').length + 2);
+		$('#tessels').width(tesselsW+'px');
+		
+		var oneSizeW = $('#sizes a').width();
+		var oneSizeM = parseInt($('#sizes a').css('margin-right'));
+		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
+		$('#sizes').width(sizesW+'px');
+		
 	},
 	
 	init: function(){
@@ -257,13 +267,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		document.getElementById('filechooser').addEventListener('change', handleFileSelect, false);
 		
-		this.controlsWidth();
-		
 		// Load all tiles, objects, beings actions
 		this.drawTexture();
 		this.loadTessels();
 		this.loadBeings();
 		this.loadActions(1,false);
+		
+		this.controlsWidth();
 		
 		this.drawActions();
 		
