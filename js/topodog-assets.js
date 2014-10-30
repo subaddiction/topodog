@@ -94,7 +94,7 @@ function topoDogAssets(){
 		'size':'3',
 		'shape':'pipiraspata.svg',
 	}
-	loql.insert('actions', pipi);
+	loql.insert('actions', pipiraspata);
 	
 	var cacca = {
 		'name':'cacca',
@@ -152,6 +152,27 @@ function topoDogAssets(){
 		'shape':'esplora.svg',
 	}
 	loql.insert('actions', esplora);
+	
+	var chew = {
+		'name':'mastica',
+		'size':'3',
+		'shape':'chew.svg',
+	}
+	loql.insert('actions', chew);
+	
+	var controllo = {
+		'name':'controllo',
+		'size':'3',
+		'shape':'controllo.svg',
+	}
+	loql.insert('actions', controllo);
+	
+	var gestione = {
+		'name':'gestione',
+		'size':'3',
+		'shape':'gestione.svg',
+	}
+	loql.insert('actions', gestione);
 	
 	var possessivita = {
 		'name':'poss.',

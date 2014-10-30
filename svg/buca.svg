@@ -7,10 +7,34 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="36"
    height="36"
-   id="svg2">
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="buca.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview2993"
+     showgrid="false"
+     inkscape:zoom="4.6354778"
+     inkscape:cx="11.818341"
+     inkscape:cy="20.862833"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
   <defs
      id="defs4" />
   <metadata
@@ -21,12 +45,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <path
-     d="M 18,0 8,5 28,5 18,0 z m 0,6 C 11.372583,6 6,11.372583 6,18 6,24.627417 11.372583,30 18,30 24.627417,30 30,24.627417 30,18 30,11.372583 24.627417,6 18,6 z m 0,2 c 5.522847,0 10,4.477153 10,10 0,5.522847 -4.477153,10 -10,10 C 12.477153,28 8,23.522847 8,18 8,12.477153 12.477153,8 18,8 z m 0,2 c -4.418278,0 -8,3.581722 -8,8 0,4.418278 3.581722,8 8,8 4.418278,0 8,-3.581722 8,-8 0,-4.418278 -3.581722,-8 -8,-8 z m 0,2 c 3.313708,0 6,2.686292 6,6 0,3.313708 -2.686292,6 -6,6 -3.313708,0 -6,-2.686292 -6,-6 0,-3.313708 2.686292,-6 6,-6 z"
      id="path3001"
-     style="fill:#000000;fill-opacity:1;stroke:none" />
+     style="fill:#000000;fill-opacity:1;stroke:none"
+     d="m 18,12 c 3.313708,0 6,2.686292 6,6 0,3.313708 -2.686292,6 -6,6 -3.313708,0 -6,-2.686292 -6,-6 0,-3.313708 2.686292,-6 6,-6 z m 0,-2 c -4.418278,0 -8,3.581722 -8,8 0,4.418278 3.581722,8 8,8 4.418278,0 8,-3.581722 8,-8 0,-4.418278 -3.581722,-8 -8,-8 z m 0,-2 c 5.522847,0 10,4.477153 10,10 0,5.522847 -4.477153,10 -10,10 C 12.477153,28 8,23.522847 8,18 8,12.477153 12.477153,8 18,8 z M 18,6 C 11.372583,6 6,11.372583 6,18 6,24.627417 11.372583,30 18,30 24.627417,30 30,24.627417 30,18 30,11.372583 24.627417,6 18,6 z" />
 </svg>

@@ -7,10 +7,34 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="36"
    height="36"
-   id="svg2">
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="pipiraspata.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="6.5555556"
+     inkscape:cx="18"
+     inkscape:cy="18"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
   <defs
      id="defs4" />
   <metadata
@@ -21,12 +45,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <path
-     d="m 10,30.000001 16,0 0,4 -16,0 z m 0,-6.000002 16,0 0,4 -16,0 z M 12.780488,6 10,8.756098 15.219512,14 10,19.243902 12.780488,22 18,16.756098 23.268293,22 26,19.243902 20.780488,14 26,8.756098 23.268293,6 18,11.243902 12.780488,6 z M 18,0 8,5 28,5 18,0 z"
      id="rect2989"
-     style="fill:#000000;fill-opacity:1;stroke:none" />
+     style="fill:#000000;fill-opacity:1;stroke:none"
+     d="M 18,0 8,5 28,5 18,0 z M 13.47716,6.0677966 11.067797,8.4560256 15.590636,13 11.067797,17.543974 13.47716,19.932203 18,15.388229 22.56511,19.932203 24.932203,17.543974 20.409364,13 24.932203,8.4560256 22.56511,6.0677966 18,10.611771 13.47716,6.0677966 z m 9.522841,15.5254244 0,10.813559 -4,0 0,-10.813559 z m -6.000002,0 0,10.813559 -4,0 0,-10.813559 z" />
 </svg>
