@@ -245,9 +245,8 @@ text-align:center;
 #beingsBox, #actionsBox, #tesselsBox, #sizesBox
 {
 position:relative;
+overflow:visible;
 width:100%;
-/*overflow-x:auto;*/
-overflow:hidden;
 height:60px;
 }
 
