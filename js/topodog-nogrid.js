@@ -193,6 +193,15 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	},
 	
+	controlsWidth: function(){
+		
+		var oneControlW = $('#modeControls li').width();
+		var oneControlM = parseInt($('#modeControls li').css('margin-right'));
+		var controlsW = (oneControlW + (2 * oneControlM)) * ($('#modeControls li').length + 2);
+		$('#modeControls').width(controlsW+'px');
+		
+	},
+	
 	init: function(){
 		var row = 0;
 		var col = 0;
@@ -248,7 +257,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		document.getElementById('filechooser').addEventListener('change', handleFileSelect, false);
 		
-		
+		this.controlsWidth();
 		
 		// Load all tiles, objects, beings actions
 		this.drawTexture();
@@ -257,6 +266,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		this.loadActions(1,false);
 		
 		this.drawActions();
+		
+		
 	},
 	
 	modeSwitch: function(mode){
@@ -290,6 +301,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#noteControls').hide(0);
 		$('#dataControls').hide(0);
 		$('#timeline').hide(0);
+		
 		
 		$(function(){
 			
@@ -747,7 +759,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 			}
 			
-			
+			scrollBars();
 			
 			
 		});

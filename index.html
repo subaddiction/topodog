@@ -39,6 +39,7 @@
 </svg>
 -->
 
+<div id="modeControlsBox">
 <div id="modeControls">
 	<ul id="stateControls">
 		<li>
@@ -73,7 +74,7 @@
 		</li>
 		
 	</ul>
-	
+	<!--
 	<ul id="beingsControls">
 		<li>
 			<a href="javascript:;" onclick="topoDog.newDogForm();">
@@ -82,7 +83,7 @@
 		</li>
 		
 	</ul>
-	
+	-->
 	<ul id="viewControls">
 		<li>
 			<a href="javascript:;" onclick="if(topoDog.mode != 'view3d'){$('#presentation').click();}zoomField(2)">
@@ -100,10 +101,15 @@
 				<span class="glyphicon glyphicon-plane"></span>
 			</a>
 		</li>
+		
+		<li>
+			<a href="javascript:;" onclick="topoDog.newDogForm();">
+				<span class="glyphicon glyphicon-plus-sign"></span>
+			</a>
+		</li>
 
 	</ul>
-	
-	
+</div>
 </div>
 
 <div id="scenario">

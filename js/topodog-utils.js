@@ -142,22 +142,45 @@ function topoDogLauncher(){
 	}
 	
 	topoDog.init();
+	scrollBars();
 
 }
 
 
+var scroll_newDog;
+var scroll_tessels
+var scroll_modeControlsBox;
+var scroll_actionsBox;
+
 function scrollBars(){
-	var myScroll = new IScroll('#newDog', {
+
+	$('.iScrollLoneScrollbar').remove();
+	
+	scroll_newDog = false;
+	scroll_newDog = new IScroll('#newDog', {
 		scrollbars: true
 	});
 	
-	/*
-	var myScroll2 = new IScroll('#tessels', {
+	
+	scroll_tessels = new IScroll('#tessels', {
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,	
 	});
-	*/
+	
+	scroll_actionsBox = new IScroll('#actionsBox', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,	
+	});
+	
+	
+	scroll_modeControlsBox = false;
+	scroll_modeControlsBox = new IScroll('#modeControlsBox', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,
+	});
 	
 }
 
