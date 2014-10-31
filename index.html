@@ -43,32 +43,32 @@
 <div id="modeControls">
 	<ul id="stateControls">
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('tessel')">
+			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('tessel')" ontouchstart="topoDog.modeSwitch('tessel')">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertItems')">
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertItems')" ontouchstart="zoomReset();topoDog.modeSwitch('insertItems')">
 				<span class="glyphicon glyphicon-tree-deciduous"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertActions')">
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertActions')" ontouchstart="zoomReset();topoDog.modeSwitch('insertActions')">
 				<span class="glyphicon glyphicon-screenshot"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('notes')">
+			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('notes')" ontouchstart="topoDog.modeSwitch('notes')">
 				<span class="glyphicon glyphicon-comment"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('editActions')">
+			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('editActions')" ontouchstart="topoDog.modeSwitch('editActions')">
 				<span class="glyphicon glyphicon-remove-circle"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('manageData');">
+			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('manageData');" ontouchstart="zoomReset();topoDog.modeSwitch('manageData');">
 				<span class="glyphicon glyphicon-transfer"></span>
 			</a>
 		</li>
@@ -97,13 +97,13 @@
 		</li>
 		
 		<li>
-			<a id="presentation" class="mode" href="javascript:;" onclick="topoDog.modeSwitch('view3d')">
+			<a id="presentation" class="mode" href="javascript:;" onclick="topoDog.modeSwitch('view3d')" ontouchstart="topoDog.modeSwitch('view3d')">
 				<span class="glyphicon glyphicon-plane"></span>
 			</a>
 		</li>
 		
 		<li>
-			<a href="javascript:;" onclick="topoDog.newDogForm();">
+			<a href="javascript:;" onclick="topoDog.newDogForm();" ontouchstart="topoDog.newDogForm();">
 				<span class="glyphicon glyphicon-plus-sign"></span>
 			</a>
 		</li>
@@ -134,12 +134,12 @@
 		</div>
 		<div id="sizesBox" class="clear">
 			<div id="sizes">
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.166666667, this);">1px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.25, this);">3px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.5, this);">6px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(1, this);">12px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(2, this);">24px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(4, this);">48px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(0.166666667, this);" ontouchstart="topoDog.setPaintSize(0.166666667, this);">1px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(0.25, this);" ontouchstart="topoDog.setPaintSize(0.25, this);">3px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(0.5, this);" ontouchstart="topoDog.setPaintSize(0.5, this);">6px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(1, this);" ontouchstart="topoDog.setPaintSize(1, this);">12px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(2, this);" ontouchstart="topoDog.setPaintSize(2, this);">24px</a>
+			<a href="javascript:;" onclick="topoDog.setPaintSize(4, this);" ontouchstart="topoDog.setPaintSize(4, this);">48px</a>
 			</div>
 		</div>
 	</div>
@@ -236,11 +236,11 @@
 		<input id="newDog_type" type="hidden" value="dog" />
 		<input id="newDog_image" type="hidden" value="" />
 		
-		<a class="control" href="javascript:;" onclick="$('#newDog').hide(0);">
+		<a class="control" href="javascript:;" onclick="$('#newDog').hide(0);" ontouchstart="$('#newDog').hide(0);">
 			<span class="glyphicon glyphicon-remove"></span>
 		</a>
 		
-		<a class="control" href="javascript:;" onclick="topoDog.insertBeing();">
+		<a class="control" href="javascript:;" onclick="topoDog.insertBeing();" ontouchstart="topoDog.insertBeing();">
 			<span class="glyphicon glyphicon-ok"></span>
 		</a>
 		

@@ -141,6 +141,12 @@ function topoDogLauncher(){
 		topoDog.newAction(0,0,0,0,0,false);
 	}
 	
+	loql.drop('tessels');
+	loql.drop('objects');
+	loql.drop('actions');
+	
+	topoDogAssets();
+	
 	topoDog.init();
 	scrollBars();
 

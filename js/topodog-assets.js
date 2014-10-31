@@ -31,16 +31,21 @@ function topoDogAssets(){
 	
 	//////////////////////////////
 	
-	
+	var persona = {
+		'type':'object',
+		'name':'persona',
+		'size': 3,
+		'shape':'persona.svg',
+	}
+	loql.insert('objects', persona);
 	
 	var ciotola = {
 		'type':'object',
 		'name':'ciotola',
-		'size': 2,
+		'size': 3,
 		'shape':'ciotola.svg',
 	}
 	loql.insert('objects', ciotola);
-	
 	
 	var albero = {
 		'type':'object',
@@ -53,10 +58,18 @@ function topoDogAssets(){
 	var cespuglio = {
 		'type':'object',
 		'name':'cespuglio',
-		'size': 2,
+		'size': 3,
 		'shape':'cespuglio.svg',
 	}
 	loql.insert('objects', cespuglio);
+	
+	var tavolo = {
+		'type':'object',
+		'name':'tavolo',
+		'size': 3,
+		'shape':'tavolo.svg',
+	}
+	loql.insert('objects', tavolo);
 	
 	/*** AZIONI ***/
 	

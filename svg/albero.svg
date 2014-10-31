@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="36"
+   height="36"
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="ciotola.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     id="namedview2989"
+     showgrid="false"
+     inkscape:zoom="4.7140452"
+     inkscape:cx="16.797085"
+     inkscape:cy="21.253579"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none"
+     d="M 17.875 0 C 14.403532 0 11.561131 2.6064314 11.15625 5.96875 C 7.5698927 6.1509181 4.71875 9.087116 4.71875 12.71875 C 4.71875 13.995106 5.0748963 15.16761 5.6875 16.1875 C 5.0664571 17.212353 4.71875 18.432916 4.71875 19.71875 C 4.71875 23.467783 7.7509668 26.5 11.5 26.5 C 12.705752 26.5 13.831356 26.178866 14.8125 25.625 L 14.8125 36 L 21.1875 36 L 21.1875 25.625 C 22.168824 26.17839 23.293199 26.5 24.5 26.5 C 28.249033 26.5 31.28125 23.467783 31.28125 19.71875 C 31.28125 18.432916 30.933543 17.212353 30.3125 16.1875 C 30.925104 15.16761 31.28125 13.995106 31.28125 12.71875 C 31.28125 9.001603 28.298758 5.9885908 24.59375 5.9375 C 24.175342 2.589869 21.336012 0 17.875 0 z "
+     id="path3018" />
+</svg>
