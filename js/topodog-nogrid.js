@@ -433,11 +433,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 //								var X = Math.floor((touch.pageX - ($(this).offset().left)) / tesselZoom);
 //								var Y = Math.floor((touch.pageY - ($(this).offset().top)) / tesselZoom);
 
-								var X = Math.floor(touch.pageX - ($(this).offset().left));
-								var Y = Math.floor(touch.pageY - ($(this).offset().top));
+								var X = touch.pageX - ($(this).offset().left);
+								var Y = touch.pageY - ($(this).offset().top);
 								
 								ctx.fillStyle = paintColor;
-        							ctx.fillRect(X*tesselSize, Y*tesselSize, tesselSize, tesselSize);
+        							//ctx.fillRect(X*tesselSize, Y*tesselSize, tesselSize, tesselSize);
+								ctx.fillRect(X, Y, tesselSize, tesselSize);
 								
 							} else {
 								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
