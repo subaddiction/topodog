@@ -210,13 +210,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$(this).prepend(showBeingModal);
 				
 				$('.showB').on({
-					'click touchend': function(){
+					'click touchstart': function(){
 						topoDog.showBeing(id);
 						//console.log(id);
 					}
 				});
 				$('.hideB').on({
-					'click touchend': function(){
+					'click touchstart': function(){
 						topoDog.hideBeing(id);
 						//console.log(id);
 					}
