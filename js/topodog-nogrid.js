@@ -331,40 +331,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
-		$('.mode').on({
-			'click touchend': function(){
+		$('a.mode').on({
+			'tap': function(){
 				zoomReset();
 				topoDog.modeSwitch($(this).attr('data-mode'));
 				
-			}
-		});
-		
-		$('#openNewDogForm').on({
-			'click touchend': function(){
-				topoDog.newDogForm();
-			}
-		});
-		
-		$('#zoomMore').on({
-			'click touchend': function(){
-				if(topoDog.mode != 'view3d'){
-					$('#presentation').click();
-				}
-				zoomField(2);
-			}
-		});
-		
-		$('#zoomLess').on({
-			'click touchend': function(){
-				if(topoDog.mode != 'view3d'){
-					$('#presentation').click();
-				}
-				zoomField(.5);
-			}
-		});
-		
-		$('a.mode').on({
-			'click touchstart': function(e){
 				$('a.mode').css({
 					'background':'#000000',
 					'color':'#cccccc'
@@ -373,6 +344,31 @@ topoDog = { // Oggetto base con parametri fondamentali
 					'background':'#ffffff',
 					'color':'#000000'
 				});
+				
+			}
+		});
+		
+		$('#openNewDogForm').on({
+			'tap': function(){
+				topoDog.newDogForm();
+			}
+		});
+		
+		$('#zoomMore').on({
+			'tap': function(){
+				if(topoDog.mode != 'view3d'){
+					$('#presentation').click();
+				}
+				zoomField(2);
+			}
+		});
+		
+		$('#zoomLess').on({
+			'tap': function(){
+				if(topoDog.mode != 'view3d'){
+					$('#presentation').click();
+				}
+				zoomField(.5);
 			}
 		});
 		
@@ -382,7 +378,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		);
 		$('.colorSelect').on({
-			'click touchstart': function(){
+			'tap': function(){
 				$('.colorSelect').css('outline', '0');
 				$('.colorSelect').css('opacity', '0.6');
 				$('.colorSelect').css('box-shadow', 'none');
@@ -395,26 +391,26 @@ topoDog = { // Oggetto base con parametri fondamentali
 		});
 		
 		$('.pan').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				gridPan(parseInt($(this).attr('data-panx')), parseInt($(this).attr('data-pany')));
 			}	
 		});
 		
 		$('#closeNewDogForm').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				$('#newDog').hide(0);
 			}
 		});
 		
 		$('#submitNewDogForm').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				topoDog.insertBeing();
 			}
 		});
 		
 		
 		$('#sizes a').on({
-			'click touchend': function(){
+			'tap': function(){
 				topoDog.setPaintSize($(this).attr('data-size'), $(this));
 			}
 		});

@@ -482,17 +482,11 @@ max-width:120px;
 min-width:120px;
 }
 
-/***
-.time:first-child
-{
-display:none;
-}
 
-.time:nth-child(2)
+.time:first-child
 {
 border-left:1px solid #ffffff;
 }
-***/
 
 .time[data-id="0"]
 {
@@ -528,6 +522,8 @@ position:absolute;
 color:#000000;
 background:#ffffff;
 font-size:32px;
+line-height:32px;
+height:40px;
 }
 
 
