@@ -377,13 +377,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 		});
 		
 		$('#closeNewDogForm').on({
-			'click touchend': function(){
+			'tap': function(){
 				$('#newDog').hide(0);
 			}
 		});
 		
 		$('#submitNewDogForm').on({
-			'click touchend': function(){
+			'tap': function(){
 				topoDog.insertBeing();
 			}
 		});
