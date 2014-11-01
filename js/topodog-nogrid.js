@@ -210,13 +210,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$(this).prepend(showBeingModal);
 				
 				$('.showB').on({
-					'click touchstart': function(){
+					'tap': function(){
 						topoDog.showBeing(id);
 						//console.log(id);
 					}
 				});
 				$('.hideB').on({
-					'click touchstart': function(){
+					'tap': function(){
 						topoDog.hideBeing(id);
 						//console.log(id);
 					}
@@ -1123,14 +1123,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 	},
 	
 	showBeing: function(id){
-		$('#beings > a[data-id='+id+']').show();
+		//$('#beings > a[data-id='+id+']').show();
 		//$('div[data-bid='+id+']').show();
 		$('div[data-bid='+id+']').attr('being-hide', 'false');
 		$('#showBeing').remove();
 	},
 	
 	hideBeing: function(id){
-		$('#beings > a[data-id='+id+']').show();
+		//$('#beings > a[data-id='+id+']').show();
 		//$('div[data-bid='+id+']').hide();
 		$('div[data-bid='+id+']').attr('being-hide', 'true');
 		$('#showBeing').remove();
