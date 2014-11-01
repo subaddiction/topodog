@@ -39,7 +39,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	//tessels: {}, // texture disegnata
 	//beings: {}, // esseri umani e cani
 	
-	activeBeing: '0',
+	activeBeing: false,
 	
 	loadTessels: function(){
 		$('#tessels').html('');
@@ -415,6 +415,24 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
+		$('.pan').on({
+			'click touchstart': function(){
+				gridPan(parseInt($(this).attr('data-panx')), parseInt($(this).attr('data-pany')));
+			}	
+		});
+		
+		$('#closeNewDogForm').on({
+			'click touchstart': function(){
+				$('#newDog').hide(0);
+			}
+		});
+		
+		$('#submitNewDogForm').on({
+			'click touchstart': function(){
+				topoDog.insertBeing();
+			}
+		});
+		
 		document.getElementById('filechooser').addEventListener('change', handleFileSelect, false);
 		
 		// Load all tiles, objects, beings actions
@@ -573,27 +591,32 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('#itemsControls').show(0);
 					
-					$('#grid').click(function(e){
-						if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-								
-								var X = touch.pageX - ($(this).offset().left);
-								var Y = touch.pageY - ($(this).offset().top);
-								
-								topoDog.newItem(topoDog.selectedObject,X,Y,false);
-								
-							} else {
-								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-								if(button==1){
-									var touch = e.originalEvent;
-									var X = touch.clientX - ($(this).offset().left);
-									var Y = touch.clientY - ($(this).offset().top);
-									
-									topoDog.newItem(topoDog.selectedObject,X,Y,false);
-								}
+					$('#grid').on({
+						'click': function(e){
+							if(topoDog.selectedObject == false){
+								return;
 							}
+							if(e.originalEvent.touches){
+									var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								
+									var X = touch.pageX - ($(this).offset().left);
+									var Y = touch.pageY - ($(this).offset().top);
+								
+									topoDog.newItem(topoDog.selectedObject,X,Y,false);
+								
+								} else {
+									var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+									if(button==1){
+										var touch = e.originalEvent;
+										var X = touch.clientX - ($(this).offset().left);
+										var Y = touch.clientY - ($(this).offset().top);
+									
+										topoDog.newItem(topoDog.selectedObject,X,Y,false);
+									}
+								}
 						
 						
+						}
 					});
 					
 				break;
@@ -618,6 +641,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 						'mousedown touchstart': function(e){
 					
 							e.preventDefault();
+							
+							if(topoDog.activeBeing == false){
+								return;
+							}
 							
 							if(e.originalEvent.touches){
 								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -733,6 +760,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 					
 						'mouseup touchend' : function(e){
+								e.preventDefault();
+								
+								if(topoDog.activeBeing == false){
+									return;
+								}
+								
 								var confirmAction = {
 									'aid':topoDog.selectedAction,
 									'bid':topoDog.activeBeing.id,
@@ -835,6 +868,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					// [RI]Costruisco la timeline
 					var actions = loql.select('action');
+					
+					if(actions.length <= 1){
+						return;
+					}
 					for(i=0;i<actions.length;i++){
 						
 						var action = loql.select('action', actions[i]);
@@ -911,7 +948,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 						'taphold': function(e){
 							e.preventDefault();
 							$('#noteForm').remove();
-						
+							$('.action').attr('data-note', false);
+							$(this).attr('data-note', 'true');
 							//alert('muovi,ruota,elimina');
 							var actionID = $(this).attr('data-id');
 							var noteAction = loql.select('action', actionID);
@@ -925,12 +963,19 @@ topoDog = { // Oggetto base con parametri fondamentali
 							var topOffset = $(this).height()/2;
 							var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
 							noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
-							noteForm += '<a id="saveNote" href="javascript:;" onclick="topoDog.addNote('+actionID+')">';
+							noteForm += '<a id="saveNote" href="javascript:;" data-id="'+actionID+'">';
 							noteForm += '<span class="glyphicon glyphicon-ok"></span>';
 							noteForm += '</a>';
 							noteForm += '</div>';
 							
 							$('#action-'+actionID).prepend(noteForm);
+							
+							$('#saveNote').on({
+								'click touchstart':function(){
+									topoDog.addNote($(this).attr('data-id'));
+									$('.action').attr('data-note', false);
+								}
+							});
 						}
 					});
 				

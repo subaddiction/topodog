@@ -511,3 +511,8 @@ height:38px;
 {
 display:none!important;
 }
+
+[data-note=true]
+{
+z-index:999999;
+}

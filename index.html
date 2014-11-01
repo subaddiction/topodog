@@ -118,13 +118,13 @@
 </div>
 
 <div id="scenario">
-	<a id="pandown" href="javascript:;" onclick="gridPan(0,-48)"></a>
+	<a id="pandown" class="pan" data-panx="0" data-pany="-48" href="javascript:;"></a>
 
-	<a id="panup" href="javascript:;" onclick="gridPan(0,48)"></a>
+	<a id="panup" class="pan" data-panx="0" data-pany="48" href="javascript:;"></a>
 
-	<a id="panleft" href="javascript:;" onclick="gridPan(48,0)"></a>
+	<a id="panleft"class="pan" data-panx="48" data-pany="0" href="javascript:;"></a>
 
-	<a id="panright" href="javascript:;" onclick="gridPan(-48,0)"></a>
+	<a id="panright" class="pan" data-panx="-48" data-pany="0" href="javascript:;"></a>
 
 	<div id="grid">
 	<canvas id="bgCanvas"></canvas>
@@ -187,11 +187,11 @@
 		</a>
 		<input id="filechooser" type="file" style="display:none;" />
 		
-		<a id="eraseScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
+		<a id="eraseScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
 			<span class="glyphicon glyphicon-refresh"></span>
 		</a>
 		
-		<a id="resetScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE TopoDog?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdReset(true); }">
+		<a id="resetScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE TopoDog?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdReset(true); }">
 			<span class="glyphicon glyphicon-fire"></span>
 		</a>
 		
@@ -245,11 +245,11 @@
 		<input id="newDog_type" type="hidden" value="dog" />
 		<input id="newDog_image" type="hidden" value="" />
 		
-		<a class="control" href="javascript:;" onclick="$('#newDog').hide(0);" ontouchstart="$('#newDog').hide(0);">
+		<a id="closeNewDogForm" class="control" href="javascript:;">
 			<span class="glyphicon glyphicon-remove"></span>
 		</a>
 		
-		<a class="control" href="javascript:;" onclick="topoDog.insertBeing();" ontouchstart="topoDog.insertBeing();">
+		<a id="submitNewDogForm" class="control" href="javascript:;">
 			<span class="glyphicon glyphicon-ok"></span>
 		</a>
 		
