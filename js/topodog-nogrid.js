@@ -120,7 +120,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			$('#itemsControls').width(itemsW+'px');
 			
 			$('#itemsControls a').on({
-				'click touchstart': function(){
+				'click touchend': function(){
 					topoDog.selectItem($(this).attr('data-id'));
 				}
 			});
@@ -188,13 +188,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 //			$('#actions a').css('background', $(this).attr('data-color'));
 //			topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
 //		});
-
-
-		
 		
 		$('#beings a').on({
 		
-			'click touchstart': function(){
+			'click touchend': function(){
 				$('#actions a').css('background', $(this).attr('data-color'));
 				topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
 			},
@@ -213,13 +210,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$(this).prepend(showBeingModal);
 				
 				$('.showB').on({
-					'click': function(){
+					'click touchend': function(){
 						topoDog.showBeing(id);
 						//console.log(id);
 					}
 				});
 				$('.hideB').on({
-					'click': function(){
+					'click touchend': function(){
 						topoDog.hideBeing(id);
 						//console.log(id);
 					}
@@ -593,7 +590,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('#itemsControls').show(0);
 					
 					$('#grid').on({
-						'click': function(e){
+						'click touchend': function(e){
 							if(topoDog.selectedObject == false){
 								return;
 							}
