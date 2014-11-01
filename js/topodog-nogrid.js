@@ -18,6 +18,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	selectedTessel: 0,
 	selectedAction: 0,
 	selectedItem: 0,
+	activeBeing: false,
 	theNewAction: false,
 	orientBegin: false,
 	
@@ -39,7 +40,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 	//tessels: {}, // texture disegnata
 	//beings: {}, // esseri umani e cani
 	
-	activeBeing: false,
+	firstID: false,
+	lastID: false,
 	
 	loadTessels: function(){
 		$('#tessels').html('');
@@ -323,20 +325,28 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
 		$('#sizes').width(sizesW+'px');
 		
+		$('body').on({
+			'mousemove touchmove': function(e){
+				e.preventDefault();
+			}
+		});
+		
 		$('.mode').on({
-			'click touchstart': function(){
+			'click touchend': function(){
+				zoomReset();
 				topoDog.modeSwitch($(this).attr('data-mode'));
+				
 			}
 		});
 		
 		$('#openNewDogForm').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				topoDog.newDogForm();
 			}
 		});
 		
 		$('#zoomMore').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
@@ -345,42 +355,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 		});
 		
 		$('#zoomLess').on({
-			'click touchstart': function(){
+			'click touchend': function(){
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
 				zoomField(.5);
-			}
-		});
-		
-		$('#sizes a').on({
-			'click touchstart': function(){
-				topoDog.setPaintSize($(this).attr('data-size'), $(this));
-			}
-		});
-		
-		
-	},
-	
-	init: function(){
-		var row = 0;
-		var col = 0;
-
-		
-		$('#'+this.tilesId).width((this.w*this.tileSize)+'px');
-		$('#'+this.tilesId).height((this.h*this.tileSize)+'px');
-		
-		//$('canvas').remove();
-		//$('#grid').prepend('<canvas id="bgCanvas"></canvas>');
-		
-		$('#bgCanvas').attr('width', (this.w*this.tileSize));
-		$('#bgCanvas').attr('height', (this.h*this.tileSize));
-		
-		$('#bgCanvas').css('margin-bottom', -(this.h*this.tileSize));
-		
-		$('body').on({
-			'mousemove touchmove': function(e){
-				e.preventDefault();
 			}
 		});
 		
@@ -433,7 +412,33 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
-		document.getElementById('filechooser').addEventListener('change', handleFileSelect, false);
+		
+		$('#sizes a').on({
+			'click touchend': function(){
+				topoDog.setPaintSize($(this).attr('data-size'), $(this));
+			}
+		});
+		
+		
+	},
+	
+	init: function(){
+		var row = 0;
+		var col = 0;
+
+		
+		$('#'+this.tilesId).width((this.w*this.tileSize)+'px');
+		$('#'+this.tilesId).height((this.h*this.tileSize)+'px');
+		
+		//$('canvas').remove();
+		//$('#grid').prepend('<canvas id="bgCanvas"></canvas>');
+		
+		$('#bgCanvas').attr('width', (this.w*this.tileSize));
+		$('#bgCanvas').attr('height', (this.h*this.tileSize));
+		
+		$('#bgCanvas').css('margin-bottom', -(this.h*this.tileSize));
+		
+		
 		
 		// Load all tiles, objects, beings actions
 		this.drawTexture();
@@ -911,18 +916,22 @@ topoDog = { // Oggetto base con parametri fondamentali
 					});
 					
 					$('.time .t-id').on({
-						'click touchstart': function(){
-							
-							var lastID = parseInt($(this).parent().attr('data-id'));
+						'click touchstart': function(e){
+							e.preventDefault();
+							topoDog.lastID = parseInt($(this).parent().attr('data-id'));
 								
 								for(i=0;i<actions.length;i++){
 									var action = loql.select('action', actions[i]);
-									if(lastID >= actions[i]){
+									if(topoDog.lastID >= actions[i] && topoDog.firstID <= actions[i]){
 										$('#action-'+actions[i]).show(0);
 									} else {
 										$('#action-'+actions[i]).hide(0);
 									}
 								}
+								
+								$('#lastFrameFlag').remove();
+								var lastFrameFlag = '<div id="lastFrameFlag"><span class="glyphicon glyphicon-step-forward"></span></div>';
+								$('.time[data-id='+topoDog.lastID+']').append(lastFrameFlag);
 							
 						},
 						
@@ -932,16 +941,22 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('.time .t-detail').on({
 						'click touchstart': function(e){
 							e.preventDefault();
-							var firstID = parseInt($(this).parent().attr('data-id'));
+							topoDog.firstID = parseInt($(this).parent().attr('data-id'));
 								
 								for(i=0;i<actions.length;i++){
 									var action = loql.select('action', actions[i]);
-									if(firstID > actions[i]){
+									if(topoDog.firstID > actions[i]){
 										$('#action-'+actions[i]).hide(0);
 									} else {
-										$('#action-'+actions[i]).show(0);
+										if(actions[i] <= topoDog.lastID){
+											$('#action-'+actions[i]).show(0);
+										}
 									}
 								}
+								
+							$('#firstFrameFlag').remove();
+							var firstFrameFlag = '<div id="firstFrameFlag"><span class="glyphicon glyphicon-step-backward"></span></div>';
+							$('.time[data-id='+topoDog.firstID+']').append(firstFrameFlag);
 							
 						}
 					
@@ -966,7 +981,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 						}
 					});
 					
-				
 				break;
 				
 				case 'notes':

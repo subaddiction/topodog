@@ -81,6 +81,12 @@ function zoomField(value){
 		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
 	});
 	
+	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
+	//$('.object svg, .action svg').css('transform', 'scale('+topoDog.zoomFactor+')');
+	$('.object svg').each( function(){
+		$(this).css('transform', 'scale('+topoDog.zoomFactor+')');
+	});
+	
 }
 
 function zoomReset(){
