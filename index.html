@@ -43,32 +43,32 @@
 <div id="modeControls">
 	<ul id="stateControls">
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('tessel')" ontouchstart="topoDog.modeSwitch('tessel')">
+			<a class="mode" data-mode="tessel" href="javascript:;">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertItems')" ontouchstart="zoomReset();topoDog.modeSwitch('insertItems')">
+			<a class="mode" data-mode="insertItems" href="javascript:;">
 				<span class="glyphicon glyphicon-tree-deciduous"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('insertActions')" ontouchstart="zoomReset();topoDog.modeSwitch('insertActions')">
+			<a class="mode" data-mode="insertActions" href="javascript:;">
 				<span class="glyphicon glyphicon-screenshot"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('notes')" ontouchstart="topoDog.modeSwitch('notes')">
+			<a class="mode" data-mode="notes" href="javascript:;">
 				<span class="glyphicon glyphicon-comment"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="topoDog.modeSwitch('editActions')" ontouchstart="topoDog.modeSwitch('editActions')">
+			<a class="mode" data-mode="editActions" href="javascript:;">
 				<span class="glyphicon glyphicon-remove-circle"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" href="javascript:;" onclick="zoomReset();topoDog.modeSwitch('manageData');" ontouchstart="zoomReset();topoDog.modeSwitch('manageData');">
+			<a class="mode" data-mode="manageData" href="javascript:;">
 				<span class="glyphicon glyphicon-transfer"></span>
 			</a>
 		</li>
@@ -86,24 +86,24 @@
 	-->
 	<ul id="viewControls">
 		<li>
-			<a href="javascript:;" onclick="if(topoDog.mode != 'view3d'){$('#presentation').click();}zoomField(2)">
+			<a id="zoomMore" href="javascript:;">
 				<span class="glyphicon glyphicon-zoom-in"></span>
 			</a>
 		</li>
 		<li>
-			<a href="javascript:;" onclick="if(topoDog.mode != 'view3d'){$('#presentation').click();}zoomField(.5)">
+			<a id="zoomLess" href="javascript:;">
 				<span class="glyphicon glyphicon-zoom-out"></span>
 			</a>
 		</li>
 		
 		<li>
-			<a id="presentation" class="mode" href="javascript:;" onclick="topoDog.modeSwitch('view3d')" ontouchstart="topoDog.modeSwitch('view3d')">
+			<a id="presentation" class="mode"  data-mode="view3d" href="javascript:;">
 				<span class="glyphicon glyphicon-plane"></span>
 			</a>
 		</li>
 		
 		<li>
-			<a href="javascript:;" onclick="topoDog.newDogForm();" ontouchstart="topoDog.newDogForm();">
+			<a id="openNewDogForm" href="javascript:;">
 				<span class="glyphicon glyphicon-plus-sign"></span>
 			</a>
 		</li>
@@ -134,12 +134,12 @@
 		</div>
 		<div id="sizesBox" class="clear">
 			<div id="sizes">
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.166666667, this);" ontouchstart="topoDog.setPaintSize(0.166666667, this);">1px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.25, this);" ontouchstart="topoDog.setPaintSize(0.25, this);">3px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(0.5, this);" ontouchstart="topoDog.setPaintSize(0.5, this);">6px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(1, this);" ontouchstart="topoDog.setPaintSize(1, this);">12px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(2, this);" ontouchstart="topoDog.setPaintSize(2, this);">24px</a>
-			<a href="javascript:;" onclick="topoDog.setPaintSize(4, this);" ontouchstart="topoDog.setPaintSize(4, this);">48px</a>
+			<a href="javascript:;" data-size="0.166666667">1px</a>
+			<a href="javascript:;" data-size="0.25">3px</a>
+			<a href="javascript:;" data-size="0.5">6px</a>
+			<a href="javascript:;" data-size="1">12px</a>
+			<a href="javascript:;" data-size="2">24px</a>
+			<a href="javascript:;" data-size="4">48px</a>
 			</div>
 		</div>
 	</div>
@@ -149,9 +149,6 @@
 
 
 	<div id="itemsControls" class="clear">
-		<a href="javascript:;" onclick="topoDog.selectedObject='0';">Ciotola</a>
-		<a href="javascript:;" onclick="topoDog.selectedObject='1';">Albero</a>
-		<a href="javascript:;" onclick="topoDog.selectedObject='2';">Cespuglio</a>
 	</div>
 
 	<div id="actionsControls">
@@ -168,7 +165,7 @@
 	</div>
 	
 	<div id="editControls">
-		<h3>Premi a lungo su una azione per cancellarla.</h3>
+		<h3>Premi a lungo su una azione o su un oggetto per cancellare.</h3>
 	</div>
 	
 	<div id="noteControls">
@@ -185,7 +182,7 @@
 		</a>
 		<input id="filechooser" type="file" style="display:none;" />
 		
-		<a id="resetScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
+		<a id="eraseScene" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
 			<span class="glyphicon glyphicon-refresh"></span>
 		</a>
 		
@@ -196,7 +193,9 @@
 		
 	</div>
 	
-	<div id="timeline">
+	<div id="timelineBox">
+		<div id="timeline">
+		</div>
 	</div>
 
 	

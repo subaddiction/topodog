@@ -157,6 +157,7 @@ var scroll_newDog;
 var scroll_tessels
 var scroll_modeControlsBox;
 var scroll_actionsBox;
+var scroll_timeline;
 
 function scrollBars(){
 
@@ -198,6 +199,13 @@ function scrollBars(){
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,
+	});
+	
+	scroll_timeline = false;
+	scroll_timeline = new IScroll('#timelineBox', {
+		scrollbars: true,
+		scrollY: false,
+		scrollX: true,	
 	});
 	
 }

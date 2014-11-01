@@ -76,7 +76,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		});
 	},
 	
-	
 	loadItems: function(i, limit){
 	
 		var items = loql.select('objects');
@@ -96,7 +95,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 //			console.log(currentItem);
 			shapeData = $.get('./svg/'+currentItem.shape, function(){
 		//alert(shapeData.responseText);
-				tag += '<a id="itemSelect-'+currentItem.id+'" class="itemSelector" href="javascript:;" onclick="topoDog.selectItem(\''+currentItem.id+'\');" data-id="'+currentItem.id+'">\n';
+				tag += '<a id="itemSelect-'+currentItem.id+'" class="itemSelector" href="javascript:;" data-id="'+currentItem.id+'">\n';
+				//onclick="topoDog.selectItem(\''+currentItem.id+'\');"
 				tag += shapeData.responseText+'\n';
 				//console.log(shapeData.responseText);
 				tag += '<span>'+currentItem.name+'</span>\n';
@@ -116,6 +116,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 			var oneItemM = parseInt($('#itemsControls a').css('margin-right'));
 			var itemsW = (oneItemW + (2 * oneItemM)) * (items.length + 1);
 			$('#itemsControls').width(itemsW+'px');
+			
+			$('#itemsControls a').on({
+				'click touchstart': function(){
+					topoDog.selectItem($(this).attr('data-id'));
+				}
+			});
 		}
 	},
 	
@@ -191,17 +197,32 @@ topoDog = { // Oggetto base con parametri fondamentali
 				topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
 			},
 			
-			'taphold': function(){
+			'taphold': function(e){
 				
+				$('#showBeing').remove();
+				e.preventDefault();
 				var id = $(this).attr('data-id');
 				var color = $(this).attr('data-color');
 				
 				var showBeingModal = '<div id="showBeing" style="background:'+color+';">';
-				showBeingModal += '<a href="javascript:;" onclick="topoDog.showBeing('+id+')" ontouchstart="topoDog.showBeing('+id+')"><span class="glyphicon glyphicon-eye-open"></span></a>';
+				showBeingModal += '<a class="showB" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
 				showBeingModal += '<br />';
-				showBeingModal += '<a href="javascript:;" onclick="topoDog.hideBeing('+id+')" ontouchstart="topoDog.hideBeing('+id+')"><span class="glyphicon glyphicon-eye-close"></span></a>';
+				showBeingModal += '<a class="hideB" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
 				showBeingModal += '</div>';
 				$(this).prepend(showBeingModal);
+				
+				$('.showB').on({
+					'click': function(){
+						topoDog.showBeing(id);
+						//console.log(id);
+					}
+				});
+				$('.hideB').on({
+					'click': function(){
+						topoDog.hideBeing(id);
+						//console.log(id);
+					}
+				});
 			}
 		
 		});
@@ -226,7 +247,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		if(i < limit){
 			shapeData = $.get('./svg/'+currentAction.shape, function(){
 		//alert(shapeData.responseText);
-				tag += '<a id="actSelect-'+currentAction.id+'" class="actionSelector" href="javascript:;" onclick="topoDog.selectAction(\''+currentAction.id+'\');" ontouchstart="topoDog.selectAction(\''+currentAction.id+'\');" data-id="'+currentAction.id+'">\n';
+				tag += '<a id="actSelect-'+currentAction.id+'" class="actionSelector" href="javascript:;" data-id="'+currentAction.id+'">\n';
+				//onclick="topoDog.selectAction(\''+currentAction.id+'\');" ontouchstart="topoDog.selectAction(\''+currentAction.id+'\');"
 				tag += shapeData.responseText+'\n';
 				//console.log(shapeData.responseText);
 				tag += '<span>'+currentAction.name+'</span>\n';
@@ -247,6 +269,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 			var oneActionM = parseInt($('#actions a').css('margin-right'));
 			var beingsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
 			$('#actions').width(beingsW+'px');
+			
+			$('#actionsControls a').on({
+				'click touchstart': function(){
+					topoDog.selectAction($(this).attr('data-id'));
+				}
+			});
 		
 		}
 		
@@ -277,7 +305,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	},
 	
-	controlsWidth: function(){
+	startControls: function(){
+		
+		
 		
 		var oneControlW = $('#modeControls li').width();
 		var oneControlM = parseInt($('#modeControls li').css('margin-right'));
@@ -293,6 +323,43 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var oneSizeM = parseInt($('#sizes a').css('margin-right'));
 		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
 		$('#sizes').width(sizesW+'px');
+		
+		$('.mode').on({
+			'click touchstart': function(){
+				topoDog.modeSwitch($(this).attr('data-mode'));
+			}
+		});
+		
+		$('#openNewDogForm').on({
+			'click touchstart': function(){
+				topoDog.newDogForm();
+			}
+		});
+		
+		$('#zoomMore').on({
+			'click touchstart': function(){
+				if(topoDog.mode != 'view3d'){
+					$('#presentation').click();
+				}
+				zoomField(2);
+			}
+		});
+		
+		$('#zoomLess').on({
+			'click touchstart': function(){
+				if(topoDog.mode != 'view3d'){
+					$('#presentation').click();
+				}
+				zoomField(.5);
+			}
+		});
+		
+		$('#sizes a').on({
+			'click touchstart': function(){
+				topoDog.setPaintSize($(this).attr('data-size'), $(this));
+			}
+		});
+		
 		
 	},
 	
@@ -359,7 +426,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		this.loadItems(0,false);
 		this.loadActions(1,false);
 		
-		this.controlsWidth();
+		this.startControls();
 		this.drawItems();
 		this.drawActions();
 		
@@ -396,7 +463,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#editControls').hide(0);
 		$('#noteControls').hide(0);
 		$('#dataControls').hide(0);
-		$('#timeline').hide(0);
+		$('#timelineBox').hide(0);
 		
 		
 		$(function(){
@@ -433,8 +500,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 //								var X = Math.floor((touch.pageX - ($(this).offset().left)) / tesselZoom);
 //								var Y = Math.floor((touch.pageY - ($(this).offset().top)) / tesselZoom);
 
-								var X = touch.pageX - ($(this).offset().left);
-								var Y = touch.pageY - ($(this).offset().top);
+								var X = touch.pageX - ($(this).offset().left) - (tesselSize/2);
+								var Y = touch.pageY - ($(this).offset().top) - (tesselSize/2);
 								
 								ctx.fillStyle = paintColor;
         							//ctx.fillRect(X*tesselSize, Y*tesselSize, tesselSize, tesselSize);
@@ -447,8 +514,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 								var touch = e.originalEvent;
 //								var X = Math.floor((touch.clientX - ($(this).offset().left)) / tesselZoom);
 //								var Y = Math.floor((touch.clientY - ($(this).offset().top)) / tesselZoom);
-								var X = touch.clientX - ($(this).offset().left);
-								var Y = touch.clientY - ($(this).offset().top);
+								var X = touch.clientX - ($(this).offset().left) - (tesselSize/2);
+								var Y = touch.clientY - ($(this).offset().top) - (tesselSize/2);
 								
 								
 								
@@ -693,7 +760,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('#editControls').show(0);
 					
 					$('.object').on({
-						'taphold': function(){
+						'taphold': function(e){
+							e.preventDefault();
 							//alert('muovi,ruota,elimina');
 							var objectID = $(this).attr('data-id');
 							//if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
@@ -705,7 +773,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 					});
 				
 					$('.action').on({
-						'taphold': function(){
+						'taphold': function(e){
+							e.preventDefault();
 							//alert('muovi,ruota,elimina');
 							var actionID = $(this).attr('data-id');
 							//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
@@ -724,8 +793,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'view3d':
 					
-					$('#timeline').html('');
-					$('#timeline').show(0);
+					$('#timeline > .time').remove();
+					$('#timelineBox').show(0);
 				
 					var rotZ = 0;
 					var rotX = 0;
@@ -772,35 +841,40 @@ topoDog = { // Oggetto base con parametri fondamentali
 					for(i=0;i<actions.length;i++){
 						
 						var action = loql.select('action', actions[i]);
+						var being = loql.select('beings', action.bid);
 						
 						//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
 						
 						var date = new Date(action.t);
-						var humanDate = date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate();
+						var humanDate = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 						var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 						var tag = '';
 						
-						tag += '<div class="time" data-id="'+actions[i]+'">';
-						tag += '<div class="t-id">'+actions[i]+'</div>';
+						tag += '<div class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
+						tag += '<div class="t-id" style="background:'+being.color+';">'+actions[i]+'</div>';
 						tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
 						tag += '</div>'
 						$('#timeline').append(tag);
 					
 					}
 					
+					//$('#timelineBox .iScrollLoneScrollbar').remove();
+					
+					$('#timeline').width($('.time').width() * (actions.length + 2));
+					
 					$('.time').css({
 						'float':'left',
-						'width':(100/actions.length)+'%',
+						//'width':(100/actions.length)+'%',
 					});
 					
-					$('.time').on({
-						'click': function(){
+					$('.time .t-id').on({
+						'click touchstart': function(){
 							
-							var lastID = parseInt($(this).attr('data-id'));
+							var lastID = parseInt($(this).parent().attr('data-id'));
 								
 								for(i=0;i<actions.length;i++){
 									var action = loql.select('action', actions[i]);
-									if(lastID > actions[i]){
+									if(lastID >= actions[i]){
 										$('#action-'+actions[i]).show(0);
 									} else {
 										$('#action-'+actions[i]).hide(0);
@@ -809,9 +883,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 						},
 						
-						'dblclick': function(e){
+						
+					});
+					
+					$('.time .t-detail').on({
+						'click touchstart': function(e){
 							e.preventDefault();
-							var firstID = parseInt($(this).attr('data-id'));
+							var firstID = parseInt($(this).parent().attr('data-id'));
 								
 								for(i=0;i<actions.length;i++){
 									var action = loql.select('action', actions[i]);
@@ -823,6 +901,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 								}
 							
 						}
+					
 					});
 					
 				
@@ -832,7 +911,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 					$('#noteControls').show(0);
 					$('.action').on({
-						'taphold': function(){
+						'taphold': function(e){
+							e.preventDefault();
 							$('#noteForm').remove();
 						
 							//alert('muovi,ruota,elimina');
@@ -955,13 +1035,15 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	showBeing: function(id){
 		$('#beings > a[data-id='+id+']').show();
-		$('div[data-bid='+id+']').show();
+		//$('div[data-bid='+id+']').show();
+		$('div[data-bid='+id+']').attr('being-hide', 'false');
 		$('#showBeing').remove();
 	},
 	
 	hideBeing: function(id){
 		$('#beings > a[data-id='+id+']').show();
-		$('div[data-bid='+id+']').hide();
+		//$('div[data-bid='+id+']').hide();
+		$('div[data-bid='+id+']').attr('being-hide', 'true');
 		$('#showBeing').remove();
 	},
 	
@@ -999,7 +1081,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
 		
 		var now = new Date();
-		var filename = 'scenario-'+now.getFullYear()+'-'+now.getMonth()+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.json';
+		var filename = 'scenario-'+now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.json';
 		
 		
 		if (typeof window.requestFileSystem != 'undefined') {
