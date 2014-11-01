@@ -892,9 +892,18 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					}
 					
+					var showhide = '';
+					showhide += '<div class="time">';
+					showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
+					showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
+					showhide += '</div>';
+					
+					$('#timeline').prepend(showhide);
+					$('#timeline').append(showhide);
+					
 					//$('#timelineBox .iScrollLoneScrollbar').remove();
 					
-					$('#timeline').width($('.time').width() * (actions.length + 2));
+					$('#timeline').width($('.time').width() * (actions.length + 3));
 					
 					$('.time').css({
 						'float':'left',
@@ -936,6 +945,25 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 						}
 					
+					});
+					
+					$('.showAllTimeline').on({
+						'click touchstart': function(){
+							$('.time').show();
+						}
+					});
+					
+					$('.hideFromTimeline').on({
+						'click touchstart': function(){
+							var beings = loql.select('beings');
+							//$('[data-bid=]').attr('being-hide')
+							for(i=0;i<beings.length;i++){
+								//var being = loql.select('beings', beings[i]);
+								if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
+									$('.time[data-bid='+beings[i]+']').hide();
+								}
+							}
+						}
 					});
 					
 				

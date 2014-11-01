@@ -472,6 +472,7 @@ display:none;
 border-bottom:2px solid #eeeeee;
 border-right:1px solid #cccccc;
 float:left;
+width:120px;
 }
 
 .time > div
@@ -481,6 +482,7 @@ max-width:120px;
 min-width:120px;
 }
 
+/***
 .time:first-child
 {
 display:none;
@@ -489,6 +491,12 @@ display:none;
 .time:nth-child(2)
 {
 border-left:1px solid #ffffff;
+}
+***/
+
+.time[data-id="0"]
+{
+display:none!important;
 }
 
 .t-id
@@ -504,6 +512,14 @@ height:40px;
 font-size:10px;
 line-height:19px;
 height:38px;
+}
+
+.showAllTimeline, .hideFromTimeline
+{
+display:block;
+font-size:32px;
+height:39px;
+text-align:center;
 }
 
 
