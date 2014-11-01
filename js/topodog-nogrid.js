@@ -198,9 +198,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 			},
 			
 			'taphold': function(e){
-				
-				$('#showBeing').remove();
 				e.preventDefault();
+				$('#showBeing').remove();
 				var id = $(this).attr('data-id');
 				var color = $(this).attr('data-color');
 				
@@ -448,6 +447,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#grid').off();
 		$('.object').off();
 		$('.action').off();
+		$('#modeControls a').unbind('taphold');
 		
 		if(mode != 'view3d'){
 			$('#grid').css({
@@ -464,6 +464,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#noteControls').hide(0);
 		$('#dataControls').hide(0);
 		$('#timelineBox').hide(0);
+		$('#helpBox').hide(0);
 		
 		
 		$(function(){
@@ -572,9 +573,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('#itemsControls').show(0);
 					
-					
-					
-					/*** NOGRID ***/
 					$('#grid').click(function(e){
 						if(e.originalEvent.touches){
 								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -597,7 +595,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 						
 					});
-					/*** /NOGRID ***/
 					
 				break;
 				
@@ -937,6 +934,18 @@ topoDog = { // Oggetto base con parametri fondamentali
 						}
 					});
 				
+				break;
+				
+				case 'help':
+				
+					$('#helpBox').show();
+					$('#modeControls a').on({
+						'taphold': function(){
+							$('#help').html($(this).attr('title'));
+						}
+					});
+					
+					$('#help').html($('#inlineHelp').attr('title'));
 				break;
 				
 				

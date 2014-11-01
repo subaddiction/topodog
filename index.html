@@ -43,32 +43,32 @@
 <div id="modeControls">
 	<ul id="stateControls">
 		<li>
-			<a class="mode" data-mode="tessel" href="javascript:;">
+			<a class="mode" data-mode="tessel" href="javascript:;" title="Disegno: Scegli un colore ed una misura e disegna sullo scenario. I pulsanti di colore e misura selezionati hanno il bordo bianco.">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" data-mode="insertItems" href="javascript:;">
+			<a class="mode" data-mode="insertItems" href="javascript:;" title="Oggetti: Seleziona un oggetto dalla lista e inseriscilo cliccando sullo scenario. Il pulsante dell'oggetto selezionato ha il bordo bianco.">
 				<span class="glyphicon glyphicon-tree-deciduous"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" data-mode="insertActions" href="javascript:;">
+			<a class="mode" data-mode="insertActions" href="javascript:;" title="Azioni: Seleziona un cane ed una azione, poi clicca e trascina sullo scenario per inserire ed orientare l'azione. I pulsanti delle azioni hanno lo sfondo del colore del cane selezionato.">
 				<span class="glyphicon glyphicon-screenshot"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" data-mode="notes" href="javascript:;">
+			<a class="mode" data-mode="notes" href="javascript:;" title="Annotazioni: Tieni premuto su una azione per inserire una nota. Per eliminare una nota è sufficiente cencellarne il contenuto.">
 				<span class="glyphicon glyphicon-comment"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" data-mode="editActions" href="javascript:;">
+			<a class="mode" data-mode="editActions" href="javascript:;" title="Elimina: Tieni premuto su un oggetto o su una azione per eliminare.">
 				<span class="glyphicon glyphicon-remove-circle"></span>
 			</a>
 		</li>
 		<li>
-			<a class="mode" data-mode="manageData" href="javascript:;">
+			<a class="mode" data-mode="manageData" href="javascript:;" title="Esporta, Importa, Pulizia, Reset: Premi sul dischetto con freccia in basso per esportare lo scenario attuale e sul dischetto con la freccia in alto per importare uno scenario. Premi su pulizia (frecce cerchio) per eliminare cani e azioni e mantenere lo scenario. Premi su Reset (fuoco) per eliminare tutto.">
 				<span class="glyphicon glyphicon-transfer"></span>
 			</a>
 		</li>
@@ -86,6 +86,11 @@
 	-->
 	<ul id="viewControls">
 		<li>
+			<a id="inlineHelp" class="mode" data-mode="help" href="javascript:;" title="Tieni premuto un pulsante funzione per per leggere le istruzioni.">
+				<span class="glyphicon glyphicon-question-sign"></span>
+			</a>
+		</li>
+		<li>
 			<a id="zoomMore" href="javascript:;">
 				<span class="glyphicon glyphicon-zoom-in"></span>
 			</a>
@@ -97,7 +102,7 @@
 		</li>
 		
 		<li>
-			<a id="presentation" class="mode"  data-mode="view3d" href="javascript:;">
+			<a id="presentation" class="mode"  data-mode="view3d" href="javascript:;" title="Presentazione: Premi su un numero ID azione (riquadro colorato) per vedere le azioni fino ad essa. Premi su una data (riquadro nero) per vedere le azioni da essa in poi.">
 				<span class="glyphicon glyphicon-plane"></span>
 			</a>
 		</li>
@@ -195,6 +200,11 @@
 	
 	<div id="timelineBox">
 		<div id="timeline">
+		</div>
+	</div>
+	
+	<div id="helpBox">
+		<div id="help">
 		</div>
 	</div>
 
