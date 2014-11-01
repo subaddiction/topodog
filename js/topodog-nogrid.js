@@ -328,23 +328,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
-		$('a.mode').on({
-			'tap': function(){
-				zoomReset();
-				topoDog.modeSwitch($(this).attr('data-mode'));
-				
-				$('a.mode').css({
-					'background':'#000000',
-					'color':'#cccccc'
-				});
-				$(this).css({
-					'background':'#ffffff',
-					'color':'#000000'
-				});
-				
-			}
-		});
-		
 		$('#openNewDogForm').on({
 			'tap': function(){
 				topoDog.newDogForm();
@@ -415,6 +398,25 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 	},
 	
+	modeControls: function(){
+		$('a.mode').on({
+			'tap': function(){
+				zoomReset();
+				topoDog.modeSwitch($(this).attr('data-mode'));
+				
+				$('a.mode').css({
+					'background':'#000000',
+					'color':'#cccccc'
+				});
+				$(this).css({
+					'background':'#ffffff',
+					'color':'#000000'
+				});
+				
+			}
+		});
+	},
+	
 	init: function(){
 		var row = 0;
 		var col = 0;
@@ -442,6 +444,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		this.loadActions(1,false);
 		
 		this.startControls();
+		this.modeControls();
 		this.drawItems();
 		this.drawActions();
 		
@@ -1019,9 +1022,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 				case 'help':
 				
 					$('#helpBox').show();
-					$('#modeControls a').on({
+					$('a.mode').on({
 						'taphold': function(){
 							$('#help').html($(this).attr('title'));
+						},
+						
+						'mouseup touchend': function(){
+							$('a.mode').off();
+							topoDog.modeControls();
 						}
 					});
 					
