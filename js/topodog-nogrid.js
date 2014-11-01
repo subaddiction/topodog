@@ -322,18 +322,21 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
 		$('#sizes').width(sizesW+'px');
 		
+		$('body').off();
 		$('body').on({
-			'mousemove touchmove': function(e){
+			'mousemove touchmove taphold': function(e){
 				e.preventDefault();
 			}
 		});
 		
+		$('#openNewDogForm').off();
 		$('#openNewDogForm').on({
 			'tap': function(){
 				topoDog.newDogForm();
 			}
 		});
 		
+		$('#zoomMore').off();
 		$('#zoomMore').on({
 			'tap': function(){
 				if(topoDog.mode != 'view3d'){
@@ -343,6 +346,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
+		$('#zoomLess').off();
 		$('#zoomLess').on({
 			'tap': function(){
 				if(topoDog.mode != 'view3d'){
@@ -357,6 +361,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				$(this).css('background', $(this).attr('data-color'));
 			}
 		);
+		
+		$('.colorSelect').off();
 		$('.colorSelect').on({
 			'tap': function(){
 				$('.colorSelect').css('outline', '0');
@@ -370,25 +376,28 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
+		$('.pan').off();
 		$('.pan').on({
 			'click touchend': function(){
 				gridPan(parseInt($(this).attr('data-panx')), parseInt($(this).attr('data-pany')));
 			}	
 		});
 		
+		$('#closeNewDogForm').off();
 		$('#closeNewDogForm').on({
 			'tap': function(){
 				$('#newDog').hide(0);
 			}
 		});
 		
+		$('#submitNewDogForm').off();
 		$('#submitNewDogForm').on({
 			'tap': function(){
 				topoDog.insertBeing();
 			}
 		});
 		
-		
+		$('#sizes a').off();
 		$('#sizes a').on({
 			'tap': function(){
 				topoDog.setPaintSize($(this).attr('data-size'), $(this));
@@ -399,6 +408,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	},
 	
 	modeControls: function(){
+		$('a.mode').off();
 		$('a.mode').on({
 			'tap': function(){
 				zoomReset();
@@ -1022,6 +1032,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				case 'help':
 				
 					$('#helpBox').show();
+					$('a.mode').off();
 					$('a.mode').on({
 						'taphold': function(){
 							$('#help').html($(this).attr('title'));
