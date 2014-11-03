@@ -820,6 +820,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 								loql.del('object', objectID);
 								$(this).remove();
 							}
+						},
+						
+						'touchmove': function(e){
+							e.preventDefault();
 						}
 					});
 				
@@ -833,6 +837,16 @@ topoDog = { // Oggetto base con parametri fondamentali
 								loql.del('action', actionID);
 								$(this).remove();
 							}
+						},
+						
+						'touchmove': function(e){
+							e.preventDefault();
+						}
+					});
+					
+					$('#grid').on({
+						'taphold touchmove': function(e){
+							e.preventDefault();
 						}
 					});
 				break;
@@ -1036,6 +1050,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 									$('.action').attr('data-note', false);
 								}
 							});
+						},
+						
+						'touchmove': function(e){
+							e.preventDefault();
 						}
 					});
 				
