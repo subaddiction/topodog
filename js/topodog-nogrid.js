@@ -836,8 +836,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 						}
 					});
 					
-					$('html, body, #scenario, #grid').on({
-						'taphold mousemove touchmove': function(e){
+					$('html, body, #scenario, #grid, .object, .action, .object *, .action *').on({
+						'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
 							e.preventDefault();
 						}
 					});
