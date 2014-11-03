@@ -1326,6 +1326,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 					fileData = data;
 					//alert(fileData);
+					topoDog.tdImport(fileData);
 
 				}, function(){
 					alert('Non riesco a leggere questo file.');
@@ -1343,17 +1344,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 //////					   
 //////				});
 
-			this.tdImport(fileData);
-
 		} else {
 			//Assuming we are in a browser
 			//alert('NO FS');
 			$('#filechooser').click();
-			
-		
 		}
-		
-		//alert(fileData);
 		
 
 	
