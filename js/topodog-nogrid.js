@@ -815,11 +815,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 							e.preventDefault();
 							//alert('muovi,ruota,elimina');
 							var objectID = $(this).attr('data-id');
-							//if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
+							if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
 								
 								loql.del('object', objectID);
 								$(this).remove();
-							//}
+							}
 						}
 					});
 				
@@ -828,11 +828,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 							e.preventDefault();
 							//alert('muovi,ruota,elimina');
 							var actionID = $(this).attr('data-id');
-							//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
+							if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
 								
 								loql.del('action', actionID);
 								$(this).remove();
-							//}
+							}
 						}
 					});
 				break;
