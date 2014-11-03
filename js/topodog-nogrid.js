@@ -404,6 +404,16 @@ topoDog = { // Oggetto base con parametri fondamentali
 			}
 		});
 		
+		$('#filechooser').off();
+		document.getElementById('filechooser').addEventListener('change', handleFileSelect, false);
+////		$('#filechooser').on({
+////			'change': function(){
+////				handleFileSelect(this);
+////			}
+////		});
+		
+		
+		
 		
 	},
 	
@@ -829,6 +839,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'manageData':
 					$('#dataControls').show(0);
+					$('#exportData').hide(0);
+					$('#export').show(0);
 				
 				break;
 				
@@ -1185,6 +1197,43 @@ topoDog = { // Oggetto base con parametri fondamentali
 //		    //console.log(typeof(v));
 //		    return (typeof(v) === 'object') ? JSON.stringify(v) : v;
 //		});
+
+
+//////		var tables = {
+//////		  1:'beings',
+//////		  2:'object',
+//////		  3:'action'
+//////		}
+
+//////		var output = '';
+//////		var records = false;
+//////		var record = false;
+//////		
+//////		
+//////		
+//////		for(i in tables){
+//////			output += "var data_"+tables[i]+"={";
+//////			records = loql.select(tables[i]);
+//////		 	for (r in records){
+//////		 		
+////////		 		console.log(r);
+////////		 		console.log(typeof(r));
+//////		 		record = loql.select(tables[i], r);
+////////		 		console.log(record);
+////////		 		console.log(typeof(record));
+//////		 		output += records[r]+":{";
+//////			 			for(field in record){
+//////			 				output += field+":"+record[field]+",";
+//////			 			}
+//////		
+//////		 		output +="}";
+//////		 	}
+//////		 	output += "}";
+//////		}
+//////		
+//////		var background = loql.select('savedtexture', 0);
+//////		output += "var data_savedtexture = \""+background+"\"";
+//////		console.log(output);
 		
 		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
 		
@@ -1243,10 +1292,18 @@ topoDog = { // Oggetto base con parametri fondamentali
 
 		} else {
 				//Assuming we are in a browser
-			$('#export').attr('download', filename);
-			$('#export').attr('href', uriContent);
-			$('#export').click();
-
+			$('#export').hide('0');
+			$('#exportData').show('0');
+			$('#exportData').attr('download', filename);
+			$('#exportData').attr('href', uriContent);
+			$('#exportData').off();
+			$('#exportData').on({
+				'click': function(){
+					$('#exportData').hide(0);
+					$('#export').show(0);
+				}
+			
+			});
 			//alert('NO FS');
 		
 		}
@@ -1285,6 +1342,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 //////					
 //////					   
 //////				});
+
+			this.tdImport(fileData);
+
 		} else {
 			//Assuming we are in a browser
 			//alert('NO FS');
@@ -1294,7 +1354,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		}
 		
 		//alert(fileData);
-		this.tdImport(fileData);
+		
 
 	
 	},
@@ -1312,7 +1372,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			localStorage.setItem(k, content[k]);
 		}
 		
-		topoDogAssets();
+		//topoDogAssets();
 		topoDogLauncher();
 		
 	},
