@@ -614,7 +614,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('#grid').on({
 						'mouseup touchend': function(e){
-							if(topoDog.selectedObject == false){
+							if(topoDog.selectedObject === false){
 								return;
 							}
 							if(e.originalEvent.touches){
@@ -663,7 +663,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 							e.preventDefault();
 							
-							if(topoDog.activeBeing == false){
+							if(topoDog.activeBeing === false){
 								return;
 							}
 							
@@ -686,7 +686,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							}
 							
 
-							if(topoDog.theNewAction == false){
+							if(topoDog.theNewAction === false){
 								
 								var theAction = loql.select('actions', topoDog.selectedAction.toString());
 								topoDog.theNewAction = topoDog.newAction(topoDog.selectedAction,topoDog.activeBeing.id,X,Y,rotation,false);
@@ -783,7 +783,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						'mouseup touchend' : function(e){
 								e.preventDefault();
 								
-								if(topoDog.activeBeing == false){
+								if(topoDog.activeBeing === false){
 									return;
 								}
 								
