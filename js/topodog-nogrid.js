@@ -618,23 +618,23 @@ topoDog = { // Oggetto base con parametri fondamentali
 								return;
 							}
 							if(e.originalEvent.touches){
-									var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-								
-									var X = touch.pageX - ($(this).offset().left);
-									var Y = touch.pageY - ($(this).offset().top);
+								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+							
+								var X = touch.pageX - ($(this).offset().left);
+								var Y = touch.pageY - ($(this).offset().top);
+							
+								topoDog.newItem(topoDog.selectedObject,X,Y,false);
+							
+							} else {
+								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+								if(button==1){
+									var touch = e.originalEvent;
+									var X = touch.clientX - ($(this).offset().left);
+									var Y = touch.clientY - ($(this).offset().top);
 								
 									topoDog.newItem(topoDog.selectedObject,X,Y,false);
-								
-								} else {
-									var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-									if(button==1){
-										var touch = e.originalEvent;
-										var X = touch.clientX - ($(this).offset().left);
-										var Y = touch.clientY - ($(this).offset().top);
-									
-										topoDog.newItem(topoDog.selectedObject,X,Y,false);
-									}
 								}
+							}
 						
 						
 						}
