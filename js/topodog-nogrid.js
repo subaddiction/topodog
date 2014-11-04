@@ -613,7 +613,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('#itemsControls').show(0);
 					
 					$('#grid').on({
-						'tap': function(e){
+						'click': function(e){
 							if(topoDog.selectedObject === false){
 								return;
 							}
