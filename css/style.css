@@ -508,12 +508,14 @@ line-height:19px;
 height:38px;
 }
 
-.showAllTimeline, .hideFromTimeline
+.showAllTimeline, .hideFromTimeline, .play, .pause
 {
-display:block;
-font-size:32px;
-height:39px;
+display:inline-block;
+font-size:28px;
+height:40px;
+line-height:40px;
 text-align:center;
+width:50%;
 }
 
 #firstFrameFlag, #lastFrameFlag
@@ -524,6 +526,17 @@ background:#ffffff;
 font-size:32px;
 line-height:32px;
 height:40px;
+}
+
+#presentationControls
+{
+position:absolute;
+right:0;
+width:120px;
+height:120px;
+background:#000000;
+border-left:1px solid #ffffff;
+z-index:9999;
 }
 
 

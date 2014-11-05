@@ -43,6 +43,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 	firstID: false,
 	lastID: false,
 	
+	//view3dStatus: false,
+	
 	loadTessels: function(){
 		$('#tessels').html('');
 		
@@ -921,23 +923,34 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					}
 					
+					//$('#timelineBox .iScrollLoneScrollbar').remove();
+					
+					$('#timeline').width($('.time').width() * (actions.length + 2));
+					
+					$('.time').css({
+						'float':'left',
+					});
+					
 					var showhide = '';
-					showhide += '<div class="time">';
+					showhide += '<div id="presentationControls">';
+					showhide += '<div>';
 					showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
 					showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
 					showhide += '</div>';
 					
-					$('#timeline').prepend(showhide);
-					$('#timeline').append(showhide);
+					showhide += '<div>';
+					showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
+					showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
+					showhide += '</div>';
 					
-					//$('#timelineBox .iScrollLoneScrollbar').remove();
+					showhide += '</div>';
 					
-					$('#timeline').width($('.time').width() * (actions.length + 3));
+					$('#timelineBox').append(showhide);
 					
-					$('.time').css({
-						'float':'left',
-						//'width':(100/actions.length)+'%',
-					});
+					
+					
+					
+					
 					
 					$('.time .t-id').on({
 						'click touchstart': function(e){
@@ -986,14 +999,34 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					});
 					
-					$('.showAllTimeline').on({
-						'click touchstart': function(){
-							$('.time').show();
+					
+					$('.play').on({
+						'tap': function(){
+							playPresentation(true);
+						},
+						
+						'taphold': function(){
+							playPresentation(true, 1000);
 						}
 					});
 					
+					$('.pause').on({
+						'tap': function(){
+							playPresentation(false);
+						}
+					});
+					
+					
+					$('.showAllTimeline').on({
+						'tap': function(){
+							$('.time').show();
+							scrollBars();
+						}
+						
+					});
+					
 					$('.hideFromTimeline').on({
-						'click touchstart': function(){
+						'tap': function(){
 							var beings = loql.select('beings');
 							//$('[data-bid=]').attr('being-hide')
 							for(i=0;i<beings.length;i++){
@@ -1002,8 +1035,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 									$('.time[data-bid='+beings[i]+']').hide();
 								}
 							}
+							scrollBars();
 						}
+						
+						
 					});
+					
+					$('.time:nth-child(2) .t-detail').click();
+					$('.time:nth-child(2) .t-id').click();
 					
 				break;
 				

@@ -97,6 +97,34 @@ function zoomReset(){
 }
 
 
+var play = false;
+function playPresentation(status, interval){
+	
+	clearInterval(play);
+	if(status !== false){
+		if(!interval) { interval = 2000 }
+		//$('#lastFrameFlag').parent().children('.t-id').click();
+		presentationStep();
+		play = setInterval("presentationStep()", interval);
+	}
+}
+
+function presentationStep(direction){
+	if(direction === "rewind"){
+	
+	} else {
+		var nextFrame = $('#lastFrameFlag').parent().next('.time').children('.t-id');
+		//.click();
+		if(nextFrame.length < 1){
+			clearInterval(play);
+			console.log("PRESENTATION END");
+		} else {
+			nextFrame.click();
+		}
+		
+	}
+}
+
 function handleFileSelect(evt) {
 	
 	var result = '';
