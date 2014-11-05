@@ -11,6 +11,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	originalTileSize: 12, // altri valori: 4,8
 	zoomFactor:1,
 	paintSize: 1,
+	itemSize: 1,
 	
 	mode: 'tessel', //tessel, erase, insert, editItems, editActions
 	//pathMode: 'new', //new, addPoint, edit
@@ -324,6 +325,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
 		$('#sizes').width(sizesW+'px');
 		
+		var oneItemSizeW = $('#itemsSizes a').width();
+		var oneItemSizeM = parseInt($('#itemsSizes a').css('margin-right'));
+		var itemsSizesW = (oneItemSizeW + (2 * oneItemSizeM)) * ($('#itemsSizes a').length + 2);
+		$('#itemsSizes').width(sizesW+'px');
+		
 		$('body').off();
 		$('body').on({
 			'mousemove touchmove taphold': function(e){
@@ -403,6 +409,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#sizes a').on({
 			'tap': function(){
 				topoDog.setPaintSize($(this).attr('data-size'), $(this));
+			}
+		});
+		
+		$('#itemsSizes a').off();
+		$('#itemsSizes a').on({
+			'tap': function(){
+				topoDog.setItemSize($(this).attr('data-size'), $(this));
 			}
 		});
 		
@@ -499,7 +512,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		
 		$('#tesselControls').hide(0);
-		$('#itemsControls').hide(0);
+		$('#itemsControlsBox').hide(0);
 		$('#actionsControls').hide(0);
 		$('#editControls').hide(0);
 		$('#noteControls').hide(0);
@@ -612,7 +625,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'insertItems':
 					
-					$('#itemsControls').show(0);
+					$('#itemsControlsBox').show(0);
 					
 					$('#grid').on({
 						'click': function(e){
@@ -1172,6 +1185,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	},
 	
+	setItemSize: function(size, elem){
+		topoDog.itemSize = size;
+		$('#itemsSizes a').css('border', '3px solid #000000');
+		$(elem).css('border', '3px solid #ffffff');
+	
+	},
+	
 	selectAction: function(id){
 		topoDog.selectedAction = id;
 		$('#actions a').css('border', '3px solid #000000');
@@ -1481,19 +1501,25 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	newItem: function(objectID,x,y,nodb){
 		
+		
+		var theScale;
 		if(nodb != false){
 			var theID = nodb;
+			var selectedItem = loql.select('object', theID);
+			theScale = selectedItem.s;
 		} else {
 			var values = {
 				'oid':objectID,
 				'x':x,
-				'y':y
+				'y':y,
+				's':this.itemSize
 			}
 			theID = loql.insert('object', values);
+			theScale = this.itemSize;
 		}
 	
 		var theItem = loql.select('objects', objectID);
-	
+		
 	
 		var Isize = theItem.size*topoDog.tileSize;
 		/***
@@ -1505,9 +1531,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 		var ImarginTop = y - (Isize/2);
 		var ImarginLeft = x - (Isize/2);
-		$('#grid').append('<div id="object-'+theID+'" class="object '+theItem.name+'" data-id="'+theID+'" style="position:absolute;width:'+Isize+'px;height:'+Isize+'px;margin-top:'+ImarginTop+'px;margin-left:'+ImarginLeft+'px;"></div>');
+		$('#grid').append('<div id="object-'+theID+'" class="object '+theItem.name+'" data-id="'+theID+'" data-scale="'+theScale+'" style="position:absolute;width:'+Isize+'px;height:'+Isize+'px;margin-top:'+ImarginTop+'px;margin-left:'+ImarginLeft+'px;"></div>');
 	
-		$('#object-'+theID).load('./svg/'+theItem.shape);
+		$('#object-'+theID).load('./svg/'+theItem.shape, function(){
+			$('#object-'+theID).css('transform', 'scale('+theScale+')');
+		});
 	
 	
 	

@@ -73,18 +73,28 @@ function zoomField(value){
 	
 	
 	topoDog.tileSize = topoDog.tileSize*value;
-	
 	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
-	//$('.object svg, .action svg').css('transform', 'scale('+topoDog.zoomFactor+')');
-	$('.action svg').each( function(){
+	
+//////	
+//////	$('.action svg').each( function(){
+//////		var rotation = $(this).attr('data-rot');
+//////		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+//////	});
+//////	
+//////	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
+//////	$('.object svg').each( function(){
+//////		$(this).css('transform', 'scale('+topoDog.zoomFactor+')');
+//////	});
+
+	
+	$('.action').each( function(){
 		var rotation = $(this).attr('data-rot');
-		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+		$(this).css('transform', 'scale('+(topoDog.zoomFactor*$(this).attr('data-scale'))+') rotate('+rotation+'deg)');
 	});
 	
 	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
-	//$('.object svg, .action svg').css('transform', 'scale('+topoDog.zoomFactor+')');
-	$('.object svg').each( function(){
-		$(this).css('transform', 'scale('+topoDog.zoomFactor+')');
+	$('.object').each( function(){
+		$(this).css('transform', 'scale('+topoDog.zoomFactor*$(this).attr('data-scale')+')');
 	});
 	
 }

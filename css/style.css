@@ -258,7 +258,7 @@ width:auto;
 height:60px;
 }
 
-#beings > a, #tesselControls a
+#beings > a, #tesselControls a, #itemsSizes a
 {
 display:inline-block;
 width:48px;
@@ -319,7 +319,7 @@ display:none;
 text-align:center;
 }
 
-#itemsControls, #dataControls
+#itemsControlsBox, #dataControls
 {
 display:none;
 overflow:hidden;
