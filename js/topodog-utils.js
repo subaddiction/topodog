@@ -102,7 +102,7 @@ function playPresentation(status, interval){
 	
 	clearInterval(play);
 	if(status !== false){
-		if(!interval) { interval = 2000 }
+		if(!interval) { interval = 1000 }
 		//$('#lastFrameFlag').parent().children('.t-id').click();
 		presentationStep();
 		play = setInterval("presentationStep()", interval);
@@ -110,19 +110,32 @@ function playPresentation(status, interval){
 }
 
 function presentationStep(direction){
-	if(direction === "rewind"){
-	
+	if(direction === "rew"){
+		var nextFrame = $('#lastFrameFlag').parent().prev('.time');
 	} else {
-		var nextFrame = $('#lastFrameFlag').parent().next('.time').children('.t-id');
-		//.click();
-		if(nextFrame.length < 1){
-			clearInterval(play);
-			console.log("PRESENTATION END");
-		} else {
-			nextFrame.click();
-		}
+		var nextFrame = $('#lastFrameFlag').parent().next('.time');
 		
 	}
+	
+	if(nextFrame.length < 1){
+		clearInterval(play);
+		console.log("PRESENTATION END");
+	} else {
+		nextFrame.children('.t-id').click();
+		scroll_timeline.scrollToElement('#'+nextFrame.attr('id'));
+	}
+}
+
+function presentationRew(){
+	$('.time:nth-child(2)').children('.t-detail').click();
+	//$('.time:nth-child(2)').children('.t-id').click();
+	scroll_timeline.scrollToElement('#'+$('.time:nth-child(2)').attr('id'));
+}
+
+function presentationFwd(){
+	//$('.time:last-child').children('.t-detail').click();
+	$('.time:last-child').children('.t-id').click();
+	scroll_timeline.scrollToElement('#'+$('.time:last-child').attr('id'));
 }
 
 function handleFileSelect(evt) {

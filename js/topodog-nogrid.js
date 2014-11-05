@@ -915,7 +915,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 						var tag = '';
 						
-						tag += '<div class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
+						tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
 						tag += '<div class="t-id" style="background:'+being.color+';">'+actions[i]+'</div>';
 						tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
 						tag += '</div>'
@@ -933,14 +933,22 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					var showhide = '';
 					showhide += '<div id="presentationControls">';
+					
 					showhide += '<div>';
-					showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
-					showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
+					showhide += '<a class="stepRew" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
+					showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
+					showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
+					showhide += '<a class="stepFwd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
 					showhide += '</div>';
 					
 					showhide += '<div>';
-					showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
-					showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
+					showhide += '<a class="rew" href="javascript:;"><span class="glyphicon glyphicon-fast-backward"></span></a>';
+					showhide += '<a class="fwd" href="javascript:;"><span class="glyphicon glyphicon-fast-forward"></span></a>';
+					showhide += '</div>';
+					
+					showhide += '<div>';
+					showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
+					showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
 					showhide += '</div>';
 					
 					showhide += '</div>';
@@ -1003,16 +1011,36 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('.play').on({
 						'tap': function(){
 							playPresentation(true);
-						},
-						
-						'taphold': function(){
-							playPresentation(true, 1000);
 						}
 					});
 					
 					$('.pause').on({
 						'tap': function(){
 							playPresentation(false);
+						}
+					});
+					
+					$('.fwd').on({
+						'tap': function(){
+							presentationFwd();
+						}
+					});
+					
+					$('.rew').on({
+						'tap': function(){
+							presentationRew();
+						}
+					});
+					
+					$('.stepFwd').on({
+						'tap': function(){
+							presentationStep();
+						}
+					});
+					
+					$('.stepRew').on({
+						'tap': function(){
+							presentationStep("rew");
 						}
 					});
 					
