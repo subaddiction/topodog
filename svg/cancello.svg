@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="36"
+   height="36"
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="cancello.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     id="namedview2989"
+     showgrid="true"
+     inkscape:zoom="9.4280904"
+     inkscape:cx="21.968782"
+     inkscape:cy="13.255616"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3051"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none"
+     d="M 7.5 3 L 4.5 8 L 4.5 33 L 10.5 33 L 10.5 28 L 15 28 L 15 33 L 21 33 L 21 28 L 25.5 28 L 25.5 33 L 31.5 33 L 31.5 8 L 28.5 3 L 25.5 8 L 25.5 12 L 21 12 L 21 8 L 18 3 L 15 8 L 15 12 L 10.5 12 L 10.5 8 L 7.5 3 z M 10.5 14 L 15 14 L 15 17.125 L 10.5 14.5 L 10.5 14 z M 21 14 L 25.5 14 L 25.5 14.5 L 21 17.125 L 21 14 z M 10.5 16.84375 L 15 19.4375 L 15 20.5625 L 10.5 23.15625 L 10.5 16.84375 z M 25.5 16.84375 L 25.5 23.15625 L 21 20.5625 L 21 19.4375 L 25.5 16.84375 z M 15 22.875 L 15 26 L 10.5 26 L 10.5 25.5 L 15 22.875 z M 21 22.875 L 25.5 25.5 L 25.5 26 L 21 26 L 21 22.875 z "
+     id="rect3048" />
+</svg>

@@ -31,6 +31,14 @@ function topoDogAssets(){
 	
 	//////////////////////////////
 	
+	var cancello = {
+		'type':'object',
+		'name':'cancello',
+		'size': 3,
+		'shape':'cancello.svg',
+	}
+	loql.insert('objects', cancello);
+	
 	var persona = {
 		'type':'object',
 		'name':'persona',
