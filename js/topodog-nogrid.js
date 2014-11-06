@@ -877,6 +877,56 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('#timelineBox').show(0);
 					
+					var closeNote = false;
+					$('.action').on({
+						
+						'tap':function(){
+							//console.log($(this).attr('data-id'));
+							if(closeNote == true){
+								$('#noteShow, #noteForm').remove();
+								$('.action').attr('data-note', false);
+								closeNote = false;
+							} else {
+								$('#frame-'+$(this).attr('data-id')).children('.t-id').click();
+								scroll_timeline.scrollToElement('#frame-'+$(this).attr('data-id'));
+								closeNote = true;
+							}
+						},
+						
+						'taphold': function(e){
+							e.preventDefault();
+							$('#noteShow').remove();
+							$('.action').attr('data-note', false);
+							$(this).attr('data-note', 'true');
+							//alert('muovi,ruota,elimina');
+							var actionID = $(this).attr('data-id');
+							var noteAction = loql.select('action', actionID);
+							if(noteAction.n){
+								var currentNote = noteAction.n;
+							} else {
+								return;
+							}
+							
+							var leftOffset = $(this).width()/2;
+							var topOffset = $(this).height()/2;
+							var noteShow = '<div id="noteShow" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+							//noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
+							noteShow += '<div class="clearfix">';
+							noteShow += currentNote;
+							noteShow += '</div>';
+							noteShow += '<a id="closeNote" href="javascript:;">';
+							noteShow += '<span class="glyphicon glyphicon-remove"></span>';
+							noteShow += '</a>';
+							noteShow += '</div>';
+							
+							
+							closeNote = true;
+							$('#action-'+actionID).prepend(noteShow);
+							
+						
+						}
+					});
+					
 					if(preserveTimeline === true){
 						scroll_timeline.refresh();
 						scroll_timeline.scrollToElement('#lastFrameFlag');
@@ -1082,13 +1132,15 @@ topoDog = { // Oggetto base con parametri fondamentali
 					});
 					
 					$('.hideFromTimeline').on({
-						'tap': function(){
+						'click tap': function(){
 							var beings = loql.select('beings');
 							//$('[data-bid=]').attr('being-hide')
 							for(i=0;i<beings.length;i++){
 								//var being = loql.select('beings', beings[i]);
 								if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
-									$('.time[data-bid='+beings[i]+']').hide();
+									$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
+								} else {
+									$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
 								}
 							}
 							scrollBars();
@@ -1097,8 +1149,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 					});
 					
+					
+					
 					$('.time:nth-child(2) .t-detail').click();
 					$('.time:nth-child(2) .t-id').click();
+					
+					$('.hideFromTimeline').click();
+					presentationRew();
 					
 				break;
 				
@@ -1108,7 +1165,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('.action').on({
 						'taphold': function(e){
 							e.preventDefault();
-							$('#noteForm').remove();
+							$('#noteForm, #noteShow').remove();
 							$('.action').attr('data-note', false);
 							$(this).attr('data-note', 'true');
 							//alert('muovi,ruota,elimina');

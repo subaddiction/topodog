@@ -381,7 +381,7 @@ z-index:9;
 position:absolute;
 }
 
-#noteForm
+#noteForm, #noteShow
 {
 position:absolute;
 z-index:999999;
@@ -394,7 +394,15 @@ font-size:11px;
 overflow:hidden;
 }
 
-#saveNote
+#noteShow > div.clearfix
+{
+min-width:120px;
+min-height:60px;
+max-width:240px;
+}
+
+
+#saveNote, #closeNote
 {
 display:block;
 float:right;
@@ -404,6 +412,7 @@ padding:8px;
 background:#000000;
 color:#ffffff;
 border-radius:8px;
+line-height:100%;
 }
 
 #saveNote span
@@ -546,6 +555,11 @@ z-index:9999;
 
 
 [being-hide=true]
+{
+display:none!important;
+}
+
+[frame-hide=true]
 {
 display:none!important;
 }

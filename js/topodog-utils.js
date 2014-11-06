@@ -76,10 +76,7 @@ function zoomField(value){
 	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
 	
 //////	
-//////	$('.action svg').each( function(){
-//////		var rotation = $(this).attr('data-rot');
-//////		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
-//////	});
+	
 //////	
 //////	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
 //////	$('.object svg').each( function(){
@@ -89,10 +86,14 @@ function zoomField(value){
 	
 	$('.action').each( function(){
 		var rotation = $(this).attr('data-rot');
-		$(this).css('transform', 'scale('+(topoDog.zoomFactor*$(this).attr('data-scale'))+') rotate('+rotation+'deg)');
+		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
 	});
 	
-	topoDog.zoomFactor = topoDog.tileSize/topoDog.originalTileSize;
+	$('.action svg').each( function(){
+		var rotation = $(this).attr('data-rot');
+		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+	});
+	
 	$('.object').each( function(){
 		$(this).css('transform', 'scale('+topoDog.zoomFactor*$(this).attr('data-scale')+')');
 	});
@@ -121,9 +122,10 @@ function playPresentation(status, interval){
 
 function presentationStep(direction){
 	if(direction === "rew"){
-		var nextFrame = $('#lastFrameFlag').parent().prev('.time');
+		var nextFrame = $('#lastFrameFlag').parent().prevAll('.time[frame-hide="false"]:first');
+		
 	} else {
-		var nextFrame = $('#lastFrameFlag').parent().next('.time');
+		var nextFrame = $('#lastFrameFlag').parent().nextAll('.time[frame-hide="false"]:first');
 		
 	}
 	
@@ -137,15 +139,26 @@ function presentationStep(direction){
 }
 
 function presentationRew(){
-	$('.time:nth-child(2)').children('.t-detail').click();
+	//$('.time:nth-child(2)').children('.t-detail').click();
 	//$('.time:nth-child(2)').children('.t-id').click();
-	scroll_timeline.scrollToElement('#'+$('.time:nth-child(2)').attr('id'));
+	//scroll_timeline.scrollToElement('#'+$('.time:nth-child(2)').attr('id'));
+	
+	var firstFrameID = $('.time[frame-hide="false"]').first().attr('id');
+	$('#'+firstFrameID).children('.t-detail').click();
+	$('#'+firstFrameID).children('.t-id').click();
+	scroll_timeline.scrollToElement('#'+firstFrameID);
 }
 
 function presentationFwd(){
 	//$('.time:last-child').children('.t-detail').click();
-	$('.time:last-child').children('.t-id').click();
-	scroll_timeline.scrollToElement('#'+$('.time:last-child').attr('id'));
+	//$('.time:last-child').children('.t-id').click();
+	//scroll_timeline.scrollToElement('#'+$('.time:last-child').attr('id'));
+	
+	var lastFrameID = $('.time[frame-hide="false"]').last().attr('id');
+	
+	//$('#'+lastFrameID).children('.t-detail').click();
+	$('#'+lastFrameID).children('.t-id').click();
+	scroll_timeline.scrollToElement('#'+lastFrameID);
 }
 
 function handleFileSelect(evt) {
