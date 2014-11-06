@@ -1125,7 +1125,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('.showAllTimeline').on({
 						'tap': function(){
-							$('.time').show();
+							$('.time').attr('frame-hide', 'false');
 							scrollBars();
 						}
 						
@@ -1151,8 +1151,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					
 					
-					$('.time:nth-child(2) .t-detail').click();
-					$('.time:nth-child(2) .t-id').click();
+					//$('.time:nth-child(2) .t-detail').click();
+					//$('.time:nth-child(2) .t-id').click();
 					
 					$('.hideFromTimeline').click();
 					presentationRew();
