@@ -158,7 +158,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	loadBeings: function(){
 	
 		
-		$('#beings').html('');
+		$('#beings a').remove();
 	
 		var beings = loql.select('beings');
 		if(!beings){
@@ -169,13 +169,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 			
 			var currentBeing = loql.select('beings', beings[i]);
-			//console.log(currentBeing);
-			
-			//
-			if(currentBeing.active < 1){
-				//Usare campo active per farlo vedere o no
-				//continue;
-			}
 			
 			var tag = '<a class="being" href="javascript:;" data-id="'+currentBeing.id+'" data-color="'+currentBeing.color+'" style="background:'+currentBeing.color+';border:3px solid '+currentBeing.color+'">'+currentBeing.name+'</a>';
 			$('#beings').append(tag);
@@ -186,7 +179,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		var beingsW = (oneBeingW + (2 * oneBeingM)) * (beings.length + 1);
 		$('#beings').width(beingsW+'px');
 		
-		$('#beings a').off();
+//		$('#beings a').off();
 //		$('#beings a').click(function(){
 //			$('#actions a').css('background', $(this).attr('data-color'));
 //			topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
@@ -194,7 +187,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		$('#beings a').on({
 		
-			'mouseup touchend': function(){
+			'tap': function(e){
+				e.preventDefault();
 				$('#actions a').css('background', $(this).attr('data-color'));
 				topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
 			},
@@ -271,7 +265,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			var beingsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
 			$('#actions').width(beingsW+'px');
 			
-			$('#actionsControls a').on({
+			$('#actions a').on({
 				'click touchstart': function(){
 					topoDog.selectAction($(this).attr('data-id'));
 				}
@@ -473,10 +467,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 		// Load all tiles, objects, beings actions
 		this.drawTexture();
 		this.loadTessels();
-		this.loadBeings();
+		
 		//this.loadItems(1,false);
 		this.loadItems(0,false);
 		this.loadActions(1,false);
+		this.loadBeings();
 		
 		this.startControls();
 		this.modeControls();
@@ -1320,7 +1315,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			'show': 0,
 		}
 		var newBeingID = loql.insert('beings', newBeing);
-		topoDog.loadBeings();
+		this.loadBeings();
 		return newBeingID;
 	},
 	
