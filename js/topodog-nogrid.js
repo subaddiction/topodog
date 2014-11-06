@@ -493,6 +493,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 			this.saveTexture();
 		}
 		
+		
+		var preserveTimeline = false;
+		if(this.mode == 'notes' && mode == 'view3d'){
+			//Non rigenero timeline
+			preserveTimeline = true;
+		}
+		
 		if(mode){
 			topoDog.mode = mode;
 		}
@@ -503,7 +510,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('.action').off();
 		$('#modeControls a').unbind('taphold');
 		
-		if(mode != 'view3d'){
+		if(mode != 'view3d' && mode != 'notes'){
 			$('#grid').css({
 				'transform':'rotate3d(1, 0, 0, 0deg) rotate(0deg)',
 			});
@@ -867,8 +874,16 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				case 'view3d':
 					
-					$('#timeline > .time').remove();
+					
 					$('#timelineBox').show(0);
+					
+					if(preserveTimeline === true){
+						scroll_timeline.refresh();
+						scroll_timeline.scrollToElement('#lastFrameFlag');
+						return false;
+					}
+					
+					$('#timeline > .time').remove();
 				
 					var rotZ = 0;
 					var rotX = 0;
@@ -1151,6 +1166,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				
 			}
+			
+			
 			
 			scrollBars();
 			
