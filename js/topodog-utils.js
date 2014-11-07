@@ -164,7 +164,7 @@ function presentationFwd(){
 function gotoStart(){
 	var firstFrameID = $('#firstFrameFlag').parent().attr('id');
 	scroll_timeline.scrollToElement('#'+firstFrameID);
-	$('#'+lastFrameID).children('.t-id').click();
+	$('#'+firstFrameID).children('.t-id').click();
 }
 
 function gotoEnd(){

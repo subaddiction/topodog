@@ -875,7 +875,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					var closeNote = false;
 					$('.action').on({
 						
-						'click':function(){
+						'tap':function(){
 							//console.log($(this).attr('data-id'));
 							if(closeNote == true){
 								$('#noteShow, #noteForm').remove();
