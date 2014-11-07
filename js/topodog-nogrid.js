@@ -1023,7 +1023,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					showhide += '<div>';
 					showhide += '<a class="rew" href="javascript:;"><span class="glyphicon glyphicon-fast-backward"></span></a>';
+					showhide += '<a class="gotoStart" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
+					showhide += '<a class="gotoEnd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
 					showhide += '<a class="fwd" href="javascript:;"><span class="glyphicon glyphicon-fast-forward"></span></a>';
+					
 					showhide += '</div>';
 					
 					showhide += '<div>';
@@ -1121,6 +1124,18 @@ topoDog = { // Oggetto base con parametri fondamentali
 					$('.stepRew').on({
 						'tap': function(){
 							presentationStep("rew");
+						}
+					});
+					
+					$('.gotoStart').on({
+						'tap': function(){
+							gotoStart();
+						}
+					});
+					
+					$('.gotoEnd').on({
+						'tap': function(){
+							gotoEnd();
 						}
 					});
 					

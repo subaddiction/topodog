@@ -517,7 +517,7 @@ line-height:19px;
 height:38px;
 }
 
-.showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew
+.showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
 {
 display:inline-block;
 font-size:28px;
@@ -527,7 +527,7 @@ text-align:center;
 width:50%;
 }
 
-.play, .pause, .stepFwd, .stepRew
+.play, .pause, .stepFwd, .stepRew, .fwd, .rew, .gotoStart, .gotoEnd
 {
 width:25%;
 }

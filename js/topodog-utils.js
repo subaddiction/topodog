@@ -161,6 +161,17 @@ function presentationFwd(){
 	scroll_timeline.scrollToElement('#'+lastFrameID);
 }
 
+function gotoStart(){
+	var firstFrameID = $('#firstFrameFlag').parent().attr('id');
+	scroll_timeline.scrollToElement('#'+firstFrameID);
+	$('#'+lastFrameID).children('.t-id').click();
+}
+
+function gotoEnd(){
+	var lastFrameID = $('#lastFrameFlag').parent().attr('id');
+	scroll_timeline.scrollToElement('#'+lastFrameID);
+}
+
 function handleFileSelect(evt) {
 	
 	var result = '';
