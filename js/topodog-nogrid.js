@@ -875,7 +875,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					var closeNote = false;
 					$('.action').on({
 						
-						'tap':function(){
+						'click':function(){
 							//console.log($(this).attr('data-id'));
 							if(closeNote == true){
 								$('#noteShow, #noteForm').remove();
@@ -921,6 +921,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 						}
 					});
+					
 					
 					if(preserveTimeline === true){
 						scroll_timeline.refresh();
