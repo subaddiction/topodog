@@ -131,7 +131,7 @@ function presentationStep(direction){
 	
 	if(nextFrame.length < 1){
 		clearInterval(play);
-		console.log("PRESENTATION END");
+		//console.log("PRESENTATION END");
 	} else {
 		nextFrame.children('.t-id').click();
 		scroll_timeline.scrollToElement('#'+nextFrame.attr('id'));
