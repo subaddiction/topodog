@@ -916,13 +916,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 							
 							closeNote = true;
-							$('#noteShow').on({
-								'mouseup touchend':function(e){
-									e.preventDefault();
-									return false;
-								}
-							});
 							$('#action-'+actionID).prepend(noteShow);
+//////							$('#noteShow').on({
+//////								'mouseup touchend':function(e){
+//////									e.preventDefault();
+//////									return false;
+//////								}
+//////							});
 							
 						
 						}
