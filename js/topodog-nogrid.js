@@ -1040,7 +1040,39 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					
 					
+					$('.time').on({
+						
+						'taphold': function(e){
+							e.preventDefault();
+							//console.log('start/stop here');
+							$('#stopHere').off();
+							$('#flagDialog').remove();
+							$('#flagStop').remove();
+							
+							var flagDialog = '';
+							flagDialog += '<div id="flagDialog">';
+							flagDialog += '<a href="javascript:;" id="stopHere">';
+							flagDialog += 'STOP QUI';
+							flagDialog += '</a>';
+							flagDialog += '</div>';
+							$(this).prepend(flagDialog);
+							
+							$('#stopHere').on({
+								'tap': function(e){
+									e.preventDefault();
+									var flagStop = '';
+									flagStop += '<span id="flagStop">';
+									flagStop += 'STOP';
+									flagStop += '</span>';
+									$(this).parent().parent().addClass('stop');
+									$(this).parent().parent().prepend(flagStop);
+									$(this).parent().remove();
+								}
+							
+							})
+						}
 					
+					});
 					
 					
 					$('.time .t-id').on({
