@@ -23,7 +23,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 	theNewAction: false,
 	orientBegin: false,
 	
-	moveAction: false,
+	movingAction: false,
+	rotatingAction: false,
 	
 	timestamp: function(){
 		var now = new Date().getTime();
@@ -840,8 +841,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					$('.action').on({
 						
-						'taphold':function(){
-						
+						'taphold':function(e){
+							
+							e.preventDefault();
+							
 							X = parseInt($(this).css('margin-left')) - offset;
 							Y = parseInt($(this).css('margin-top')) - offset;
 						
@@ -857,7 +860,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							$(this).on({
 						
 							'mousemove touchmove': function(e){
-					
+							
 								e.preventDefault();
 							
 								if(e.originalEvent.touches){
@@ -909,25 +912,143 @@ topoDog = { // Oggetto base con parametri fondamentali
 				case 'rotateActions':
 					$('#actionsControls').show(0);
 					
+					var offset = parseInt($('.action').width()) / 2;
+					
 					$('.action').on({
-					
-						'mousedown touchstart': function(e){
-					
+						
+						'taphold':function(e){
+							
 							e.preventDefault();
-						},
-						
-						'mousemove touchmove': function(e){
-					
-							e.preventDefault();
-						},
-						
-						'mouseup touchend': function(e){
-					
-							e.preventDefault();
-						},
-						
-						
+							
+							console.log(e);
+							
+							/***
+							if(e.originalEvent.touches){
+								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								
+								startX = touch.pageX;
+								startY = touch.pageY;
+							} else {
+								var touch = e.originalEvent;
+								
+								startX = touch.clientX;
+								startY = touch.clientY;
+							}
+							***/
+							
+							var startX = 0;
+							var startY = 0;
+							var endX = 0;
+							var endY = 0;
+							var rotation = 0;
+							var actionId = $(this).attr('data-id');
+							topoDog.rotatingAction = true;
+							
+							
+							startX = parseInt($(this).css('margin-left')) + offset;
+							startY = parseInt($(this).css('margin-top')) + offset;
+							
+							
+							$(this).css('background', '#cccccc');
+							$(this).css('z-index', '9999');
+							
+							$('#grid').on({
+								'mousemove touchmove':function(e){
+									e.preventDefault();
+									
+									
+									if(e.originalEvent.touches){
+										var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+										endX = touch.pageX;
+										endY = touch.pageY;
+									} else {
+										var touch = e.originalEvent;
+										endX = touch.pageX;
+										endY = touch.pageY;
+									}
+							
+									if(topoDog.rotatingAction != false){
+										var ipotenusa;
+										var radRot;
+									
+										var dX = endX-startX;
+										var dY = endY-startY;
+								
+								
+										ipotenusa = Math.sqrt((dY*dY)+(dX*dX));
+										radRot = (dX * Math.sin(90)) / ipotenusa;
+
+										rotation = Math.asin(radRot);
+										rotation = rotation * (180/Math.PI);
+									
+										rotation = Math.floor(rotation);
+								
+										if((dX > 0) && (dY > 0)){
+											rotation = 180 - rotation;
+										}
+									
+										if((dX > 0) && (dY < 0)){
+											//rotation = rotation;
+										}
+								
+										if((dX < 0) && (dY < 0)){
+											//rotation = rotation;
+										}
+									
+								
+										if((dX < 0) && (dY > 0)){
+											rotation = 180 - rotation;
+										} 
+									
+									
+										var tolerance = 10;
+										if(dY == 0 || (dY < tolerance && dY > -tolerance)){
+											if(dX >= 0){
+												rotation = 90;
+											} else if(dX <= 0) {
+												rotation = -90
+											} else {
+												rotation = 0;
+											}
+										}
+								
+										if(dX == 0 || (dX < tolerance && dX > -tolerance)){
+											if(dY >= 0){
+												rotation = 180;
+											} else if(dY <= 0){
+												rotation = 0;
+											} else {
+												rotation = 0;
+											}
+										}
+									
+								
+										$('#action-'+actionId).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+										$('#action-'+actionId).children('svg').attr('data-rot', rotation);
+									}
+									
+								},
+								
+								'mouseup touchend':function(e){
+									e.preventDefault();
+									
+									topoDog.rotatingAction = false;
+									
+									var record = loql.select('action', actionId);
+									console.log(record);
+									record.r = rotation;
+								
+									loql.set('action', actionId, record);
+									
+									$('#action-'+actionId).css('background', '');
+									$('#action-'+actionId).css('z-index', '');
+								}
+							});
+							
+						}
 					});
+						
+					
 				break;
 				
 				case 'editActions':
