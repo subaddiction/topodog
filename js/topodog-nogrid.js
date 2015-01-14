@@ -848,8 +848,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 							X = parseInt($(this).css('margin-left')) - offset;
 							Y = parseInt($(this).css('margin-top')) - offset;
 						
-							console.log(X);
-							console.log(Y);
+							//console.log(X);
+							//console.log(Y);
 							
 							$(this).css('background', '#cccccc');
 							$(this).css('z-index', '9999');
@@ -891,7 +891,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 								
 								
 								var record = loql.select('action', $(this).attr('data-id'));
-								console.log(record);
+								//console.log(record);
 								record.x = X + offset;
 								record.y = Y + offset;
 								
@@ -923,7 +923,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 							e.preventDefault();
 							
-							console.log(e);
+							//console.log(e);
 							
 							/***
 							if(e.originalEvent.touches){
@@ -1044,7 +1044,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 									topoDog.rotatingAction = false;
 									
 									var record = loql.select('action', actionId);
-									console.log(record);
+									//console.log(record);
 									record.r = rotation;
 								
 									loql.set('action', actionId, record);
