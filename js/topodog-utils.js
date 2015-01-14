@@ -121,6 +121,17 @@ function playPresentation(status, interval){
 }
 
 function presentationStep(direction){
+
+	if(play != false){
+		var stophere = $('#lastFrameFlag').parent().children('#flagStop');
+		if(stophere.length >= 1){
+			clearInterval(play);
+			play = false;
+			return;
+		}
+		
+	}
+	
 	if(direction === "rew"){
 		var nextFrame = $('#lastFrameFlag').parent().prevAll('.time[frame-hide="false"]:first');
 		
@@ -133,7 +144,11 @@ function presentationStep(direction){
 		clearInterval(play);
 		//console.log("PRESENTATION END");
 	} else {
+		if(topoDog.lastID < topoDog.firstID){
+			nextFrame.children('.t-detail').click();
+		}
 		nextFrame.children('.t-id').click();
+		
 		scroll_timeline.scrollToElement('#'+nextFrame.attr('id'));
 	}
 }

@@ -27,7 +27,6 @@
 <!--<script type="text/javascript" src="js/raphael.polyline.js"></script>-->
 <script type="text/javascript" src="js/jquerypp.min.js"></script>
 <script type="text/javascript" src="js/iscroll.js"></script>
-<!--<script type="text/javascript" src="js/topodog.js"></script>-->
 <script type="text/javascript" src="js/topodog-assets.js"></script>
 <script type="text/javascript" src="js/topodog-nogrid.js"></script>
 <script type="text/javascript" src="js/topodog-utils.js"></script>
@@ -55,6 +54,16 @@
 		<li>
 			<a class="mode" data-mode="insertActions" href="javascript:;" title="Azioni: Seleziona un cane ed una azione, poi clicca e trascina sullo scenario per inserire ed orientare l'azione. I pulsanti delle azioni hanno lo sfondo del colore del cane selezionato.">
 				<span class="glyphicon glyphicon-screenshot"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" data-mode="moveActions" href="javascript:;" title="Muovi Azioni">
+				<span class="glyphicon glyphicon-move"></span>
+			</a>
+		</li>
+		<li>
+			<a class="mode" data-mode="rotateActions" href="javascript:;" title="Ruota Azioni">
+				<span class="glyphicon glyphicon-rotate"></span>
 			</a>
 		</li>
 		<li>
@@ -128,6 +137,7 @@
 
 	<div id="grid">
 	<canvas id="bgCanvas"></canvas>
+	<div id="snapshot"></div>
 	</div>
 </div>
 

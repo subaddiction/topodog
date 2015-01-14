@@ -44,6 +44,12 @@ background:#333333;
 display:block;
 }
 
+#snapshot
+{
+position:absolute;
+opacity:0.25;
+}
+
 #grid
 {
 background:#eeeeee;
@@ -517,7 +523,31 @@ line-height:19px;
 height:38px;
 }
 
-.showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
+#flagDialog
+{
+position:absolute;
+background:#ffffff;
+height:78px;
+}
+
+#flagDialog a
+{
+color:#000000;
+font-weight:bold;
+line-height:39px;
+display:block;
+}
+
+#flagStop
+{
+position:absolute;
+width:120px;
+text-align:right;
+line-height:44px;
+font-size:32px;
+}
+
+.makeSnapshot, .clearSnapshot, .showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
 {
 display:inline-block;
 font-size:28px;
@@ -525,6 +555,11 @@ height:40px;
 line-height:40px;
 text-align:center;
 width:50%;
+}
+
+.showAllTimeline, .hideFromTimeline
+{
+display:none;
 }
 
 .play, .pause, .stepFwd, .stepRew, .fwd, .rew, .gotoStart, .gotoEnd
@@ -560,6 +595,11 @@ display:none!important;
 }
 
 [frame-hide=true]
+{
+display:none!important;
+}
+
+[time-hide=true]
 {
 display:none!important;
 }
