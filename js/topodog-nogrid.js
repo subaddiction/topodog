@@ -915,6 +915,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 					var offset = parseInt($('.action').width()) / 2;
 					
 					$('.action').on({
+						'mousemove touchmove': function(e){
+							e.preventDefault();
+						},
 						
 						'taphold':function(e){
 							
@@ -953,6 +956,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 							$(this).css('z-index', '9999');
 							
 							$('#grid').on({
+								/***
+								'mousedown touchstart':function(e){
+									e.preventDefault();
+								},
+								***/
+								
 								'mousemove touchmove':function(e){
 									e.preventDefault();
 									
