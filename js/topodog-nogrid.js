@@ -211,14 +211,18 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('.showB').on({
 					'tap': function(){
+						
+						$(this).parent().parent().children('.flagHide').remove();
 						topoDog.showBeing(id);
 						//console.log(id);
 					}
 				});
 				$('.hideB').on({
 					'tap': function(){
+						$(this).parent().parent().prepend('<span class="flagHide glyphicon glyphicon-eye-close"></span>');
 						topoDog.hideBeing(id);
 						//console.log(id);
+						
 					}
 				});
 			}

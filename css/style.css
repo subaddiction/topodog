@@ -304,6 +304,14 @@ line-height:48px;
 
 }
 
+.flagHide
+{
+display:block;
+position:absolute;
+margin:2px 0 0 2px;
+font-size:16px;
+}
+
 #bottomControls a, #actionsControls a
 {
 color:#ffffff;
