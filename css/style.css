@@ -526,6 +526,7 @@ height:38px;
 #flagDialog
 {
 position:absolute;
+z-index:9999;
 background:#ffffff;
 height:78px;
 }
@@ -534,17 +535,34 @@ height:78px;
 {
 color:#000000;
 font-weight:bold;
-line-height:39px;
+font-size:32px;
+line-height:44px;
 display:block;
+text-align:center;
 }
 
-#flagStop
+#startHere, #flagStart
 {
 position:absolute;
-width:120px;
-text-align:right;
-line-height:44px;
+width:40px;
 font-size:32px;
+line-height:44px;
+text-align:center;
+}
+
+#stopHere, #flagStop
+{
+position:absolute;
+margin-left:80px;
+width:40px;
+font-size:32px;
+line-height:44px;
+text-align:center;
+}
+
+#cancelStop
+{
+margin-top:39px;
 }
 
 .makeSnapshot, .clearSnapshot, .showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
@@ -555,6 +573,14 @@ height:40px;
 line-height:40px;
 text-align:center;
 width:50%;
+}
+
+.makeSnapshot
+{
+background-color:#000000;
+-webkit-transition:background-color .5s;
+-moz-transition:background-color .5s;
+transition:background .5s;
 }
 
 .showAllTimeline, .hideFromTimeline

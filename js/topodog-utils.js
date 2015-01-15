@@ -177,14 +177,18 @@ function presentationFwd(){
 }
 
 function gotoStart(){
-	var firstFrameID = $('#firstFrameFlag').parent().attr('id');
+	//var firstFrameID = $('#firstFrameFlag').parent().attr('id');
+	var firstFrameID = $('#flagStart').parent().attr('id');
 	scroll_timeline.scrollToElement('#'+firstFrameID);
+	$('#'+firstFrameID).children('.t-detail').click();
 	$('#'+firstFrameID).children('.t-id').click();
 }
 
 function gotoEnd(){
-	var lastFrameID = $('#lastFrameFlag').parent().attr('id');
+	//var lastFrameID = $('#lastFrameFlag').parent().attr('id');
+	var lastFrameID = $('#flagStop').parent().attr('id');
 	scroll_timeline.scrollToElement('#'+lastFrameID);
+	$('#'+lastFrameID).children('.t-id').click();
 }
 
 function handleFileSelect(evt) {

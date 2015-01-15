@@ -1293,14 +1293,32 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 							var flagDialog = '';
 							flagDialog += '<div id="flagDialog">';
+							flagDialog += '<a href="javascript:;" id="startHere">';
+							flagDialog += '<span class="glyphicon glyphicon-step-forward"></span>';
+							flagDialog += '</a>';
 							flagDialog += '<a href="javascript:;" id="stopHere">';
-							flagDialog += 'STOP QUI';
+							flagDialog += '<span class="glyphicon glyphicon-step-backward"></span>';
 							flagDialog += '</a>';
 							flagDialog += '<a href="javascript:;" id="cancelStop">';
-							flagDialog += 'ANNULLA';
+							flagDialog += '<span class="glyphicon glyphicon-remove"></span>';
 							flagDialog += '</a>';
 							flagDialog += '</div>';
 							$(this).prepend(flagDialog);
+							
+							$('#startHere').on({
+								'tap': function(e){
+									e.preventDefault();
+									$('#flagStart').remove();
+									var flagStart = '';
+									flagStart += '<span id="flagStart">';
+									flagStart += '<span class="glyphicon glyphicon-step-forward"></span>';
+									flagStart += '</span>';
+									//$(this).parent().parent().addClass('stop');
+									$(this).parent().parent().prepend(flagStart);
+									$(this).parent().remove();
+								}
+							
+							});
 							
 							$('#stopHere').on({
 								'tap': function(e){
@@ -1310,7 +1328,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 									flagStop += '<span id="flagStop">';
 									flagStop += '<span class="glyphicon glyphicon-step-backward"></span>';
 									flagStop += '</span>';
-									$(this).parent().parent().addClass('stop');
+									//$(this).parent().parent().addClass('stop');
 									$(this).parent().parent().prepend(flagStop);
 									$(this).parent().remove();
 								}
@@ -1704,6 +1722,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 			snapAction.addClass('actionClone');
 			$('#snapshot').append(snapAction);
 		});
+		
+		$( '.makeSnapshot' ).css('background', '#ffffff');
+		setTimeout("$( '.makeSnapshot' ).css('background', '#000000');", 500);
 		
 	},
 	
