@@ -556,6 +556,7 @@ width:40px;
 font-size:32px;
 line-height:44px;
 text-align:center;
+z-index:9999;
 }
 
 #stopHere, #flagStop
@@ -566,6 +567,7 @@ width:40px;
 font-size:32px;
 line-height:44px;
 text-align:center;
+z-index:9999;
 }
 
 #cancelStop
