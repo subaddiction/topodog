@@ -528,6 +528,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#tesselControls').hide(0);
 		$('#itemsControlsBox').hide(0);
 		$('#actionsControls').hide(0);
+		$('#moveControls').hide(0);
+		$('#rotateControls').hide(0);
 		$('#editControls').hide(0);
 		$('#noteControls').hide(0);
 		$('#dataControls').hide(0);
@@ -836,7 +838,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				break;
 				
 				case 'moveActions':
-					$('#actionsControls').show(0);
+					
+					$('#moveControls').show(0);
 					
 					var X = 0;
 					var Y = 0;
@@ -914,7 +917,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 				break;
 				
 				case 'rotateActions':
-					$('#actionsControls').show(0);
+					
+					$('#rotateControls').show(0);
 					
 					var offset = parseInt($('.action').width()) / 2;
 					
@@ -1736,6 +1740,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	clearSnapShot: function(){
 		$('#snapshot .actionClone').remove();
+	},
+	
+	timeHide: function(){
+		$('.action').attr('time-hide', 'true');
+	},
+	
+	timeShow: function(){
+		$('.action').attr('time-hide', 'false');
 	},
 	
 	tdExport: function(){
