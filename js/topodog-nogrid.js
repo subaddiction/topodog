@@ -1051,6 +1051,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 									
 									$('#action-'+actionId).css('background', '');
 									$('#action-'+actionId).css('z-index', '');
+									
+									topoDog.modeSwitch('rotateActions');
 								}
 							});
 							
