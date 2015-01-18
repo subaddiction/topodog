@@ -173,7 +173,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 			
 			var currentBeing = loql.select('beings', beings[i]);
 			
-			var tag = '<a class="being" href="javascript:;" data-id="'+currentBeing.id+'" data-color="'+currentBeing.color+'" style="background:'+currentBeing.color+';border:3px solid '+currentBeing.color+'">'+currentBeing.name+'</a>';
+			var tag = '<a class="being" href="javascript:;" data-id="'+currentBeing.id+'" data-color="'+currentBeing.color+'" style="background:'+currentBeing.color+';border:3px solid '+currentBeing.color+'">';
+			if(currentBeing.show < 1){
+				tag += '<span class="flagHide glyphicon glyphicon-eye-close"></span>';
+			}
+			tag += currentBeing.name;
+			tag +='</a>';
 			$('#beings').append(tag);
 		}
 		
@@ -219,6 +224,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				$('.hideB').on({
 					'tap': function(){
+						$(this).parent().parent().children('.flagHide').remove();
 						$(this).parent().parent().prepend('<span class="flagHide glyphicon glyphicon-eye-close"></span>');
 						topoDog.hideBeing(id);
 						//console.log(id);
@@ -309,7 +315,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	startControls: function(){
 		
-		
+		$('.flagHide').remove();
 		
 		var oneControlW = $('#modeControls li').width();
 		var oneControlM = parseInt($('#modeControls li').css('margin-right'));
@@ -1245,7 +1251,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 						var tag = '';
 						
 						tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
-						tag += '<div class="t-id" style="background:'+being.color+';">'+actions[i]+'</div>';
+						tag += '<div class="t-id" style="background:'+being.color+';">';
+						tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
+						tag += '<div style="background:'+being.color+';">'+actions[i]+'</div>';
+						tag += '</div>';
 						tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
 						tag += '</div>'
 						$('#timeline').append(tag);
@@ -1681,7 +1690,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			'name':name,
 			'type':type,
 			'image':image,
-			'show': 0,
+			'show': 1,
 		}
 		var newBeingID = loql.insert('beings', newBeing);
 		this.loadBeings();
@@ -1691,6 +1700,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 	showBeing: function(id){
 		//$('#beings > a[data-id='+id+']').show();
 		//$('div[data-bid='+id+']').show();
+		
+		var theBeing = loql.select('beings', id);
+		theBeing.show = 1;
+		loql.set('beings', id, theBeing);
+		
 		$('div[data-bid='+id+']').attr('being-hide', 'false');
 		$('#showBeing').remove();
 	},
@@ -1698,6 +1712,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 	hideBeing: function(id){
 		//$('#beings > a[data-id='+id+']').show();
 		//$('div[data-bid='+id+']').hide();
+		
+		var theBeing = loql.select('beings', id);
+		theBeing.show = 0;
+		loql.set('beings', id, theBeing);
+		
 		$('div[data-bid='+id+']').attr('being-hide', 'true');
 		$('#showBeing').remove();
 	},
