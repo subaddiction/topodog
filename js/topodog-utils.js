@@ -62,7 +62,7 @@ function zoomField(value){
 		});
 	});
 
-	$('.action').each(function(){
+	$('.action, .actionClone').each(function(){
 		$(this).css({
 		'width':$(this).width()*value,
 		'height':$(this).height()*value,
