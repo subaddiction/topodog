@@ -84,12 +84,12 @@ function zoomField(value){
 //////	});
 
 	
-	$('.action').each( function(){
+	$('.action, .actionClone').each( function(){
 		var rotation = $(this).attr('data-rot');
 		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
 	});
 	
-	$('.action svg').each( function(){
+	$('.action svg, .actionClone svg').each( function(){
 		var rotation = $(this).attr('data-rot');
 		$(this).css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
 	});
