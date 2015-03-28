@@ -184,7 +184,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		var oneBeingW = $('#beings a').width();
 		var oneBeingM = parseInt($('#beings a').css('margin-right'));
-		var beingsW = (oneBeingW + (2 * oneBeingM)) * (beings.length + 1);
+		var beingsW = (oneBeingW + (2 * oneBeingM)) * (beings.length + 2);
 		$('#beings').width(beingsW+'px');
 		
 //		$('#beings a').off();
@@ -275,8 +275,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 			var oneActionW = $('#actions a').width();
 			var oneActionM = parseInt($('#actions a').css('margin-right'));
-			var beingsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
-			$('#actions').width(beingsW+'px');
+			var actionsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
+			$('#actions').width(actionsW+'px');
 			
 			$('#actions a').on({
 				'click touchstart': function(){
