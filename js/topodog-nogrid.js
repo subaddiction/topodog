@@ -122,7 +122,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		} else {
 			var oneItemW = $('#itemsControls a').width();
 			var oneItemM = parseInt($('#itemsControls a').css('margin-right'));
-			var itemsW = (oneItemW + (2 * oneItemM)) * (items.length + 1);
+			var itemsW = (oneItemW + (4 * oneItemM)) * (items.length);
 			$('#itemsControls').width(itemsW+'px');
 			
 			$('#itemsControls a').on({
@@ -184,9 +184,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 			$('#beings').append(tag);
 		}
 		
-		var oneBeingW = $('#beings a').width();
+		var oneBeingW = $('#beings a').innerWidth();
 		var oneBeingM = parseInt($('#beings a').css('margin-right'));
-		var beingsW = (oneBeingW + (2 * oneBeingM)) * (beings.length + 2);
+		var beingsW = (oneBeingW + (4 * oneBeingM)) * (beings.length);
 		$('#beings').width(beingsW+'px');
 		
 //		$('#beings a').off();
@@ -228,15 +228,17 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('.deleteB').on({
 					'tap': function(){
-						if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
+						//if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
 							
-							topoDog.hideBeing(id);
-							loql.del('beings', id);
-							topoDog.loadBeings();
+							//topoDog.hideBeing(id);
+							topoDog.deleteActionsById(1, id);
+							
+							//loql.del('beings', id);
+							
 							
 							//$('.being').removeClass('editing');
 						
-						}
+						//}
 						
 						//console.log(id);
 					}
@@ -317,7 +319,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 			var oneActionW = $('#actions a').width();
 			var oneActionM = parseInt($('#actions a').css('margin-right'));
-			var actionsW = (oneActionW + (2 * oneActionM)) * ($('#actions a').length + 2);
+			var actionsW = (oneActionW + (4 * oneActionM)) * ($('#actions a').length);
 			$('#actions').width(actionsW+'px');
 			
 			$('#actions a').on({
@@ -361,22 +363,22 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		var oneControlW = $('#modeControls li').width();
 		var oneControlM = parseInt($('#modeControls li').css('margin-right'));
-		var controlsW = (oneControlW + (2 * oneControlM)) * ($('#modeControls li').length + 2);
+		var controlsW = (oneControlW + (4 * oneControlM)) * ($('#modeControls li').length);
 		$('#modeControls').width(controlsW+'px');
 		
 		var oneTesselW = $('#tessels a').width();
 		var oneTesselM = parseInt($('#tessels a').css('margin-right'));
-		var tesselsW = (oneTesselW + (2 * oneTesselM)) * ($('#tessels a').length + 2);
+		var tesselsW = (oneTesselW + (4 * oneTesselM)) * ($('#tessels a').length);
 		$('#tessels').width(tesselsW+'px');
 		
 		var oneSizeW = $('#sizes a').width();
 		var oneSizeM = parseInt($('#sizes a').css('margin-right'));
-		var sizesW = (oneSizeW + (2 * oneSizeM)) * ($('#sizes a').length + 2);
+		var sizesW = (oneSizeW + (4 * oneSizeM)) * ($('#sizes a').length);
 		$('#sizes').width(sizesW+'px');
 		
 		var oneItemSizeW = $('#itemsSizes a').width();
 		var oneItemSizeM = parseInt($('#itemsSizes a').css('margin-right'));
-		var itemsSizesW = (oneItemSizeW + (2 * oneItemSizeM)) * ($('#itemsSizes a').length + 2);
+		var itemsSizesW = (oneItemSizeW + (4 * oneItemSizeM)) * ($('#itemsSizes a').length);
 		$('#itemsSizes').width(sizesW+'px');
 		
 		$('body').off();
@@ -532,12 +534,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 		//this.loadItems(1,false);
 		this.loadItems(0,false);
 		this.loadActions(1,false);
-		this.loadBeings();
+		//this.loadBeings();
 		
 		this.startControls();
 		this.modeControls();
 		this.drawItems();
 		this.drawActions();
+		
+		this.loadBeings();
 		
 		
 	},
@@ -1281,7 +1285,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					if(actions.length <= 1){
 						return;
 					}
-					for(i=0;i<actions.length;i++){
+					for(i=1;i<actions.length;i++){
 						
 						var action = loql.select('action', actions[i]);
 						var being = loql.select('beings', action.bid);
@@ -1306,7 +1310,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 					//$('#timelineBox .iScrollLoneScrollbar').remove();
 					
-					$('#timeline').width($('.time').width() * (actions.length + 2));
+					$('#timeline').width(($('.time').width() + 2) * (actions.length));
 					
 					$('.time').css({
 						'float':'left',
@@ -2176,11 +2180,49 @@ topoDog = { // Oggetto base con parametri fondamentali
 				if(actionNote){
 					$('#action-'+theID).prepend( '<span class="noteLabel glyphicon glyphicon-comment"></span>');
 				}
+				if(theBeing.show == 0){
+					$('#action-'+theID).attr('being-hide', 'true');
+				}
 			
 			});
 		}
 	
 		return theID;
+	},
+	
+	
+	deleteActionsById: function(id, bid){
+		var actions = loql.select('action');
+//		console.log(actions);
+//		for(i=1;i<actions.length;i++){
+			
+		var currentAction = loql.select('action', id);
+		console.log('checking action '+ id);
+		var next = id+1;
+		
+		console.log(currentAction);
+		
+		if(!currentAction){
+			console.log('no action with id '+ id);
+			if(id < actions[actions.length -1]){
+				console.log(id +' < '+ actions[actions.length -1]);
+				topoDog.deleteActionsById(next, bid);
+			} else {
+				loql.del('beings', bid);
+				topoDog.loadBeings();
+				$('.action').remove();
+				topoDog.drawActions();
+			}
+		} else {
+			console.log('>>> found action with id '+ id);
+			if(currentAction.bid == bid){
+				loql.del('action', id);
+				console.log('>>> deleted action '+ id);
+			
+			}
+			topoDog.deleteActionsById(next, bid);
+		}
+		
 	}
 	
 }
