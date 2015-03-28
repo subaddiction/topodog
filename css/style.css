@@ -282,11 +282,6 @@ line-height:48px;
 text-transform:uppercase;
 }
 
-#beings > a
-{
-overflow:visible;
-}
-
 #showBeing
 {
 position:absolute;
@@ -451,7 +446,6 @@ position:absolute;
 #configuration, #newDog
 {
 display:none;
-position:fixed;
 width:100%;
 height:100%;
 background:#ffffff;

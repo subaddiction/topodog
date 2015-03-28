@@ -1659,6 +1659,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#newDog_name').val('');
 		$('#newDog_type').val('');
 		$('#newDog_image').val('');
+		
+		$('#scenario').hide(0);
+		
 		$('#newDog').show(0);
 		scrollBars();
 	},
@@ -1679,6 +1682,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		}
 		this.newBeingElement(color, name, type, image);
 		$('#newDog').hide(0);
+		$('#scenario').show(0);
 	},
 	
 	newBeingElement: function(color, name, type, image){
