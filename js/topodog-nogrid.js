@@ -228,17 +228,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('.deleteB').on({
 					'tap': function(){
-						//if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
+						if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
 							
 							//topoDog.hideBeing(id);
 							topoDog.deleteActionsById(1, id);
-							
-							//loql.del('beings', id);
-							
-							
-							//$('.being').removeClass('editing');
 						
-						//}
+						}
 						
 						//console.log(id);
 					}
@@ -1285,10 +1280,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 					if(actions.length <= 1){
 						return;
 					}
-					for(i=1;i<actions.length;i++){
+					for(i=0;i<actions.length;i++){
 						
 						var action = loql.select('action', actions[i]);
 						var being = loql.select('beings', action.bid);
+						
+						if(!being){
+							continue;
+						}
 						
 						//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
 						
@@ -1716,7 +1715,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		var theBeing = loql.select('beings', id);
 		
-		console.log(theBeing);
+		//console.log(theBeing);
 		
 		$('#newDog_color').val(theBeing.color);
 		$('#newDog_name').val(theBeing.name);
@@ -2194,18 +2193,17 @@ topoDog = { // Oggetto base con parametri fondamentali
 	deleteActionsById: function(id, bid){
 		var actions = loql.select('action');
 //		console.log(actions);
-//		for(i=1;i<actions.length;i++){
 			
 		var currentAction = loql.select('action', id);
-		console.log('checking action '+ id);
+		//console.log('checking action '+ id);
 		var next = id+1;
 		
-		console.log(currentAction);
+		//console.log(currentAction);
 		
 		if(!currentAction){
-			console.log('no action with id '+ id);
+			//console.log('no action with id '+ id);
 			if(id < actions[actions.length -1]){
-				console.log(id +' < '+ actions[actions.length -1]);
+				//console.log(id +' < '+ actions[actions.length -1]);
 				topoDog.deleteActionsById(next, bid);
 			} else {
 				loql.del('beings', bid);
@@ -2214,10 +2212,10 @@ topoDog = { // Oggetto base con parametri fondamentali
 				topoDog.drawActions();
 			}
 		} else {
-			console.log('>>> found action with id '+ id);
+			//console.log('>>> found action with id '+ id);
 			if(currentAction.bid == bid){
 				loql.del('action', id);
-				console.log('>>> deleted action '+ id);
+				//console.log('>>> deleted action '+ id);
 			
 			}
 			topoDog.deleteActionsById(next, bid);
