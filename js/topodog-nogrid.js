@@ -208,11 +208,47 @@ topoDog = { // Oggetto base con parametri fondamentali
 				var color = $(this).attr('data-color');
 				
 				var showBeingModal = '<div id="showBeing" style="background:'+color+';">';
+				
+				showBeingModal += '<a class="deleteB" href="javascript:;"><span class="glyphicon glyphicon-remove-circle"></span></a>';
+				showBeingModal += '<br />';
+				showBeingModal += '<a class="editB" href="javascript:;"><span class="glyphicon glyphicon-edit"></span></a>';
+				showBeingModal += '<br />';
+				
 				showBeingModal += '<a class="showB" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
 				showBeingModal += '<br />';
 				showBeingModal += '<a class="hideB" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
 				showBeingModal += '</div>';
 				$(this).prepend(showBeingModal);
+				
+				
+				$('.deleteB').on({
+					'tap': function(){
+						if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
+							
+							topoDog.hideBeing(id);
+							loql.del('beings', id);
+							topoDog.loadBeings();
+							
+							
+							//In realtà cancello solo il record del cane, mentre le azioni rimangono con il relativo id ma nascoste.
+							//Ancora abbiamo la possibilità di ripristinare il cane cancellato inserendolo a mano e forzando il vecchio id
+						
+						}
+						
+						//console.log(id);
+					}
+				});
+				
+				
+				$('.editB').on({
+					'tap': function(){
+						
+						topoDog.editDogForm(id);
+						//console.log(id);
+					}
+				});
+				
+				
 				
 				$('.showB').on({
 					'tap': function(){
@@ -1660,6 +1696,49 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#newDog_name').val('');
 		$('#newDog_type').val('');
 		$('#newDog_image').val('');
+		
+		$('#modeControlsBox, #scenario, #bottomControls').hide(0);
+		$('#newDog').show(0);
+		scrollBars();
+	},
+	
+	editDogForm: function(id){
+		
+		var theBeing = loql.select('beings', id);
+		
+		console.log(theBeing);
+		
+		$('#newDog_color').val(theBeing.color);
+		$('#newDog_name').val(theBeing.name);
+		//$('#newDog_type').val('');
+		//$('#newDog_image').val('');
+		
+		//$('.colorSelect[data-color='+theBeing.color+']').click();
+		
+		
+		$('#submitNewDogForm').hide(0);
+		$('#submitEditDogForm').show(0);
+		
+		$('#submitEditDogForm').off();
+		$('#submitEditDogForm').on({
+			'tap': function(){
+				//topoDog.insertBeing();
+				theBeing.name = $('#newDog_name').val();
+				theBeing.color = $('#newDog_color').val();
+				
+				loql.set('beings', id, theBeing);
+				
+				topoDog.loadBeings();
+				topoDog.drawActions();
+				
+				
+				$('#newDog').hide(0);
+				$('#modeControlsBox, #scenario, #bottomControls').show(0);
+				$(this).hide(0);
+				$('#submitNewDogForm').show(0);
+			}
+		});
+		
 		
 		$('#modeControlsBox, #scenario, #bottomControls').hide(0);
 		$('#newDog').show(0);

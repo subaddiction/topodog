@@ -287,8 +287,10 @@ text-transform:uppercase;
 position:absolute;
 background:#ffffff;
 width:48px;
-height:96px;
-margin-top:-96px;
+/*height:96px;*/
+/*margin-top:-96px;*/
+height:192px;
+margin-top:-192px;
 border-radius:8px;
 font-size:32px;
 line-height:48px;
@@ -468,6 +470,11 @@ display:inline-block;
 width:4em;
 height:4em;
 margin:4px;
+}
+
+#submitEditDogForm
+{
+display:none;
 }
 
 
