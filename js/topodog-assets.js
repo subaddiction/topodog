@@ -209,6 +209,13 @@ function topoDogAssets(){
 	}
 	loql.insert('actions', area);
 	
+	var olfattiva = {
+		'name':'olfattiva',
+		'size':'2',
+		'shape':'sniff.svg',
+	}
+	loql.insert('actions', olfattiva);
+	
 //	newBeingElement('#ff0000', 'fido', 'dog', '');
 //	newBeingElement('#00ff00', 'ettore', 'dog', '');
 //	newBeingElement('#0000ff', 'gunther', 'dog', '');
