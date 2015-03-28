@@ -282,6 +282,11 @@ line-height:48px;
 text-transform:uppercase;
 }
 
+#beings > a.editing
+{
+overflow:visible;
+}
+
 #showBeing
 {
 position:absolute;

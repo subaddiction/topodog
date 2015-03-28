@@ -203,6 +203,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 			
 			'taphold': function(e){
 				e.preventDefault();
+				
+				$(this).addClass('editing');
+				
 				$('#showBeing').remove();
 				var id = $(this).attr('data-id');
 				var color = $(this).attr('data-color');
@@ -229,9 +232,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							loql.del('beings', id);
 							topoDog.loadBeings();
 							
-							
-							//In realtà cancello solo il record del cane, mentre le azioni rimangono con il relativo id ma nascoste.
-							//Ancora abbiamo la possibilità di ripristinare il cane cancellato inserendolo a mano e forzando il vecchio id
+							$('.being').removeClass('editing');
 						
 						}
 						
@@ -244,6 +245,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					'tap': function(){
 						
 						topoDog.editDogForm(id);
+						$('.being').removeClass('editing');
 						//console.log(id);
 					}
 				});
@@ -255,6 +257,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 						$(this).parent().parent().children('.flagHide').remove();
 						topoDog.showBeing(id);
+						$('.being').removeClass('editing');
 						//console.log(id);
 					}
 				});
@@ -263,6 +266,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						$(this).parent().parent().children('.flagHide').remove();
 						$(this).parent().parent().prepend('<span class="flagHide glyphicon glyphicon-eye-close"></span>');
 						topoDog.hideBeing(id);
+						$('.being').removeClass('editing');
 						//console.log(id);
 						
 					}
