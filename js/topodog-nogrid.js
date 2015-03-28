@@ -177,7 +177,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 			if(currentBeing.show < 1){
 				tag += '<span class="flagHide glyphicon glyphicon-eye-close"></span>';
 			}
+			tag += '<span class="beingName">';
 			tag += currentBeing.name;
+			tag += '</span>';
 			tag +='</a>';
 			$('#beings').append(tag);
 		}
@@ -204,7 +206,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			'taphold': function(e){
 				e.preventDefault();
 				
-				$(this).addClass('editing');
+				//$(this).addClass('editing');
 				
 				$('#showBeing').remove();
 				var id = $(this).attr('data-id');
@@ -232,7 +234,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							loql.del('beings', id);
 							topoDog.loadBeings();
 							
-							$('.being').removeClass('editing');
+							//$('.being').removeClass('editing');
 						
 						}
 						
@@ -245,7 +247,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					'tap': function(){
 						
 						topoDog.editDogForm(id);
-						$('.being').removeClass('editing');
+						//$('.being').removeClass('editing');
 						//console.log(id);
 					}
 				});
@@ -257,7 +259,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						
 						$(this).parent().parent().children('.flagHide').remove();
 						topoDog.showBeing(id);
-						$('.being').removeClass('editing');
+						//$('.being').removeClass('editing');
 						//console.log(id);
 					}
 				});
@@ -266,7 +268,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 						$(this).parent().parent().children('.flagHide').remove();
 						$(this).parent().parent().prepend('<span class="flagHide glyphicon glyphicon-eye-close"></span>');
 						topoDog.hideBeing(id);
-						$('.being').removeClass('editing');
+						//$('.being').removeClass('editing');
 						//console.log(id);
 						
 					}
