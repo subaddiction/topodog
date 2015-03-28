@@ -402,6 +402,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#closeNewDogForm').on({
 			'tap': function(){
 				$('#newDog').hide(0);
+				$('#modeControlsBox, #scenario, #bottomControls').show(0);
 			}
 		});
 		
@@ -1660,8 +1661,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#newDog_type').val('');
 		$('#newDog_image').val('');
 		
-		$('#scenario').hide(0);
-		
+		$('#modeControlsBox, #scenario, #bottomControls').hide(0);
 		$('#newDog').show(0);
 		scrollBars();
 	},
@@ -1682,7 +1682,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 		}
 		this.newBeingElement(color, name, type, image);
 		$('#newDog').hide(0);
-		$('#scenario').show(0);
+		$('#modeControlsBox, #scenario, #bottomControls').show(0);
 	},
 	
 	newBeingElement: function(color, name, type, image){
