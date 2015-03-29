@@ -518,6 +518,121 @@ topoDog = { // Oggetto base con parametri fondamentali
 		showhide += '</div>';
 		
 		$('#timelineBox').append(showhide);
+		
+		
+		$('.play').off();
+		$('.play').on({
+			'tap': function(e){
+				e.preventDefault();
+				playPresentation(true);
+			}
+		});
+		
+		$('.pause').off();
+		$('.pause').on({
+			'tap': function(e){
+				e.preventDefault();
+				playPresentation(false);
+			}
+		});
+		
+		$('.fwd').off();
+		$('.fwd').on({
+			'tap': function(e){
+				e.preventDefault();
+				presentationFwd();
+			}
+		});
+		
+		$('.rew').off();
+		$('.rew').on({
+			'tap': function(e){
+				e.preventDefault();
+				presentationRew();
+			}
+		});
+		
+		$('.stepFwd').off();
+		$('.stepFwd').on({
+			'tap': function(e){
+				e.preventDefault();
+				presentationStep();
+			}
+		});
+		
+		$('.stepRew').off();
+		$('.stepRew').on({
+			'tap': function(e){
+				e.preventDefault();
+				presentationStep("rew");
+			}
+		});
+		
+		$('.gotoStart').off();
+		$('.gotoStart').on({
+			'tap': function(e){
+				e.preventDefault();
+				gotoStart();
+			}
+		});
+		
+		$('.gotoEnd').off();
+		$('.gotoEnd').on({
+			'tap': function(e){
+				e.preventDefault();
+				gotoEnd();
+			}
+		});
+		
+		$('.makeSnapshot').off();
+		$('.makeSnapshot').on({
+			'tap': function(e){
+				e.preventDefault();
+				topoDog.snapShot();
+			}
+			
+		});
+		
+		$('.clearSnapshot').off();
+		$('.clearSnapshot').on({
+			'tap': function(e){
+				e.preventDefault();
+				topoDog.clearSnapShot();
+			}
+			
+		});
+		
+		$('.showAllTimeline').off();
+		$('.showAllTimeline').on({
+			'tap': function(e){
+				e.preventDefault();
+				$('.time').attr('frame-hide', 'false');
+				scrollBars();
+			}
+			
+		});
+		
+		$('.hideFromTimeline').off();
+		$('.hideFromTimeline').on({
+			'click tap': function(e){
+				e.preventDefault();
+				var beings = loql.select('beings');
+				
+				for(i=0;i<beings.length;i++){
+					
+					if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
+						$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
+					} else {
+						$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
+					}
+				}
+				scrollBars();
+			}
+			
+			
+		});
+		
+		
 	},
 	
 	init: function(){
@@ -568,15 +683,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 	modeSwitch: function(mode){
 		
 		if(this.mode == 'tessel' && mode != 'tessel'){
-			//Salvo texture
+			//alert('Salvo texture');
 			this.saveTexture();
-		}
-		
-		
-		var preserveTimeline = false;
-		if(this.mode == 'notes' && mode == 'view3d'){
-			//Non rigenero timeline
-			preserveTimeline = true;
 		}
 		
 		if(mode){
@@ -585,9 +693,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		$('#scenario').off();
 		$('#grid').off();
-		$('.object').off();
-		$('.action').off();
-		$('#modeControls a').unbind('taphold');
+//		$('.object').off();
+//		$('.action').off();
 		
 		if(mode != 'view3d' && mode != 'notes'){
 			$('#grid').css({
@@ -623,7 +730,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				var gridCanvas = document.getElementById("bgCanvas");
 				var ctx = gridCanvas.getContext("2d");
 				
-				
+				//$('#grid').off();
 				$('#grid').on({
 				
 					'mousemove touchmove': function(e){
@@ -674,6 +781,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('#itemsControlsBox').show(0);
 				
+				//$('#grid').off();
 				$('#grid').on({
 					'click': function(e){
 						if(topoDog.selectedObject === false){
@@ -719,6 +827,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				var rotation = 0;
 				topoDog.theNewAction = false;
 				
+				//$('#grid').off();
 				$('#grid').on({
 				
 					'mousedown touchstart': function(e){
@@ -877,6 +986,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				var offset = parseInt($('.action').width()) / 2;
 				topoDog.movingAction = false;
 				
+				$('.action').off();
 				$('.action').on({
 					
 					'taphold':function(e){
@@ -953,6 +1063,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				var offset = parseInt($('.action').width()) / 2;
 				
+				$('.action').off();
 				$('.action').on({
 					'mousemove touchmove': function(e){
 						e.preventDefault();
@@ -1084,6 +1195,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('#editControls').show(0);
 				
+				$('.object').off();
 				$('.object').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1096,7 +1208,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 						//}
 					}
 				});
-			
+				
+				$('.action').off();
 				$('.action').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1111,7 +1224,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				
 				
-				$('.object, .action, .object *, .action *').on({
+				$('.object *, .action *').on({
 					'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
 						e.preventDefault();
 					}
@@ -1194,19 +1307,13 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				
 				
-				if(preserveTimeline === true){
-					scroll_timeline.refresh();
-					scroll_timeline.scrollToElement('#lastFrameFlag');
-					return false;
-				}
-				
-				
 			
 				var rotZ = 0;
 				var rotX = 0;
 				
 				$('#scenario').css('perspective', ((topoDog.h+topoDog.w)/2)*topoDog.tileSize);
-			
+				
+				//$('#scenario').off();
 				$('#scenario').on({
 				
 					'swipeleft': function(e){
@@ -1245,7 +1352,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				
 				
-				
+				$('.time').off();
 				$('.time').on({
 					
 					'taphold': function(e){
@@ -1309,7 +1416,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				});
 				
-				
+				$('.time .t-id').off();
 				$('.time .t-id').on({
 					'click touchstart': function(e){
 						e.preventDefault();
@@ -1341,6 +1448,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					
 				});
 				
+				$('.time .t-detail').off();
 				$('.time .t-detail').on({
 					'click touchstart': function(e){
 						e.preventDefault();
@@ -1377,106 +1485,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				
 				
-				$('.play').on({
-					'tap': function(e){
-						e.preventDefault();
-						playPresentation(true);
-					}
-				});
-				
-				$('.pause').on({
-					'tap': function(e){
-						e.preventDefault();
-						playPresentation(false);
-					}
-				});
-				
-				$('.fwd').on({
-					'tap': function(e){
-						e.preventDefault();
-						presentationFwd();
-					}
-				});
-				
-				$('.rew').on({
-					'tap': function(e){
-						e.preventDefault();
-						presentationRew();
-					}
-				});
-				
-				$('.stepFwd').on({
-					'tap': function(e){
-						e.preventDefault();
-						presentationStep();
-					}
-				});
-				
-				$('.stepRew').on({
-					'tap': function(e){
-						e.preventDefault();
-						presentationStep("rew");
-					}
-				});
-				
-				$('.gotoStart').on({
-					'tap': function(e){
-						e.preventDefault();
-						gotoStart();
-					}
-				});
-				
-				$('.gotoEnd').on({
-					'tap': function(e){
-						e.preventDefault();
-						gotoEnd();
-					}
-				});
-				
-				$('.makeSnapshot').on({
-					'tap': function(e){
-						e.preventDefault();
-						topoDog.snapShot();
-					}
-					
-				});
-				
-				$('.clearSnapshot').on({
-					'tap': function(e){
-						e.preventDefault();
-						topoDog.clearSnapShot();
-					}
-					
-				});
-				
-				
-				$('.showAllTimeline').on({
-					'tap': function(e){
-						e.preventDefault();
-						$('.time').attr('frame-hide', 'false');
-						scrollBars();
-					}
-					
-				});
-				
-				$('.hideFromTimeline').on({
-					'click tap': function(e){
-						e.preventDefault();
-						var beings = loql.select('beings');
-						
-						for(i=0;i<beings.length;i++){
-							
-							if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
-								$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
-							} else {
-								$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
-							}
-						}
-						scrollBars();
-					}
-					
-					
-				});
 				
 				
 				
@@ -1488,6 +1496,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			case 'notes':
 			
 				$('#noteControls').show(0);
+				$('.action').off();
 				$('.action').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1531,7 +1540,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			
 			case 'help':
 			
-				$('#helpBox').show();
+				$('#helpBox').show(0);
 				$('a.mode').off();
 				$('a.mode').on({
 					'taphold': function(){
