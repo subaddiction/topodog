@@ -619,13 +619,14 @@ topoDog = {
 			'click tap': function(e){
 				e.preventDefault();
 				var beings = loql.select('beings');
-				
-				for(i=0;i<beings.length;i++){
+				if(beings){
+					for(i=0;i<beings.length;i++){
 					
-					if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
-						$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
-					} else {
-						$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
+						if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
+							$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
+						} else {
+							$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
+						}
 					}
 				}
 				scrollBars();
@@ -667,17 +668,20 @@ topoDog = {
 		//this.loadItems(1,false);
 		this.loadItems(0,false);
 		this.loadActions(1,false);
-		//this.loadBeings();
+		this.loadBeings();
 		
 		this.timelineControls();
-		this.regenTimeline();
+		var actions = loql.select('action');
+		if(actions){
+			this.regenTimeline();
+		}
 		
 		this.startControls();
 		this.modeControls();
 		this.drawItems();
 		this.drawActions();
 		
-		this.loadBeings();
+		
 		
 		
 	},
@@ -1247,7 +1251,10 @@ topoDog = {
 				
 				
 				var actions = loql.select('action');
-				$('#timeline').width(($('.time').width() + 2) * (actions.length));
+				
+				if(actions){
+					$('#timeline').width(($('.time').width() + 2) * (actions.length));
+				}
 				$('#timelineBox').removeClass('ctrlH');
 				
 				
