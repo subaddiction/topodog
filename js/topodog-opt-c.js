@@ -1656,6 +1656,7 @@ topoDog = {
 				
 				topoDog.loadBeings();
 				topoDog.drawActions();
+				topoDog.regenTimeline();
 				
 				
 				$('#newDog').hide(0);
