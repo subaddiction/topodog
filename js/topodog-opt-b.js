@@ -432,6 +432,7 @@ topoDog = {
 			'tap': function(){
 				$('#newDog').hide(0);
 				$('#modeControlsBox, #scenario, #bottomControls').show(0);
+				scrollBars();
 			}
 		});
 		
