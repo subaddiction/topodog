@@ -670,10 +670,14 @@ topoDog = {
 		this.loadActions(1,false);
 		this.loadBeings();
 		
+		
+		$('#presentationControls').remove();
 		this.timelineControls();
 		var actions = loql.select('action');
 		if(actions){
 			this.regenTimeline();
+		} else {
+			$('.time').remove();
 		}
 		
 		this.startControls();
@@ -1888,7 +1892,7 @@ topoDog = {
 			localStorage.setItem(k, content[k]);
 		}
 		
-		//topoDogAssets();
+		
 		topoDogLauncher();
 		
 	},
@@ -1901,6 +1905,8 @@ topoDog = {
 		//Elimino tutti i beings e tutte le actions dalla DOM
 		$('.object').remove();
 		$('.action').remove();
+		
+		
 		
 		//Ricarico assets
 		topoDogAssets();
