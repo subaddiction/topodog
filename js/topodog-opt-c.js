@@ -818,6 +818,7 @@ topoDog = {
 			
 			case 'insertActions':
 				
+				/***
 				
 				$('#actionsControls').removeClass('ctrlH');
 				
@@ -978,7 +979,7 @@ topoDog = {
 				
 				});
 				
-				
+				***/
 			break;
 			
 			case 'moveActions':
