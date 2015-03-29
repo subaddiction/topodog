@@ -149,7 +149,7 @@ function presentationStep(direction){
 		}
 		nextFrame.children('.t-id').click();
 		
-		scroll_timeline.scrollToElement('#'+nextFrame.attr('id'));
+		scroll_timeline.scrollToElement('#'+nextFrame.attr('id'), 1000, 0, 0, IScroll.utils.ease.quadratic);
 	}
 }
 
@@ -161,7 +161,7 @@ function presentationRew(){
 	var firstFrameID = $('.time[frame-hide="false"]').first().attr('id');
 	$('#'+firstFrameID).children('.t-detail').click();
 	$('#'+firstFrameID).children('.t-id').click();
-	scroll_timeline.scrollToElement('#'+firstFrameID);
+	scroll_timeline.scrollToElement('#'+firstFrameID, 1000, 0, 0, IScroll.utils.ease.quadratic);
 }
 
 function presentationFwd(){
@@ -173,13 +173,13 @@ function presentationFwd(){
 	
 	//$('#'+lastFrameID).children('.t-detail').click();
 	$('#'+lastFrameID).children('.t-id').click();
-	scroll_timeline.scrollToElement('#'+lastFrameID);
+	scroll_timeline.scrollToElement('#'+lastFrameID, 1000, 0, 0, IScroll.utils.ease.quadratic);
 }
 
 function gotoStart(){
 	//var firstFrameID = $('#firstFrameFlag').parent().attr('id');
 	var firstFrameID = $('#flagStart').parent().attr('id');
-	scroll_timeline.scrollToElement('#'+firstFrameID);
+	scroll_timeline.scrollToElement('#'+firstFrameID, 1000, 0, 0, IScroll.utils.ease.quadratic);
 	$('#'+firstFrameID).children('.t-detail').click();
 	$('#'+firstFrameID).children('.t-id').click();
 }
@@ -187,7 +187,7 @@ function gotoStart(){
 function gotoEnd(){
 	//var lastFrameID = $('#lastFrameFlag').parent().attr('id');
 	var lastFrameID = $('#flagStop').parent().attr('id');
-	scroll_timeline.scrollToElement('#'+lastFrameID);
+	scroll_timeline.scrollToElement('#'+lastFrameID, 1000, 0, 0, IScroll.utils.ease.quadratic);
 	$('#'+lastFrameID).children('.t-id').click();
 }
 
@@ -265,32 +265,47 @@ function scrollBars(){
 	
 	scroll_newDog = false;
 	scroll_newDog = new IScroll('#newDog', {
-		scrollbars: true
+		scrollbars: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	
 	scroll_tesselsBox = new IScroll('#tesselsBox', {
 		scrollbars: true,
 		scrollY: false,
-		scrollX: true,	
+		scrollX: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	scroll_sizesBox = new IScroll('#sizesBox', {
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,	
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	scroll_actionsBox = new IScroll('#actionsBox', {
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,	
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	scroll_beingsBox = new IScroll('#beingsBox', {
 		scrollbars: true,
 		scrollY: false,
-		scrollX: true,	
+		scrollX: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	
@@ -299,13 +314,19 @@ function scrollBars(){
 		scrollbars: true,
 		scrollY: false,
 		scrollX: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 	scroll_timeline = false;
 	scroll_timeline = new IScroll('#timelineBox', {
 		scrollbars: true,
 		scrollY: false,
-		scrollX: true,	
+		scrollX: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
 	});
 	
 }

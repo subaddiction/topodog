@@ -410,6 +410,21 @@ padding:8px;
 box-shadow:0 0 4px #000000;
 font-size:11px;
 overflow:hidden;
+
+}
+
+#noteForm
+{
+padding:8px 1%;
+width:98%;
+}
+
+#noteForm textarea
+{
+width:66%;
+height:96px;
+float:left;
+color:#333333;
 }
 
 #noteShow > div.clearfix

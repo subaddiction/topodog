@@ -1297,6 +1297,7 @@ topoDog = {
 						
 						closeNote = true;
 						$('#action-'+actionID).prepend(noteShow);
+						//$('#timelineBox').prepend(noteShow);
 //////							$('#noteShow').on({
 //////								'mouseup touchend':function(e){
 //////									e.preventDefault();
@@ -1488,7 +1489,7 @@ topoDog = {
 				
 				
 				$('.hideFromTimeline').click();
-				presentationRew();
+				//presentationRew();
 				
 			break;
 			
@@ -1513,14 +1514,16 @@ topoDog = {
 						
 						var leftOffset = $(this).width()/2;
 						var topOffset = $(this).height()/2;
-						var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+						//var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+						var noteForm = '<div id="noteForm">';
 						noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
 						noteForm += '<a id="saveNote" href="javascript:;" data-id="'+actionID+'">';
 						noteForm += '<span class="glyphicon glyphicon-ok"></span>';
 						noteForm += '</a>';
 						noteForm += '</div>';
 						
-						$('#action-'+actionID).prepend(noteForm);
+						//$('#action-'+actionID).prepend(noteForm);
+						$('#noteControls').prepend(noteForm);
 						
 						$('#saveNote').on({
 							'click touchstart':function(){
