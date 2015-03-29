@@ -222,6 +222,7 @@ topoDog = {
 							//topoDog.hideBeing(id);
 							topoDog.deleteActionsById(1, id);
 							topoDog.regenTimeline();
+							scrollBars();
 						
 						}
 						
@@ -474,9 +475,8 @@ topoDog = {
 		$('a.mode').off();
 		$('a.mode').on({
 			'tap': function(){
-				//zoomReset();
+				//zoomReset(); //Stucks all in cordova app!!!
 				topoDog.modeSwitch($(this).attr('data-mode'));
-				//TEST
 				$('a.mode').css({
 					'background':'#000000',
 					'color':'#cccccc'
@@ -1657,6 +1657,7 @@ topoDog = {
 				$('#modeControlsBox, #scenario, #bottomControls').show(0);
 				$(this).hide(0);
 				$('#submitNewDogForm').show(0);
+				scrollBars();
 			}
 		});
 		
