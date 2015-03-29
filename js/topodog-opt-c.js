@@ -1263,7 +1263,7 @@ topoDog = {
 							closeNote = false;
 						} else {
 							$('#frame-'+$(this).attr('data-id')).children('.t-id').click();
-							scroll_timeline.scrollToElement('#frame-'+$(this).attr('data-id'));
+							scroll_timeline.scrollToElement('#frame-'+$(this).attr('data-id'), 1000, 0, 0, IScroll.utils.ease.quadratic);
 							closeNote = true;
 						}
 					},
@@ -1282,8 +1282,8 @@ topoDog = {
 							return;
 						}
 						
-						var leftOffset = $(this).width()/2;
-						var topOffset = $(this).height()/2;
+						var leftOffset = $(this).width()*-1;
+						var topOffset = $(this).height()*-1;
 						var noteShow = '<div id="noteShow" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
 						//noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
 						noteShow += '<div class="clearfix">';
