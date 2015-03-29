@@ -35,19 +35,8 @@ topoDog = { // Oggetto base con parametri fondamentali
 	sceneId: 'scenario',
 	tilesId: 'grid',
 	
-	//objectsId: '',
-	//actionsId: '',
-	//tesselClass: 'mapTile',
-	//tiles: Array(), //lista textures
-	//objects: Array(), //lista oggetti
-	//actions: Array(), // lista azioni
-	//tessels: {}, // texture disegnata
-	//beings: {}, // esseri umani e cani
-	
 	firstID: 0,
 	lastID: 1,
-	
-	//view3dStatus: false,
 	
 	loadTessels: function(){
 		$('#tessels').html('');
@@ -231,6 +220,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 							
 							//topoDog.hideBeing(id);
 							topoDog.deleteActionsById(1, id);
+							topoDog.regenTimeline();
 						
 						}
 						
@@ -498,6 +488,38 @@ topoDog = { // Oggetto base con parametri fondamentali
 		});
 	},
 	
+	timelineControls: function(){
+		var showhide = '';
+		showhide += '<div id="presentationControls">';
+		
+		showhide += '<div>';
+		showhide += '<a class="stepRew" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
+		showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
+		showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
+		showhide += '<a class="stepFwd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
+		showhide += '</div>';
+		
+		showhide += '<div>';
+		showhide += '<a class="rew" href="javascript:;"><span class="glyphicon glyphicon-fast-backward"></span></a>';
+		showhide += '<a class="gotoStart" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
+		showhide += '<a class="gotoEnd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
+		showhide += '<a class="fwd" href="javascript:;"><span class="glyphicon glyphicon-fast-forward"></span></a>';
+		
+		showhide += '</div>';
+		
+		showhide += '<div>';
+		showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
+		showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
+		
+		showhide += '<a class="makeSnapshot" href="javascript:;"><span class="glyphicon glyphicon-camera"></span></a>';
+		showhide += '<a class="clearSnapshot" href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a>';
+		showhide += '</div>';
+		
+		showhide += '</div>';
+		
+		$('#timelineBox').append(showhide);
+	},
+	
 	init: function(){
 		var row = 0;
 		var col = 0;
@@ -529,6 +551,9 @@ topoDog = { // Oggetto base con parametri fondamentali
 		this.loadItems(0,false);
 		this.loadActions(1,false);
 		//this.loadBeings();
+		
+		this.timelineControls();
+		this.regenTimeline();
 		
 		this.startControls();
 		this.modeControls();
@@ -583,202 +608,381 @@ topoDog = { // Oggetto base con parametri fondamentali
 		$('#timelineBox').hide(0);
 		$('#helpBox').hide(0);
 		
+	
 		
-		$(function(){
+		switch(topoDog.mode){
 			
-			switch(topoDog.mode){
+			case 'tessel':
 				
-				case 'tessel':
-					
-					$('#tesselControls').show(0);
-					
-					
-					var theTessel = loql.select('tessels', topoDog.selectedTessel.toString());
-					var paintColor = theTessel.color;
-					
-					var gridCanvas = document.getElementById("bgCanvas");
-    					var ctx = gridCanvas.getContext("2d");
-					
-					
-					$('#grid').on({
-					
-						'mousemove touchmove': function(e){
+				$('#tesselControls').show(0);
+				
+				
+				var theTessel = loql.select('tessels', topoDog.selectedTessel.toString());
+				var paintColor = theTessel.color;
+				
+				var gridCanvas = document.getElementById("bgCanvas");
+				var ctx = gridCanvas.getContext("2d");
+				
+				
+				$('#grid').on({
+				
+					'mousemove touchmove': function(e){
+						
+						e.preventDefault();
+						
+						
+						var tesselSize = topoDog.originalTileSize * topoDog.paintSize;
+						var tesselZoom = topoDog.tileSize * topoDog.paintSize;
+						
+						if(e.originalEvent.touches){
+							var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 							
-							e.preventDefault();
-							
-							
-							/*** NOGRID ***/
-							
-							var tesselSize = topoDog.originalTileSize * topoDog.paintSize;
-							var tesselZoom = topoDog.tileSize * topoDog.paintSize;
-							
-							if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-								
-//								var X = Math.floor((touch.pageX - ($(this).offset().left)) / tesselZoom);
-//								var Y = Math.floor((touch.pageY - ($(this).offset().top)) / tesselZoom);
 
-								var X = touch.pageX - ($(this).offset().left) - (tesselSize/2);
-								var Y = touch.pageY - ($(this).offset().top) - (tesselSize/2);
+							var X = touch.pageX - ($(this).offset().left) - (tesselSize/2);
+							var Y = touch.pageY - ($(this).offset().top) - (tesselSize/2);
+							
+							ctx.fillStyle = paintColor;
+							ctx.fillRect(X, Y, tesselSize, tesselSize);
+							
+						} else {
+							var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+							if(button==1){
+							
+							var touch = e.originalEvent;
+							var X = touch.clientX - ($(this).offset().left) - (tesselSize/2);
+							var Y = touch.clientY - ($(this).offset().top) - (tesselSize/2);
+							
+							
+							
+							
+							ctx.fillStyle = paintColor;
+							ctx.fillRect(X, Y, tesselSize, tesselSize);
 								
-								ctx.fillStyle = paintColor;
-        							//ctx.fillRect(X*tesselSize, Y*tesselSize, tesselSize, tesselSize);
-								ctx.fillRect(X, Y, tesselSize, tesselSize);
-								
-							} else {
-								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-								if(button==1){
-								
-								var touch = e.originalEvent;
-//								var X = Math.floor((touch.clientX - ($(this).offset().left)) / tesselZoom);
-//								var Y = Math.floor((touch.clientY - ($(this).offset().top)) / tesselZoom);
-								var X = touch.clientX - ($(this).offset().left) - (tesselSize/2);
-								var Y = touch.clientY - ($(this).offset().top) - (tesselSize/2);
-								
-								
-								
-								
-								ctx.fillStyle = paintColor;
-								//ctx.fillRect(X*tesselSize, Y*tesselSize, tesselSize, tesselSize);
-								ctx.fillRect(X, Y, tesselSize, tesselSize);
-									
-								}
 							}
-							
-							/***
-							if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-								
-								var X = Math.floor((touch.pageX - ($(this).offset().left)) / topoDog.tileSize);
-								var Y = Math.floor((touch.pageY - ($(this).offset().top)) / topoDog.tileSize);
-								
-								ctx.fillStyle = paintColor;
-        							ctx.fillRect(X*topoDog.originalTileSize, Y*topoDog.originalTileSize, topoDog.originalTileSize, topoDog.originalTileSize);
-								
-							} else {
-								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-								if(button==1){
-									var touch = e.originalEvent;
-									var X = Math.floor((touch.clientX - ($(this).offset().left)) / topoDog.tileSize);
-									var Y = Math.floor((touch.clientY - ($(this).offset().top)) / topoDog.tileSize);
-									
-									
-									
-									
-									ctx.fillStyle = paintColor;
-									ctx.fillRect(X*topoDog.originalTileSize, Y*topoDog.originalTileSize, topoDog.originalTileSize, topoDog.originalTileSize);
-									
-									
-								}
-							}
-							
-							***/
-							
-							
-							
-							/*** /NOGRID ***/
-							
-							
 						}
-					});
-					
-					
-					
-				break;
+						
+						
+						
+					}
+				});
 				
-				case 'insertItems':
-					
-					$('#itemsControlsBox').show(0);
-					
-					$('#grid').on({
-						'click': function(e){
-							if(topoDog.selectedObject === false){
-								return;
-							}
-							if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-							
-								var X = touch.pageX - ($(this).offset().left);
-								var Y = touch.pageY - ($(this).offset().top);
+				
+				
+			break;
+			
+			case 'insertItems':
+				
+				$('#itemsControlsBox').show(0);
+				
+				$('#grid').on({
+					'click': function(e){
+						if(topoDog.selectedObject === false){
+							return;
+						}
+						if(e.originalEvent.touches){
+							var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+						
+							var X = touch.pageX - ($(this).offset().left);
+							var Y = touch.pageY - ($(this).offset().top);
+						
+							topoDog.newItem(topoDog.selectedObject,X,Y,false);
+						
+						} else {
+							var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
+							if(button==1){
+								var touch = e.originalEvent;
+								var X = touch.clientX - ($(this).offset().left);
+								var Y = touch.clientY - ($(this).offset().top);
 							
 								topoDog.newItem(topoDog.selectedObject,X,Y,false);
+							}
+						}
+					
+					
+					}
+				});
+				
+			break;
+			
+			case 'insertActions':
+				
+				
+				$('#actionsControls').show(0);
+				
+				
+				var X = 0;
+				var Y = 0;
+				var startX = 0;
+				var startY = 0;
+				var endX = 0;
+				var endY = 0;
+				var rotation = 0;
+				topoDog.theNewAction = false;
+				
+				$('#grid').on({
+				
+					'mousedown touchstart': function(e){
+				
+						e.preventDefault();
+						
+						if(topoDog.activeBeing === false){
+							return;
+						}
+						
+						if(e.originalEvent.touches){
+							var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+							X = touch.pageX - ($(this).offset().left);
+							Y = touch.pageY - ($(this).offset().top);
 							
+							
+							startX = touch.pageX;
+							startY = touch.pageY;
+						} else {
+							var touch = e.originalEvent;
+							X = touch.clientX - ($(this).offset().left);
+							Y = touch.clientY - ($(this).offset().top);
+							
+							
+							startX = touch.clientX;
+							startY = touch.clientY;
+						}
+						
+
+						if(topoDog.theNewAction === false){
+							
+							var theAction = loql.select('actions', topoDog.selectedAction.toString());
+							topoDog.theNewAction = topoDog.newAction(topoDog.selectedAction,topoDog.activeBeing.id,X,Y,rotation,false);
+							
+							
+						}
+					},
+				
+				
+				
+					'mousemove touchmove' : function(e){
+						
+							e.preventDefault();
+							//console.log(e.target);
+							
+							if(e.originalEvent.touches){
+								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								endX = touch.pageX;
+								endY = touch.pageY;
 							} else {
-								var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-								if(button==1){
-									var touch = e.originalEvent;
-									var X = touch.clientX - ($(this).offset().left);
-									var Y = touch.clientY - ($(this).offset().top);
-								
-									topoDog.newItem(topoDog.selectedObject,X,Y,false);
-								}
+								var touch = e.originalEvent;
+								endX = touch.pageX;
+								endY = touch.pageY;
 							}
 						
+							if(topoDog.theNewAction != false){
+							
+								var ipotenusa;
+								var radRot;
+								
+								var dX = endX-startX;
+								var dY = endY-startY;
+							
+							
+								ipotenusa = Math.sqrt((dY*dY)+(dX*dX));
+								radRot = (dX * Math.sin(90)) / ipotenusa;
+
+								rotation = Math.asin(radRot);
+								rotation = rotation * (180/Math.PI);
+								
+								rotation = Math.floor(rotation);
+							
+								if((dX > 0) && (dY > 0)){
+									rotation = 180 - rotation;
+								}
+								
+								if((dX > 0) && (dY < 0)){
+									//rotation = rotation;
+								}
+							
+								if((dX < 0) && (dY < 0)){
+									//rotation = rotation;
+								}
+								
+							
+								if((dX < 0) && (dY > 0)){
+									rotation = 180 - rotation;
+								} 
+								
+								
+								var tolerance = 10;
+								if(dY == 0 || (dY < tolerance && dY > -tolerance)){
+									if(dX >= 0){
+										rotation = 90;
+									} else if(dX <= 0) {
+										rotation = -90
+									} else {
+										rotation = 0;
+									}
+								}
+							
+								if(dX == 0 || (dX < tolerance && dX > -tolerance)){
+									if(dY >= 0){
+										rotation = 180;
+									} else if(dY <= 0){
+										rotation = 0;
+									} else {
+										rotation = 0;
+									}
+								}
+								
+							
+								$('#action-'+topoDog.theNewAction).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+								$('#action-'+topoDog.theNewAction).children('svg').attr('data-rot', rotation);
+								//$('#action-'+topoDog.theNewAction).css('transform', 'rotate('+rotation+'deg)');
 						
-						}
-					});
+								
+							}
+						
 					
-				break;
+					},
+					
 				
-				case 'insertActions':
-					
-					
-					$('#actionsControls').show(0);
-					
-					
-					var X = 0;
-					var Y = 0;
-					var startX = 0;
-					var startY = 0;
-					var endX = 0;
-					var endY = 0;
-					var rotation = 0;
-					topoDog.theNewAction = false;
-					
-					$('#grid').on({
-					
-						'mousedown touchstart': function(e){
-					
+					'mouseup touchend' : function(e){
 							e.preventDefault();
 							
 							if(topoDog.activeBeing === false){
 								return;
 							}
 							
-							if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-								X = touch.pageX - ($(this).offset().left);
-								Y = touch.pageY - ($(this).offset().top);
-								
-								
-								startX = touch.pageX;
-								startY = touch.pageY;
-							} else {
-								var touch = e.originalEvent;
-								X = touch.clientX - ($(this).offset().left);
-								Y = touch.clientY - ($(this).offset().top);
-								
-								
-								startX = touch.clientX;
-								startY = touch.clientY;
+							var confirmAction = {
+								'aid':topoDog.selectedAction,
+								'bid':topoDog.activeBeing.id,
+								'x':X,
+								'y':Y,
+								'r':rotation,
+								't':topoDog.timestamp()
 							}
+							loql.set('action', topoDog.theNewAction, confirmAction);
+							topoDog.theNewAction = false;
 							
 
-							if(topoDog.theNewAction === false){
-								
-								var theAction = loql.select('actions', topoDog.selectedAction.toString());
-								topoDog.theNewAction = topoDog.newAction(topoDog.selectedAction,topoDog.activeBeing.id,X,Y,rotation,false);
-								
-								
+					},
+				
+				});
+				
+				
+			break;
+			
+			case 'moveActions':
+				
+				$('#moveControls').show(0);
+				
+				var X = 0;
+				var Y = 0;
+				var offset = parseInt($('.action').width()) / 2;
+				topoDog.movingAction = false;
+				
+				$('.action').on({
+					
+					'taphold':function(e){
+						
+						e.preventDefault();
+						
+						X = parseInt($(this).css('margin-left')) - offset;
+						Y = parseInt($(this).css('margin-top')) - offset;
+					
+						//console.log(X);
+						//console.log(Y);
+						
+						$(this).css('background', '#cccccc');
+						$(this).css('z-index', '9999');
+					
+						topoDog.moveAction = true;
+						
+						
+						$(this).on({
+					
+						'mousemove touchmove': function(e){
+						
+							e.preventDefault();
+						
+							if(e.originalEvent.touches){
+								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								X = touch.pageX - offset;
+								Y = touch.pageY - offset;
+							} else {
+								var touch = e.originalEvent;
+								X = touch.pageX - offset;
+								Y = touch.pageY - offset;
+							}
+						
+							if(topoDog.moveAction != false){
+						
+								$(this).css('margin-left', X+'px');
+								$(this).css('margin-top', Y+'px');
+						
 							}
 						},
 					
-					
-					
-						'mousemove touchmove' : function(e){
+						'mouseup touchend': function(e){
+				
+							e.preventDefault();
+						
+							topoDog.moveAction = false;
+							$(this).css('background', '');
+							$(this).css('z-index', '');
 							
+							
+							var record = loql.select('action', $(this).attr('data-id'));
+							//console.log(record);
+							record.x = X + offset;
+							record.y = Y + offset;
+							
+							loql.set('action', $(this).attr('data-id'), record);
+							
+						},
+						
+						})
+					
+					}
+					
+					
+					
+					
+				});
+			break;
+			
+			case 'rotateActions':
+				
+				$('#rotateControls').show(0);
+				
+				var offset = parseInt($('.action').width()) / 2;
+				
+				$('.action').on({
+					'mousemove touchmove': function(e){
+						e.preventDefault();
+					},
+					
+					'taphold':function(e){
+						
+						e.preventDefault();
+						
+						var startX = 0;
+						var startY = 0;
+						var endX = 0;
+						var endY = 0;
+						var rotation = 0;
+						var actionId = $(this).attr('data-id');
+						topoDog.rotatingAction = true;
+						
+						
+						startX = parseInt($(this).css('margin-left')) + offset;
+						startY = parseInt($(this).css('margin-top')) + offset;
+						
+						
+						$(this).css('background', '#cccccc');
+						$(this).css('z-index', '9999');
+						
+						$('#grid').on({
+							
+							'mousemove touchmove':function(e){
 								e.preventDefault();
-								//console.log(e.target);
+								
 								
 								if(e.originalEvent.touches){
 									var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -789,42 +993,41 @@ topoDog = { // Oggetto base con parametri fondamentali
 									endX = touch.pageX;
 									endY = touch.pageY;
 								}
-							
-								if(topoDog.theNewAction != false){
-								
+						
+								if(topoDog.rotatingAction != false){
 									var ipotenusa;
 									var radRot;
-									
+								
 									var dX = endX-startX;
 									var dY = endY-startY;
-								
-								
+							
+							
 									ipotenusa = Math.sqrt((dY*dY)+(dX*dX));
 									radRot = (dX * Math.sin(90)) / ipotenusa;
 
 									rotation = Math.asin(radRot);
 									rotation = rotation * (180/Math.PI);
-									
-									rotation = Math.floor(rotation);
 								
+									rotation = Math.floor(rotation);
+							
 									if((dX > 0) && (dY > 0)){
 										rotation = 180 - rotation;
 									}
-									
+								
 									if((dX > 0) && (dY < 0)){
 										//rotation = rotation;
 									}
-								
+							
 									if((dX < 0) && (dY < 0)){
 										//rotation = rotation;
 									}
-									
 								
+							
 									if((dX < 0) && (dY > 0)){
 										rotation = 180 - rotation;
 									} 
-									
-									
+								
+								
 									var tolerance = 10;
 									if(dY == 0 || (dY < tolerance && dY > -tolerance)){
 										if(dX >= 0){
@@ -835,7 +1038,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 											rotation = 0;
 										}
 									}
-								
+							
 									if(dX == 0 || (dX < tolerance && dX > -tolerance)){
 										if(dY >= 0){
 											rotation = 180;
@@ -845,809 +1048,511 @@ topoDog = { // Oggetto base con parametri fondamentali
 											rotation = 0;
 										}
 									}
-									
 								
-									$('#action-'+topoDog.theNewAction).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
-									$('#action-'+topoDog.theNewAction).children('svg').attr('data-rot', rotation);
-									//$('#action-'+topoDog.theNewAction).css('transform', 'rotate('+rotation+'deg)');
 							
-									
-								}
-							
-						
-						},
-						
-					
-						'mouseup touchend' : function(e){
-								e.preventDefault();
-								
-								if(topoDog.activeBeing === false){
-									return;
+									$('#action-'+actionId).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+									$('#action-'+actionId).children('svg').attr('data-rot', rotation);
 								}
 								
-								var confirmAction = {
-									'aid':topoDog.selectedAction,
-									'bid':topoDog.activeBeing.id,
-									'x':X,
-									'y':Y,
-									'r':rotation,
-									't':topoDog.timestamp()
-								}
-								loql.set('action', topoDog.theNewAction, confirmAction);
-								topoDog.theNewAction = false;
-								
-
-						},
-					
-					});
-					
-					
-				break;
-				
-				case 'moveActions':
-					
-					$('#moveControls').show(0);
-					
-					var X = 0;
-					var Y = 0;
-					var offset = parseInt($('.action').width()) / 2;
-					topoDog.movingAction = false;
-					
-					$('.action').on({
-						
-						'taphold':function(e){
-							
-							e.preventDefault();
-							
-							X = parseInt($(this).css('margin-left')) - offset;
-							Y = parseInt($(this).css('margin-top')) - offset;
-						
-							//console.log(X);
-							//console.log(Y);
-							
-							$(this).css('background', '#cccccc');
-							$(this).css('z-index', '9999');
-						
-							topoDog.moveAction = true;
-							
-							
-							$(this).on({
-						
-							'mousemove touchmove': function(e){
-							
-								e.preventDefault();
-							
-								if(e.originalEvent.touches){
-									var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-									X = touch.pageX - offset;
-									Y = touch.pageY - offset;
-								} else {
-									var touch = e.originalEvent;
-									X = touch.pageX - offset;
-									Y = touch.pageY - offset;
-								}
-							
-								if(topoDog.moveAction != false){
-							
-									$(this).css('margin-left', X+'px');
-									$(this).css('margin-top', Y+'px');
-							
-								}
 							},
-						
-							'mouseup touchend': function(e){
-					
-								e.preventDefault();
 							
-								topoDog.moveAction = false;
-								$(this).css('background', '');
-								$(this).css('z-index', '');
+							'mouseup touchend':function(e){
+								e.preventDefault();
 								
+								topoDog.rotatingAction = false;
 								
-								var record = loql.select('action', $(this).attr('data-id'));
+								var record = loql.select('action', actionId);
 								//console.log(record);
-								record.x = X + offset;
-								record.y = Y + offset;
-								
-								loql.set('action', $(this).attr('data-id'), record);
-								
-							},
+								record.r = rotation;
 							
-							})
-						
-						}
-						
-						
-						
-						
-					});
-				break;
-				
-				case 'rotateActions':
-					
-					$('#rotateControls').show(0);
-					
-					var offset = parseInt($('.action').width()) / 2;
-					
-					$('.action').on({
-						'mousemove touchmove': function(e){
-							e.preventDefault();
-						},
-						
-						'taphold':function(e){
-							
-							e.preventDefault();
-							
-							//console.log(e);
-							
-							/***
-							if(e.originalEvent.touches){
-								var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+								loql.set('action', actionId, record);
 								
-								startX = touch.pageX;
-								startY = touch.pageY;
-							} else {
-								var touch = e.originalEvent;
+								$('#action-'+actionId).css('background', '');
+								$('#action-'+actionId).css('z-index', '');
 								
-								startX = touch.clientX;
-								startY = touch.clientY;
+								topoDog.modeSwitch('rotateActions');
 							}
-							***/
-							
-							var startX = 0;
-							var startY = 0;
-							var endX = 0;
-							var endY = 0;
-							var rotation = 0;
-							var actionId = $(this).attr('data-id');
-							topoDog.rotatingAction = true;
-							
-							
-							startX = parseInt($(this).css('margin-left')) + offset;
-							startY = parseInt($(this).css('margin-top')) + offset;
-							
-							
-							$(this).css('background', '#cccccc');
-							$(this).css('z-index', '9999');
-							
-							$('#grid').on({
-								/***
-								'mousedown touchstart':function(e){
-									e.preventDefault();
-								},
-								***/
-								
-								'mousemove touchmove':function(e){
-									e.preventDefault();
-									
-									
-									if(e.originalEvent.touches){
-										var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-										endX = touch.pageX;
-										endY = touch.pageY;
-									} else {
-										var touch = e.originalEvent;
-										endX = touch.pageX;
-										endY = touch.pageY;
-									}
-							
-									if(topoDog.rotatingAction != false){
-										var ipotenusa;
-										var radRot;
-									
-										var dX = endX-startX;
-										var dY = endY-startY;
-								
-								
-										ipotenusa = Math.sqrt((dY*dY)+(dX*dX));
-										radRot = (dX * Math.sin(90)) / ipotenusa;
-
-										rotation = Math.asin(radRot);
-										rotation = rotation * (180/Math.PI);
-									
-										rotation = Math.floor(rotation);
-								
-										if((dX > 0) && (dY > 0)){
-											rotation = 180 - rotation;
-										}
-									
-										if((dX > 0) && (dY < 0)){
-											//rotation = rotation;
-										}
-								
-										if((dX < 0) && (dY < 0)){
-											//rotation = rotation;
-										}
-									
-								
-										if((dX < 0) && (dY > 0)){
-											rotation = 180 - rotation;
-										} 
-									
-									
-										var tolerance = 10;
-										if(dY == 0 || (dY < tolerance && dY > -tolerance)){
-											if(dX >= 0){
-												rotation = 90;
-											} else if(dX <= 0) {
-												rotation = -90
-											} else {
-												rotation = 0;
-											}
-										}
-								
-										if(dX == 0 || (dX < tolerance && dX > -tolerance)){
-											if(dY >= 0){
-												rotation = 180;
-											} else if(dY <= 0){
-												rotation = 0;
-											} else {
-												rotation = 0;
-											}
-										}
-									
-								
-										$('#action-'+actionId).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
-										$('#action-'+actionId).children('svg').attr('data-rot', rotation);
-									}
-									
-								},
-								
-								'mouseup touchend':function(e){
-									e.preventDefault();
-									
-									topoDog.rotatingAction = false;
-									
-									var record = loql.select('action', actionId);
-									//console.log(record);
-									record.r = rotation;
-								
-									loql.set('action', actionId, record);
-									
-									$('#action-'+actionId).css('background', '');
-									$('#action-'+actionId).css('z-index', '');
-									
-									topoDog.modeSwitch('rotateActions');
-								}
-							});
-							
-						}
-					});
+						});
 						
+					}
+				});
 					
-				break;
 				
-				case 'editActions':
-					
-					$('#editControls').show(0);
-					
-					$('.object').on({
-						'taphold': function(e){
-							e.preventDefault();
-							//alert('muovi,ruota,elimina');
-							var objectID = $(this).attr('data-id');
-							//if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
-								
-								loql.del('object', objectID);
-								$(this).remove();
-							//}
-						}
-					});
+			break;
+			
+			case 'editActions':
 				
-					$('.action').on({
-						'taphold': function(e){
-							e.preventDefault();
-							//alert('muovi,ruota,elimina');
-							var actionID = $(this).attr('data-id');
-							//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
-								
-								loql.del('action', actionID);
-								$(this).remove();
-							//}
-						}
-					});
-					
-					
-					$('.object, .action, .object *, .action *').on({
-						'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
-							e.preventDefault();
-						}
-					});
-					
-				break;
+				$('#editControls').show(0);
 				
-				case 'manageData':
-					$('#dataControls').show(0);
-					$('#exportData').hide(0);
-					$('#export').show(0);
-				
-				break;
-				
-				case 'view3d':
-					
-					
-					$('#timelineBox').show(0);
-					
-					var closeNote = false;
-					$('.action').on({
+				$('.object').on({
+					'taphold': function(e){
+						e.preventDefault();
 						
-						'tap':function(){
-							//console.log($(this).attr('data-id'));
-							if(closeNote == true){
-								$('#noteShow, #noteForm').remove();
-								$('.action').attr('data-note', false);
-								closeNote = false;
-							} else {
-								$('#frame-'+$(this).attr('data-id')).children('.t-id').click();
-								scroll_timeline.scrollToElement('#frame-'+$(this).attr('data-id'));
-								closeNote = true;
-							}
-						},
-						
-						'taphold': function(e){
-							e.preventDefault();
-							$('#noteShow').remove();
+						var objectID = $(this).attr('data-id');
+						//if(confirm('Vuoi eliminare questo oggetto? [id:'+objectID+']')){
+							
+							loql.del('object', objectID);
+							$(this).remove();
+						//}
+					}
+				});
+			
+				$('.action').on({
+					'taphold': function(e){
+						e.preventDefault();
+						//alert('muovi,ruota,elimina');
+						var actionID = $(this).attr('data-id');
+						//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
+							
+							loql.del('action', actionID);
+							$(this).remove();
+						//}
+					}
+				});
+				
+				
+				$('.object, .action, .object *, .action *').on({
+					'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
+						e.preventDefault();
+					}
+				});
+				
+			break;
+			
+			case 'manageData':
+				$('#dataControls').show(0);
+				$('#exportData').hide(0);
+				$('#export').show(0);
+			
+			break;
+			
+			case 'view3d':
+				
+				
+				var actions = loql.select('action');
+				$('#timeline').width(($('.time').width() + 2) * (actions.length));
+				$('#timelineBox').show(0);
+				
+				
+				
+				
+				var closeNote = false;
+				$('.action').off();
+				$('.action').on({
+					
+					'tap':function(){
+						//console.log($(this).attr('data-id'));
+						if(closeNote == true){
+							$('#noteShow, #noteForm').remove();
 							$('.action').attr('data-note', false);
-							$(this).attr('data-note', 'true');
-							//alert('muovi,ruota,elimina');
-							var actionID = $(this).attr('data-id');
-							var noteAction = loql.select('action', actionID);
-							if(noteAction.n){
-								var currentNote = noteAction.n;
-							} else {
-								return;
-							}
-							
-							var leftOffset = $(this).width()/2;
-							var topOffset = $(this).height()/2;
-							var noteShow = '<div id="noteShow" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
-							//noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
-							noteShow += '<div class="clearfix">';
-							noteShow += currentNote;
-							noteShow += '</div>';
-							noteShow += '<a id="closeNote" href="javascript:;">';
-							noteShow += '<span class="glyphicon glyphicon-remove"></span>';
-							noteShow += '</a>';
-							noteShow += '</div>';
-							
-							
+							closeNote = false;
+						} else {
+							$('#frame-'+$(this).attr('data-id')).children('.t-id').click();
+							scroll_timeline.scrollToElement('#frame-'+$(this).attr('data-id'));
 							closeNote = true;
-							$('#action-'+actionID).prepend(noteShow);
+						}
+					},
+					
+					'taphold': function(e){
+						e.preventDefault();
+						$('#noteShow').remove();
+						$('.action').attr('data-note', false);
+						$(this).attr('data-note', 'true');
+						//alert('muovi,ruota,elimina');
+						var actionID = $(this).attr('data-id');
+						var noteAction = loql.select('action', actionID);
+						if(noteAction.n){
+							var currentNote = noteAction.n;
+						} else {
+							return;
+						}
+						
+						var leftOffset = $(this).width()/2;
+						var topOffset = $(this).height()/2;
+						var noteShow = '<div id="noteShow" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+						//noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
+						noteShow += '<div class="clearfix">';
+						noteShow += currentNote;
+						noteShow += '</div>';
+						noteShow += '<a id="closeNote" href="javascript:;">';
+						noteShow += '<span class="glyphicon glyphicon-remove"></span>';
+						noteShow += '</a>';
+						noteShow += '</div>';
+						
+						
+						closeNote = true;
+						$('#action-'+actionID).prepend(noteShow);
 //////							$('#noteShow').on({
 //////								'mouseup touchend':function(e){
 //////									e.preventDefault();
 //////									return false;
 //////								}
 //////							});
-							
 						
-						}
-					});
 					
-					
-					if(preserveTimeline === true){
-						scroll_timeline.refresh();
-						scroll_timeline.scrollToElement('#lastFrameFlag');
-						return false;
 					}
-					
-					$('#timeline > .time').remove();
+				});
 				
-					var rotZ = 0;
-					var rotX = 0;
-					
-					$('#scenario').css('perspective', ((topoDog.h+topoDog.w)/2)*topoDog.tileSize);
 				
-					$('#scenario').on({
-					
-						'swipeleft': function(e){
-							rotZ = rotZ-15;
-							$('#grid').css({
-								'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
-							});
-						},
-						
-						
-						
-						'swiperight': function(e){
-							rotZ = rotZ+15;
-							$('#grid').css({
-								'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
-							});
-						},
-						
-						'swipeup': function(e){
-							rotX = rotX+15;
-							$('#grid').css({
-								'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
-							});
-						},
-						
-						'swipedown': function(e){
-							rotX = rotX-15;
-							$('#grid').css({
-								'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
-							});
-						}
-					
-					});
+				if(preserveTimeline === true){
+					scroll_timeline.refresh();
+					scroll_timeline.scrollToElement('#lastFrameFlag');
+					return false;
+				}
+				
+				
+			
+				var rotZ = 0;
+				var rotX = 0;
+				
+				$('#scenario').css('perspective', ((topoDog.h+topoDog.w)/2)*topoDog.tileSize);
+			
+				$('#scenario').on({
+				
+					'swipeleft': function(e){
+						rotZ = rotZ-15;
+						$('#grid').css({
+							'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
+						});
+					},
 					
 					
-					// [RI]Costruisco la timeline
-					var actions = loql.select('action');
 					
-					if(actions.length <= 1){
-						return;
+					'swiperight': function(e){
+						rotZ = rotZ+15;
+						$('#grid').css({
+							'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
+						});
+					},
+					
+					'swipeup': function(e){
+						rotX = rotX+15;
+						$('#grid').css({
+							'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
+						});
+					},
+					
+					'swipedown': function(e){
+						rotX = rotX-15;
+						$('#grid').css({
+							'transform':'rotate3d(1, 0, 0, '+rotX+'deg) rotate('+rotZ+'deg)',
+						});
 					}
-					for(i=0;i<actions.length;i++){
-						
-						var action = loql.select('action', actions[i]);
-						var being = loql.select('beings', action.bid);
-						
-						if(!being){
-							continue;
-						}
-						
-						//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
-						
-						var date = new Date(action.t);
-						var humanDate = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-						var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-						var tag = '';
-						
-						tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
-						tag += '<div class="t-id" style="background:'+being.color+';">';
-						tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
-						tag += '<div style="background:'+being.color+';">'+actions[i]+'</div>';
-						tag += '</div>';
-						tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
-						tag += '</div>'
-						$('#timeline').append(tag);
+				
+				});
+				
+				
+				
+				
+				
+				
+				$('.time').on({
 					
+					'taphold': function(e){
+						e.preventDefault();
+						//console.log('start/stop here');
+						$('#stopHere').off();
+						$('#flagDialog').remove();
+						
+						
+						var flagDialog = '';
+						flagDialog += '<div id="flagDialog">';
+						flagDialog += '<a href="javascript:;" id="startHere">';
+						flagDialog += '<span class="glyphicon glyphicon-step-forward"></span>';
+						flagDialog += '</a>';
+						flagDialog += '<a href="javascript:;" id="stopHere">';
+						flagDialog += '<span class="glyphicon glyphicon-step-backward"></span>';
+						flagDialog += '</a>';
+						flagDialog += '<a href="javascript:;" id="cancelStop">';
+						flagDialog += '<span class="glyphicon glyphicon-remove"></span>';
+						flagDialog += '</a>';
+						flagDialog += '</div>';
+						$(this).prepend(flagDialog);
+						
+						$('#startHere').on({
+							'tap': function(e){
+								e.preventDefault();
+								$('#flagStart').remove();
+								var flagStart = '';
+								flagStart += '<span id="flagStart">';
+								flagStart += '<span class="glyphicon glyphicon-step-forward"></span>';
+								flagStart += '</span>';
+								//$(this).parent().parent().addClass('stop');
+								$(this).parent().parent().prepend(flagStart);
+								$(this).parent().remove();
+							}
+						
+						});
+						
+						$('#stopHere').on({
+							'tap': function(e){
+								e.preventDefault();
+								$('#flagStop').remove();
+								var flagStop = '';
+								flagStop += '<span id="flagStop">';
+								flagStop += '<span class="glyphicon glyphicon-step-backward"></span>';
+								flagStop += '</span>';
+								//$(this).parent().parent().addClass('stop');
+								$(this).parent().parent().prepend(flagStop);
+								$(this).parent().remove();
+							}
+						
+						});
+						
+						$('#cancelStop').on({
+							'tap': function(e){
+									e.preventDefault();
+									$('#flagDialog').remove();
+								}
+						});
 					}
-					
-					//$('#timelineBox .iScrollLoneScrollbar').remove();
-					
-					$('#timeline').width(($('.time').width() + 2) * (actions.length));
-					
-					$('.time').css({
-						'float':'left',
-					});
-					
-					var showhide = '';
-					showhide += '<div id="presentationControls">';
-					
-					showhide += '<div>';
-					showhide += '<a class="stepRew" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
-					showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
-					showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
-					showhide += '<a class="stepFwd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
-					showhide += '</div>';
-					
-					showhide += '<div>';
-					showhide += '<a class="rew" href="javascript:;"><span class="glyphicon glyphicon-fast-backward"></span></a>';
-					showhide += '<a class="gotoStart" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
-					showhide += '<a class="gotoEnd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
-					showhide += '<a class="fwd" href="javascript:;"><span class="glyphicon glyphicon-fast-forward"></span></a>';
-					
-					showhide += '</div>';
-					
-					showhide += '<div>';
-					showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
-					showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
-					
-					showhide += '<a class="makeSnapshot" href="javascript:;"><span class="glyphicon glyphicon-camera"></span></a>';
-					showhide += '<a class="clearSnapshot" href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a>';
-					showhide += '</div>';
-					
-					showhide += '</div>';
-					
-					$('#timelineBox').append(showhide);
-					
-					
-					
-					$('.time').on({
+				
+				});
+				
+				
+				$('.time .t-id').on({
+					'click touchstart': function(e){
+						e.preventDefault();
+						topoDog.lastID = parseInt($(this).parent().attr('data-id'));
 						
-						'taphold': function(e){
-							e.preventDefault();
-							//console.log('start/stop here');
-							$('#stopHere').off();
-							$('#flagDialog').remove();
+						
 							
-							
-							var flagDialog = '';
-							flagDialog += '<div id="flagDialog">';
-							flagDialog += '<a href="javascript:;" id="startHere">';
-							flagDialog += '<span class="glyphicon glyphicon-step-forward"></span>';
-							flagDialog += '</a>';
-							flagDialog += '<a href="javascript:;" id="stopHere">';
-							flagDialog += '<span class="glyphicon glyphicon-step-backward"></span>';
-							flagDialog += '</a>';
-							flagDialog += '<a href="javascript:;" id="cancelStop">';
-							flagDialog += '<span class="glyphicon glyphicon-remove"></span>';
-							flagDialog += '</a>';
-							flagDialog += '</div>';
-							$(this).prepend(flagDialog);
-							
-							$('#startHere').on({
-								'tap': function(e){
-									e.preventDefault();
-									$('#flagStart').remove();
-									var flagStart = '';
-									flagStart += '<span id="flagStart">';
-									flagStart += '<span class="glyphicon glyphicon-step-forward"></span>';
-									flagStart += '</span>';
-									//$(this).parent().parent().addClass('stop');
-									$(this).parent().parent().prepend(flagStart);
-									$(this).parent().remove();
+							for(i=0;i<actions.length;i++){
+								var action = loql.select('action', actions[i]);
+								if(topoDog.lastID >= actions[i] && topoDog.firstID <= actions[i]){
+									//$('#action-'+actions[i]).show(0);
+									$('#action-'+actions[i]).attr('time-hide', 'false');
+								} else {
+									//$('#action-'+actions[i]).hide(0);
+									$('#action-'+actions[i]).attr('time-hide', 'true');
 								}
+							}
 							
-							});
+							$('#lastFrameFlag').remove();
+							var lastFrameFlag = '<div id="lastFrameFlag"><span class="glyphicon glyphicon-step-forward"></span></div>';
+							$('.time[data-id='+topoDog.lastID+']').append(lastFrameFlag);
 							
-							$('#stopHere').on({
-								'tap': function(e){
-									e.preventDefault();
-									$('#flagStop').remove();
-									var flagStop = '';
-									flagStop += '<span id="flagStop">';
-									flagStop += '<span class="glyphicon glyphicon-step-backward"></span>';
-									flagStop += '</span>';
-									//$(this).parent().parent().addClass('stop');
-									$(this).parent().parent().prepend(flagStop);
-									$(this).parent().remove();
-								}
-							
-							});
-							
-							$('#cancelStop').on({
-								'tap': function(e){
-										e.preventDefault();
-										$('#flagDialog').remove();
-									}
-							});
-						}
-					
-					});
+							if(topoDog.lastID < topoDog.firstID){
+								$('.time[data-id='+topoDog.lastID+']').children('.t-detail').click();
+							}
+						
+					},
 					
 					
-					$('.time .t-id').on({
-						'click touchstart': function(e){
-							e.preventDefault();
-							topoDog.lastID = parseInt($(this).parent().attr('data-id'));
+				});
+				
+				$('.time .t-detail').on({
+					'click touchstart': function(e){
+						e.preventDefault();
+						topoDog.firstID = parseInt($(this).parent().attr('data-id'));
+						
+						
 							
-							
-								
-								for(i=0;i<actions.length;i++){
-									var action = loql.select('action', actions[i]);
-									if(topoDog.lastID >= actions[i] && topoDog.firstID <= actions[i]){
+							for(i=0;i<actions.length;i++){
+								var action = loql.select('action', actions[i]);
+								if(topoDog.firstID > actions[i]){
+									//$('#action-'+actions[i]).hide(0);
+									$('#action-'+actions[i]).attr('time-hide', 'true');
+								} else {
+									if(actions[i] <= topoDog.lastID){
 										//$('#action-'+actions[i]).show(0);
 										$('#action-'+actions[i]).attr('time-hide', 'false');
-									} else {
-										//$('#action-'+actions[i]).hide(0);
-										$('#action-'+actions[i]).attr('time-hide', 'true');
 									}
 								}
-								
-								$('#lastFrameFlag').remove();
-								var lastFrameFlag = '<div id="lastFrameFlag"><span class="glyphicon glyphicon-step-forward"></span></div>';
-								$('.time[data-id='+topoDog.lastID+']').append(lastFrameFlag);
-								
-								if(topoDog.lastID < topoDog.firstID){
-									$('.time[data-id='+topoDog.lastID+']').children('.t-detail').click();
-								}
-							
-						},
-						
-						
-					});
-					
-					$('.time .t-detail').on({
-						'click touchstart': function(e){
-							e.preventDefault();
-							topoDog.firstID = parseInt($(this).parent().attr('data-id'));
-							
-							
-								
-								for(i=0;i<actions.length;i++){
-									var action = loql.select('action', actions[i]);
-									if(topoDog.firstID > actions[i]){
-										//$('#action-'+actions[i]).hide(0);
-										$('#action-'+actions[i]).attr('time-hide', 'true');
-									} else {
-										if(actions[i] <= topoDog.lastID){
-											//$('#action-'+actions[i]).show(0);
-											$('#action-'+actions[i]).attr('time-hide', 'false');
-										}
-									}
-								}
-								
-							$('#firstFrameFlag').remove();
-							var firstFrameFlag = '<div id="firstFrameFlag"><span class="glyphicon glyphicon-step-backward"></span></div>';
-							$('.time[data-id='+topoDog.firstID+']').append(firstFrameFlag);
-							
-							//riporto in pari lastframeflag se piu indietro
-							if(topoDog.lastID < topoDog.firstID){
-								$('.time[data-id='+topoDog.firstID+']').children('.t-id').click();
 							}
 							
-							
-							
-						}
-					
-					});
-					
-					
-					$('.play').on({
-						'tap': function(){
-							playPresentation(true);
-						}
-					});
-					
-					$('.pause').on({
-						'tap': function(){
-							playPresentation(false);
-						}
-					});
-					
-					$('.fwd').on({
-						'tap': function(){
-							presentationFwd();
-						}
-					});
-					
-					$('.rew').on({
-						'tap': function(){
-							presentationRew();
-						}
-					});
-					
-					$('.stepFwd').on({
-						'tap': function(){
-							presentationStep();
-						}
-					});
-					
-					$('.stepRew').on({
-						'tap': function(){
-							presentationStep("rew");
-						}
-					});
-					
-					$('.gotoStart').on({
-						'tap': function(){
-							gotoStart();
-						}
-					});
-					
-					$('.gotoEnd').on({
-						'tap': function(){
-							gotoEnd();
-						}
-					});
-					
-					$('.makeSnapshot').on({
-						'tap': function(){
-							topoDog.snapShot();
-						}
+						$('#firstFrameFlag').remove();
+						var firstFrameFlag = '<div id="firstFrameFlag"><span class="glyphicon glyphicon-step-backward"></span></div>';
+						$('.time[data-id='+topoDog.firstID+']').append(firstFrameFlag);
 						
-					});
-					
-					$('.clearSnapshot').on({
-						'tap': function(){
-							topoDog.clearSnapShot();
-						}
-						
-					});
-					
-					
-					$('.showAllTimeline').on({
-						'tap': function(){
-							$('.time').attr('frame-hide', 'false');
-							scrollBars();
-						}
-						
-					});
-					
-					$('.hideFromTimeline').on({
-						'click tap': function(){
-							var beings = loql.select('beings');
-							//$('[data-bid=]').attr('being-hide')
-							for(i=0;i<beings.length;i++){
-								//var being = loql.select('beings', beings[i]);
-								if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
-									$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
-								} else {
-									$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
-								}
-							}
-							scrollBars();
+						//riporto in pari lastframeflag se piu indietro
+						if(topoDog.lastID < topoDog.firstID){
+							$('.time[data-id='+topoDog.firstID+']').children('.t-id').click();
 						}
 						
 						
-					});
-					
-					
-					
-					
-					//$('.time:nth-child(2) .t-detail').click();
-					//$('.time:nth-child(2) .t-id').click();
-					
-					$('.hideFromTimeline').click();
-					presentationRew();
-					
-				break;
+						
+					}
 				
-				case 'notes':
+				});
 				
-					$('#noteControls').show(0);
-					$('.action').on({
-						'taphold': function(e){
-							e.preventDefault();
-							$('#noteForm, #noteShow').remove();
-							$('.action').attr('data-note', false);
-							$(this).attr('data-note', 'true');
-							//alert('muovi,ruota,elimina');
-							var actionID = $(this).attr('data-id');
-							var noteAction = loql.select('action', actionID);
-							if(noteAction.n){
-								var currentNote = noteAction.n;
+				
+				$('.play').on({
+					'tap': function(e){
+						e.preventDefault();
+						playPresentation(true);
+					}
+				});
+				
+				$('.pause').on({
+					'tap': function(e){
+						e.preventDefault();
+						playPresentation(false);
+					}
+				});
+				
+				$('.fwd').on({
+					'tap': function(e){
+						e.preventDefault();
+						presentationFwd();
+					}
+				});
+				
+				$('.rew').on({
+					'tap': function(e){
+						e.preventDefault();
+						presentationRew();
+					}
+				});
+				
+				$('.stepFwd').on({
+					'tap': function(e){
+						e.preventDefault();
+						presentationStep();
+					}
+				});
+				
+				$('.stepRew').on({
+					'tap': function(e){
+						e.preventDefault();
+						presentationStep("rew");
+					}
+				});
+				
+				$('.gotoStart').on({
+					'tap': function(e){
+						e.preventDefault();
+						gotoStart();
+					}
+				});
+				
+				$('.gotoEnd').on({
+					'tap': function(e){
+						e.preventDefault();
+						gotoEnd();
+					}
+				});
+				
+				$('.makeSnapshot').on({
+					'tap': function(e){
+						e.preventDefault();
+						topoDog.snapShot();
+					}
+					
+				});
+				
+				$('.clearSnapshot').on({
+					'tap': function(e){
+						e.preventDefault();
+						topoDog.clearSnapShot();
+					}
+					
+				});
+				
+				
+				$('.showAllTimeline').on({
+					'tap': function(e){
+						e.preventDefault();
+						$('.time').attr('frame-hide', 'false');
+						scrollBars();
+					}
+					
+				});
+				
+				$('.hideFromTimeline').on({
+					'click tap': function(e){
+						e.preventDefault();
+						var beings = loql.select('beings');
+						
+						for(i=0;i<beings.length;i++){
+							
+							if($('[data-bid='+beings[i]+']').attr('being-hide') == 'true'){
+								$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'true');
 							} else {
-								var currentNote = '';
+								$('.time[data-bid='+beings[i]+']').attr('frame-hide', 'false');
 							}
-							
-							var leftOffset = $(this).width()/2;
-							var topOffset = $(this).height()/2;
-							var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
-							noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
-							noteForm += '<a id="saveNote" href="javascript:;" data-id="'+actionID+'">';
-							noteForm += '<span class="glyphicon glyphicon-ok"></span>';
-							noteForm += '</a>';
-							noteForm += '</div>';
-							
-							$('#action-'+actionID).prepend(noteForm);
-							
-							$('#saveNote').on({
-								'click touchstart':function(){
-									topoDog.addNote($(this).attr('data-id'));
-									$('.action').attr('data-note', false);
-								}
-							});
-						},
-						
-						'touchmove': function(e){
-							e.preventDefault();
 						}
-					});
-				
-				break;
-				
-				case 'help':
-				
-					$('#helpBox').show();
-					$('a.mode').off();
-					$('a.mode').on({
-						'taphold': function(){
-							$('#help').html($(this).attr('title'));
-						},
-						
-						'mouseup touchend': function(){
-							$('a.mode').off();
-							topoDog.modeControls();
-						}
-					});
+						scrollBars();
+					}
 					
-					$('#help').html($('#inlineHelp').attr('title'));
-				break;
+					
+				});
 				
 				
-			}
+				
+				$('.hideFromTimeline').click();
+				presentationRew();
+				
+			break;
+			
+			case 'notes':
+			
+				$('#noteControls').show(0);
+				$('.action').on({
+					'taphold': function(e){
+						e.preventDefault();
+						$('#noteForm, #noteShow').remove();
+						$('.action').attr('data-note', false);
+						$(this).attr('data-note', 'true');
+						
+						var actionID = $(this).attr('data-id');
+						var noteAction = loql.select('action', actionID);
+						if(noteAction.n){
+							var currentNote = noteAction.n;
+						} else {
+							var currentNote = '';
+						}
+						
+						var leftOffset = $(this).width()/2;
+						var topOffset = $(this).height()/2;
+						var noteForm = '<div id="noteForm" style="margin-top:-'+topOffset+'px;margin-left:'+leftOffset+'px;">';
+						noteForm += '<textarea rows="3" cols="24">'+currentNote+'</textarea>';
+						noteForm += '<a id="saveNote" href="javascript:;" data-id="'+actionID+'">';
+						noteForm += '<span class="glyphicon glyphicon-ok"></span>';
+						noteForm += '</a>';
+						noteForm += '</div>';
+						
+						$('#action-'+actionID).prepend(noteForm);
+						
+						$('#saveNote').on({
+							'click touchstart':function(){
+								topoDog.addNote($(this).attr('data-id'));
+								$('.action').attr('data-note', false);
+							}
+						});
+					},
+					
+					'touchmove': function(e){
+						e.preventDefault();
+					}
+				});
+			
+			break;
+			
+			case 'help':
+			
+				$('#helpBox').show();
+				$('a.mode').off();
+				$('a.mode').on({
+					'taphold': function(){
+						$('#help').html($(this).attr('title'));
+					},
+					
+					'mouseup touchend': function(){
+						$('a.mode').off();
+						topoDog.modeControls();
+					}
+				});
+				
+				$('#help').html($('#inlineHelp').attr('title'));
+			break;
 			
 			
-			
-			scrollBars();
-			
-			
-		});
+		}
+		
+		
+		
+		scrollBars();
 	
 	},
 	
@@ -2143,6 +2048,27 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 			var theID = loql.insert('action', values);
 			//console.log('INSERT');
+			
+			var action = values;
+			var being = loql.select('beings', action.bid);
+			
+			//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
+			
+			var date = new Date(action.t);
+			var humanDate = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+			var tag = '';
+			
+			tag += '<div id="frame-'+theID+'" class="time" data-id="'+theID+'" data-bid="'+action.bid+'">';
+			tag += '<div class="t-id" style="background:'+being.color+';">';
+			tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
+			tag += '<div style="background:'+being.color+';">'+theID+'</div>';
+			tag += '</div>';
+			tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
+			tag += '</div>'
+			$('#timeline').append(tag);
+			
+			
 		}
 
 		var theAction = loql.select('actions', actionID);
@@ -2221,6 +2147,46 @@ topoDog = { // Oggetto base con parametri fondamentali
 			topoDog.deleteActionsById(next, bid);
 		}
 		
+	},
+	
+	regenTimeline: function(){
+		$('#timeline > .time').remove();
+		// [RI]Costruisco la timeline
+		var actions = loql.select('action');
+		if(actions.length <= 1){
+			return;
+		}
+		
+		
+		
+		for(i=0;i<actions.length;i++){
+			
+			var action = loql.select('action', actions[i]);
+			var being = loql.select('beings', action.bid);
+			
+			if(!being){
+				continue;
+			}
+			
+			//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
+			
+			var date = new Date(action.t);
+			var humanDate = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+			var tag = '';
+			
+			tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
+			tag += '<div class="t-id" style="background:'+being.color+';">';
+			tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
+			tag += '<div style="background:'+being.color+';">'+actions[i]+'</div>';
+			tag += '</div>';
+			tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
+			tag += '</div>'
+			$('#timeline').append(tag);
+		
+		}			
+					
+	
 	}
 	
 }
