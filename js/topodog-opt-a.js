@@ -2,7 +2,7 @@
 // Requires:
 //	loql.js
 
-topoDog = { // Oggetto base con parametri fondamentali
+topoDog = {
 
 	id: '',
 	w: 100,
@@ -37,6 +37,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 	
 	firstID: 0,
 	lastID: 1,
+	
 	
 	loadTessels: function(){
 		$('#tessels').html('');
@@ -693,15 +694,14 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		$('#scenario').off();
 		$('#grid').off();
-//		$('.object').off();
-//		$('.action').off();
+		$('.object').off();
+		$('.action').off();
 		
 		if(mode != 'view3d' && mode != 'notes'){
 			$('#grid').css({
 				'transform':'rotate3d(1, 0, 0, 0deg) rotate(0deg)',
 			});
 		}
-		
 		
 		
 		$('#tesselControls').hide(0);
@@ -986,7 +986,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				var offset = parseInt($('.action').width()) / 2;
 				topoDog.movingAction = false;
 				
-				$('.action').off();
+				//$('.action').off();
 				$('.action').on({
 					
 					'taphold':function(e){
@@ -1063,7 +1063,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				var offset = parseInt($('.action').width()) / 2;
 				
-				$('.action').off();
+				//$('.action').off();
 				$('.action').on({
 					'mousemove touchmove': function(e){
 						e.preventDefault();
@@ -1195,7 +1195,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				$('#editControls').show(0);
 				
-				$('.object').off();
+				//$('.object').off();
 				$('.object').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1209,7 +1209,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 					}
 				});
 				
-				$('.action').off();
+				//$('.action').off();
 				$('.action').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1224,11 +1224,12 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				
 				
-				$('.object *, .action *').on({
-					'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
-						e.preventDefault();
-					}
-				});
+//////				$('.object *, .action *').on({
+//////					'click mousedown mouseup touchstart touchend mousemove touchmove': function(e){
+//////						e.preventDefault();
+//////					}
+//////				});
+
 				
 			break;
 			
@@ -1250,7 +1251,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 				
 				
 				var closeNote = false;
-				$('.action').off();
+				//$('.action').off();
 				$('.action').on({
 					
 					'tap':function(){
@@ -1485,9 +1486,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 				});
 				
 				
-				
-				
-				
 				$('.hideFromTimeline').click();
 				presentationRew();
 				
@@ -1496,7 +1494,7 @@ topoDog = { // Oggetto base con parametri fondamentali
 			case 'notes':
 			
 				$('#noteControls').show(0);
-				$('.action').off();
+				//$('.action').off();
 				$('.action').on({
 					'taphold': function(e){
 						e.preventDefault();
@@ -1780,49 +1778,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		this.saveTexture();
 	
 		var content = JSON.stringify(localStorage);
-
-//		var content = JSON.stringify(localStorage,function(k, v) {
-//		    //console.log(typeof(k));
-//		    //console.log(typeof(v));
-//		    return (typeof(v) === 'object') ? JSON.stringify(v) : v;
-//		});
-
-
-//////		var tables = {
-//////		  1:'beings',
-//////		  2:'object',
-//////		  3:'action'
-//////		}
-
-//////		var output = '';
-//////		var records = false;
-//////		var record = false;
-//////		
-//////		
-//////		
-//////		for(i in tables){
-//////			output += "var data_"+tables[i]+"={";
-//////			records = loql.select(tables[i]);
-//////		 	for (r in records){
-//////		 		
-////////		 		console.log(r);
-////////		 		console.log(typeof(r));
-//////		 		record = loql.select(tables[i], r);
-////////		 		console.log(record);
-////////		 		console.log(typeof(record));
-//////		 		output += records[r]+":{";
-//////			 			for(field in record){
-//////			 				output += field+":"+record[field]+",";
-//////			 			}
-//////		
-//////		 		output +="}";
-//////		 	}
-//////		 	output += "}";
-//////		}
-//////		
-//////		var background = loql.select('savedtexture', 0);
-//////		output += "var data_savedtexture = \""+background+"\"";
-//////		console.log(output);
 		
 		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
 		
@@ -1832,7 +1787,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		if (typeof window.requestFileSystem != 'undefined') {
 				//alert(cordova.file.externalRootDirectory);
-				//alert(cordova.file.externalDataDirectory);
 				//var sdCardPath = cordova.file.externalRootDirectory;
 				
 				
@@ -1845,37 +1799,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 				}, function(){
 					alert('Esportazione non riuscita.');
 				});
-				
-				
-				/***
-				window.resolveLocalFileSystemURL(window.PERSISTENT, 0, function(fs) {
-				//window.requestFileSystem(window.PERSISTENT, 0, function(fs) {
-
-				  fs.root.getFile(sdCardPath+filename, {create: true}, function(fileEntry) {
-
-				    // Create a FileWriter object for our FileEntry (log.txt).
-				    fileEntry.createWriter(function(fileWriter) {
-
-				      fileWriter.onwriteend = function(e) {
-					console.log('Write completed.');
-				      };
-
-				      fileWriter.onerror = function(e) {
-					console.log('Write failed: ' + e.toString());
-				      };
-
-				      // Create a new Blob and write it to log.txt.
-				      var blob = new Blob(content, {type: 'text/plain'});
-
-				      fileWriter.write(blob);
-
-				    }, function() {  alert('Error: fileEntry.createWriter'); });
-
-				  }, function() {  alert('Error: fs.root.getFile'); });
-
-				}, function() {  alert('Error: request file system'); });
-				
-				***/
 				
 				
 
@@ -1926,12 +1849,6 @@ topoDog = { // Oggetto base con parametri fondamentali
 				alert(error);
 
 			});
-	
-//////				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
-//////					//alert(filesystem.root);
-//////					
-//////					   
-//////				});
 
 		} else {
 			//Assuming we are in a browser
@@ -2195,6 +2112,11 @@ topoDog = { // Oggetto base con parametri fondamentali
 		
 		}			
 					
+	
+	},
+	
+	exportData: function(){
+		//var 
 	
 	}
 	
