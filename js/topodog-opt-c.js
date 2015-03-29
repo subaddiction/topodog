@@ -1962,7 +1962,13 @@ topoDog = {
 
 
  	newAction: function(actionID,bid,x,y,rotation,nodb){
-	
+		
+		var theAction = loql.select('actions', actionID);
+		
+		if(theAction.name == 'dummy'){
+			return false;
+		}
+		
 		if(nodb != false){
 			var theID = nodb;
 			var currentAction = loql.select('action', theID);
@@ -2005,7 +2011,7 @@ topoDog = {
 			
 		}
 
-		var theAction = loql.select('actions', actionID);
+		
 		var Asize = theAction.size*topoDog.tileSize;
 	
 		var AmarginTop = y - (Asize/2);
@@ -2097,6 +2103,7 @@ topoDog = {
 			
 			var action = loql.select('action', actions[i]);
 			var being = loql.select('beings', action.bid);
+			var theAction = loql.select('actions', action.aid);
 			
 			if(!being){
 				continue;
@@ -2109,14 +2116,18 @@ topoDog = {
 			var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 			var tag = '';
 			
-			tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
-			tag += '<div class="t-id" style="background:'+being.color+';">';
-			tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
-			tag += '<div style="background:'+being.color+';">'+actions[i]+'</div>';
-			tag += '</div>';
-			tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
-			tag += '</div>'
-			$('#timeline').append(tag);
+			if(theAction.name != 'dummy'){
+			
+				tag += '<div id="frame-'+actions[i]+'" class="time" data-id="'+actions[i]+'" data-bid="'+action.bid+'">';
+				tag += '<div class="t-id" style="background:'+being.color+';">';
+				tag += '<div style="background:'+being.color+';">'+being.name+'</div>';
+				tag += '<div style="background:'+being.color+';">'+actions[i]+'</div>';
+				tag += '</div>';
+				tag += '<div class="t-detail">'+humanDate+'<br />['+humanTime+']</div>';
+				tag += '</div>'
+				$('#timeline').append(tag);
+			
+			}
 		
 		}			
 					
@@ -2148,8 +2159,8 @@ topoDog = {
 				nota = action.n;
 			}
 			
-			if(theAction.name != 'area' && theAction.name != 'possessivita'){
-				output += "\n"+actions[i]+","+humanDate+" "+humanTime+","+being.name+","+theAction.name+","+action.x+","+action.y+","+action.r+","+nota;
+			if(theAction.name != 'dummy' && theAction.name != 'area' && theAction.name != 'possessivita'){
+				output += "\n"+actions[i]+","+humanDate+" "+humanTime+","+being.name+","+theAction.name+","+action.x+","+action.y+","+action.r+","+"\""+nota+"\"";
 			}
 		}
 		
