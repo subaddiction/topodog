@@ -487,14 +487,14 @@ display:none;
 
 #timelineBox
 {
-display:none;
+/*display:none;*/
 width:100%;
 height:120px;
 }
 
 #helpBox
 {
-display:none;
+/*display:none;*/
 }
 
 
