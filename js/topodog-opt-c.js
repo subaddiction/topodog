@@ -1236,8 +1236,8 @@ topoDog = {
 			
 			case 'manageData':
 				$('#dataControls').removeClass('ctrlH');
-				$('#exportData').addClass('ctrlH');
-				$('#export').removeClass('ctrlH');
+				$('#exportData').hide(0);
+				$('#export').show();
 			
 			break;
 			
