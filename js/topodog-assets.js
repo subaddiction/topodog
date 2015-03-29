@@ -126,7 +126,7 @@ function topoDogAssets(){
 	
 	
 	var spalle = {
-		'name':'spalle',
+		'name':'spalle giu',
 		'size':'3',
 		'shape':'spalle.svg',
 	}
@@ -161,7 +161,7 @@ function topoDogAssets(){
 	loql.insert('actions', sicurezza);
 	
 	var spallesu = {
-		'name':'spalle >',
+		'name':'spalle su',
 		'size':'3',
 		'shape':'spallesu.svg',
 	}
@@ -196,7 +196,7 @@ function topoDogAssets(){
 	loql.insert('actions', gestione);
 	
 	var possessivita = {
-		'name':'poss.',
+		'name':'possessivita',
 		'size':'2',
 		'shape':'possessivita.svg',
 	}
@@ -210,7 +210,7 @@ function topoDogAssets(){
 	loql.insert('actions', area);
 	
 	var olfattiva = {
-		'name':'olfattiva',
+		'name':'olfatto',
 		'size':'2',
 		'shape':'sniff.svg',
 	}

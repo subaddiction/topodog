@@ -1237,7 +1237,9 @@ topoDog = {
 			case 'manageData':
 				$('#dataControls').removeClass('ctrlH');
 				$('#exportData').hide(0);
+				$('#dataexportData').hide(0);
 				$('#export').show();
+				$('#dataexport').show();
 			
 			break;
 			
@@ -2121,8 +2123,81 @@ topoDog = {
 	},
 	
 	exportData: function(){
+		var actions = loql.select('action');
+		var output = "id,data,cane,interazione,x,y,direzione,note";
+		for(i=0;i<actions.length;i++){
+			var action = loql.select('action', actions[i]);
+			var being = loql.select('beings', action.bid);
+			var theAction = loql.select('actions', action.aid);
+			
+			if(!being){
+				continue;
+			}
+			
+			action.x = Math.round(action.x,0);
+			action.y = Math.round(action.y,0);
+			action.r = Math.round(action.r,0);
+			
+			var date = new Date(action.t);
+			var humanDate = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			var humanTime = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+			
+			var nota = "";
+			if (action.n){
+				nota = action.n;
+			}
+			
+			if(theAction.name != 'area' && theAction.name != 'possessivita'){
+				output += "\n"+actions[i]+","+humanDate+" "+humanTime+","+being.name+","+theAction.name+","+action.x+","+action.y+","+action.r+","+nota;
+			}
+		}
+		
+		//return output;
+		uriContent = "data:application/octet-stream," + encodeURIComponent(output);
+		
+		var now = new Date();
+		var filename = 'dati-'+now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.csv';
+		
+		
+		if (typeof window.requestFileSystem != 'undefined') {
+				//alert(cordova.file.externalRootDirectory);
+				//var sdCardPath = cordova.file.externalRootDirectory;
+				
+				
+				var sdCardPath = cordova.file.externalRootDirectory.replace('file\:\/\/', '');
+				//var sdCardPath = cordova.file.externalDataDirectory.replace('file\:\/\/', '');
+				//alert(sdCardPath);
+				
+				GapFile.writeFile(sdCardPath+filename, output, function(){
+					alert('Esportazione dati completata.');
+				}, function(){
+					alert('Esportazione dati non riuscita.');
+				});
+				
+				
+
+		} else {
+			//Assuming we are in a browser
+			$('#dataexport').hide('0');
+			$('#dataexportData').show('0');
+			$('#dataexportData').attr('download', filename);
+			$('#dataexportData').attr('href', uriContent);
+			$('#dataexportData').off();
+			$('#dataexportData').on({
+				'click': function(){
+					$('#dataexportData').hide(0);
+					$('#dataexport').show(0);
+				}
+			
+			});
+			//alert('NO FS');
+		}
+		
+		
+		
+	},
 	
-	}
+	
 	
 }
 
