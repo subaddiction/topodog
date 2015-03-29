@@ -476,7 +476,7 @@ topoDog = {
 			'tap': function(){
 				zoomReset();
 				//topoDog.modeSwitch($(this).attr('data-mode'));
-				
+				//TEST
 				$('a.mode').css({
 					'background':'#000000',
 					'color':'#cccccc'
