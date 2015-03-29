@@ -475,7 +475,7 @@ topoDog = {
 		$('a.mode').on({
 			'tap': function(){
 				zoomReset();
-				topoDog.modeSwitch($(this).attr('data-mode'));
+				//topoDog.modeSwitch($(this).attr('data-mode'));
 				
 				$('a.mode').css({
 					'background':'#000000',
@@ -684,7 +684,7 @@ topoDog = {
 	
 	modeSwitch: function(mode){
 		
-		/***
+		
 		if(this.mode == 'tessel' && mode != 'tessel'){
 			//alert('Salvo texture');
 			this.saveTexture();
@@ -716,8 +716,6 @@ topoDog = {
 		$('#dataControls').addClass('ctrlH');
 		$('#timelineBox').addClass('ctrlH');
 		$('#helpBox').addClass('ctrlH');
-		
-		***/
 		
 	
 		
@@ -818,7 +816,6 @@ topoDog = {
 			
 			case 'insertActions':
 				
-				/***
 				
 				$('#actionsControls').removeClass('ctrlH');
 				
@@ -979,7 +976,7 @@ topoDog = {
 				
 				});
 				
-				***/
+				
 			break;
 			
 			case 'moveActions':
@@ -1186,7 +1183,6 @@ topoDog = {
 								$('#action-'+actionId).css('background', '');
 								$('#action-'+actionId).css('z-index', '');
 								
-								topoDog.modeSwitch('rotateActions');
 							}
 						});
 						
