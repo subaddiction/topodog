@@ -335,6 +335,7 @@ color:#333333;
 {
 /*display:none;*/
 text-align:center;
+min-height:120px;
 }
 
 #itemsControlsBox, #dataControls
