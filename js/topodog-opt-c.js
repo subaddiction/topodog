@@ -473,7 +473,7 @@ topoDog = {
 	modeControls: function(){
 		$('a.mode').off();
 		$('a.mode').on({
-			'mouseup touchend': function(){
+			'tap': function(){
 				//zoomReset();
 				topoDog.modeSwitch($(this).attr('data-mode'));
 				//TEST
