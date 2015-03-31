@@ -1236,6 +1236,7 @@ topoDog = {
 						//if(confirm('Vuoi eliminare questa azione? [id:'+actionID+']')){
 							
 							loql.del('action', actionID);
+							$('#frame-'+actionID).remove();
 							$(this).remove();
 						//}
 					}
