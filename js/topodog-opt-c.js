@@ -38,6 +38,14 @@ topoDog = {
 	firstID: 0,
 	lastID: 1,
 	
+	isApp: function(){
+		if(typeof(cordova) == 'undefined'){
+			return false;
+		} else {
+			return true;
+		}
+	},
+	
 	
 	loadTessels: function(){
 		$('#tessels').html('');
@@ -685,7 +693,9 @@ topoDog = {
 		this.drawItems();
 		this.drawActions();
 		
-		
+		if(this.isApp()){
+			$('#zoomMore, #zoomLess').hide();
+		}
 		
 		
 	},
