@@ -697,7 +697,6 @@ topoDog = {
 			$('#zoomMore, #zoomLess').hide();
 		}
 		
-		
 	},
 	
 	modeSwitch: function(mode){
@@ -1987,11 +1986,7 @@ topoDog = {
  	newAction: function(actionID,bid,x,y,rotation,nodb){
 		
 		var theAction = loql.select('actions', actionID);
-		
-		if(theAction.name == 'dummy'){
-			return false;
-		}
-		
+				
 		if(nodb != false){
 			var theID = nodb;
 			var currentAction = loql.select('action', theID);
@@ -2012,8 +2007,16 @@ topoDog = {
 			var theID = loql.insert('action', values);
 			//console.log('INSERT');
 			
+			if(theAction.name == 'dummy'){
+				return false;
+			}
+			
 			var action = values;
 			var being = loql.select('beings', action.bid);
+			
+			if(!being){
+				return false;
+			}
 			
 			//var hours = date.getHours(); var minutes = date.getMinutes(); var seconds = date.getSeconds(); // will display time in 21:00:00 format var formattedTime = hours + ':' + minutes + ':' + seconds;
 			
