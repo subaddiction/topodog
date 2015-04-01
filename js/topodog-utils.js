@@ -221,6 +221,15 @@ function topoDogLauncher(){
 	jQuery.event.swipe.max = 800;
 	//jQuery.event.swipe.delay = 1000;
 	
+	$('#picker').colpick({
+		flat:true,
+		layout:'hex',
+		submit:0,
+		onChange: function(hsb, hex){
+			$('#newDog_color').val('#'+hex);
+		}
+	});
+	
 	/***
 	//topoDog.w = ($(document).width()/topoDog.tileSize) -4;
 	//topoDog.h = (($(document).height() - $('#actionsControls').height() - $('#modeControls').height()) / topoDog.tileSize) -3;
