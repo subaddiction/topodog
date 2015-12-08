@@ -387,7 +387,7 @@ z-index:9;
 .action
 {
 position:absolute;
-z-index:9;
+z-index:99;
 /*width:36px;*/
 /*height:36px;*/
 /*margin-top:-12px;*/
@@ -690,4 +690,9 @@ display:none!important;
 [data-note=true]
 {
 z-index:999999;
+}
+
+.action.forceShow
+{
+display:block!important;
 }

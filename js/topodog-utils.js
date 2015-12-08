@@ -113,7 +113,7 @@ function playPresentation(status, interval){
 	
 	clearInterval(play);
 	if(status !== false){
-		if(!interval) { interval = 1000 }
+		if(!interval) { interval = 2500 }
 		//$('#lastFrameFlag').parent().children('.t-id').click();
 		presentationStep();
 		play = setInterval("presentationStep()", interval);

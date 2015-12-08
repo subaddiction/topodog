@@ -79,6 +79,22 @@ function topoDogAssets(){
 	}
 	loql.insert('objects', tavolo);
 	
+	var piscina = {
+		'type':'object',
+		'name':'piscina',
+		'size': 3,
+		'shape':'piscina.svg',
+	}
+	loql.insert('objects', piscina);
+	
+	var pneumatico = {
+		'type':'object',
+		'name':'pneum.',
+		'size': 3,
+		'shape':'pneumatico.svg',
+	}
+	loql.insert('objects', pneumatico);
+	
 	/*** AZIONI ***/
 	
 	var azioneDummy = {

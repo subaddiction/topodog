@@ -156,7 +156,7 @@ topoDog = {
 
 	
 	loadBeings: function(){
-	
+		
 		
 		$('#beings a').remove();
 	
@@ -171,6 +171,9 @@ topoDog = {
 			var currentBeing = loql.select('beings', beings[i]);
 			
 			var tag = '<a class="being" href="javascript:;" data-id="'+currentBeing.id+'" data-color="'+currentBeing.color+'" style="background:'+currentBeing.color+';border:3px solid '+currentBeing.color+'">';
+			
+			//console.log(currentBeing.show);
+			//console.log(typeof(currentBeing.show));
 			if(currentBeing.show < 1){
 				tag += '<span class="flagHide glyphicon glyphicon-eye-close"></span>';
 			}
@@ -178,6 +181,9 @@ topoDog = {
 			tag += currentBeing.name;
 			tag += '</span>';
 			tag +='</a>';
+			
+			//console.log(tag);
+			
 			$('#beings').append(tag);
 		}
 		
@@ -389,6 +395,22 @@ topoDog = {
 			}
 		});
 		
+		$('#showAllPrevious').off();
+		$('#showAllPrevious').on({
+			'tap': function(){
+				var switched = $(this).attr('data-switched');
+				if(switched == '0'){
+					$('.action').addClass('forceShow');
+					$(this).attr('data-switched', '1');
+					$(this).children('span').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+				} else {
+					$('.action').removeClass('forceShow');
+					$(this).attr('data-switched', '0');
+					$(this).children('span').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+				}
+			}
+		});
+		
 		$('#zoomMore').off();
 		$('#zoomMore').on({
 			'tap': function(){
@@ -499,6 +521,9 @@ topoDog = {
 	},
 	
 	timelineControls: function(){
+		
+		$('#presentationControls').remove();
+		
 		var showhide = '';
 		showhide += '<div id="presentationControls">';
 		
@@ -646,6 +671,20 @@ topoDog = {
 		
 	},
 	
+	
+	highlightAction: function(id){
+		var hl = $('#'+id).clone().attr('id', 'hl-'+id);
+		$('#grid').append(hl);
+		var rot = $('#hl-'+id+' > svg').attr('data-rot');
+		$('#hl-'+id+' > svg').animate({
+			transform:'scale(4) rotate('+rot+'deg)',
+			//transform:'scale(4) rotate(0deg)',
+			opacity:0,
+		}, 1000, function(){
+			$('#hl-'+id).remove();
+		});
+	},
+	
 	init: function(){
 		var row = 0;
 		var col = 0;
@@ -673,13 +712,7 @@ topoDog = {
 		this.drawTexture();
 		this.loadTessels();
 		
-		//this.loadItems(1,false);
-		this.loadItems(0,false);
-		this.loadActions(1,false);
-		this.loadBeings();
 		
-		
-		$('#presentationControls').remove();
 		this.timelineControls();
 		var actions = loql.select('action');
 		if(actions){
@@ -690,12 +723,21 @@ topoDog = {
 		
 		this.startControls();
 		this.modeControls();
+		
+
+		this.loadItems(0,false);
+		this.loadActions(1,false);
+		this.loadBeings();
+		
+		
 		this.drawItems();
 		this.drawActions();
+		
 		
 		if(this.isApp()){
 			$('#zoomMore, #zoomLess').hide();
 		}
+		
 		
 	},
 	
@@ -1461,6 +1503,8 @@ topoDog = {
 								}
 							}
 							
+							topoDog.highlightAction('action-'+topoDog.lastID);
+							
 							$('#lastFrameFlag').remove();
 							var lastFrameFlag = '<div id="lastFrameFlag"><span class="glyphicon glyphicon-step-forward"></span></div>';
 							$('.time[data-id='+topoDog.lastID+']').append(lastFrameFlag);
@@ -2078,7 +2122,10 @@ topoDog = {
 			
 			});
 		}
-	
+		
+		topoDog.lastID = theID;
+		//console.log(topoDog.lastID);
+		
 		return theID;
 	},
 	

@@ -29,8 +29,8 @@
      id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="-1.1186441"
-     inkscape:cy="12"
+     inkscape:cx="34.984528"
+     inkscape:cy="16.094042"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -50,8 +50,8 @@
     </rdf:RDF>
   </metadata>
   <path
-     transform="matrix(2.4583334,0,0,2.4583334,-16.500002,-16.250001)"
      style="fill:#000000;fill-opacity:1;stroke:none"
      d="m 14.033899,11.491526 c 0,1.347949 -1.092729,2.440678 -2.440678,2.440678 -1.347949,0 -2.4406782,-1.092729 -2.4406782,-2.440678 0,-1.34795 1.0927292,-2.4406782 2.4406782,-2.4406782 1.347949,0 2.440678,1.0927282 2.440678,2.4406782 z"
-     id="path2983" />
+     id="path2983"
+     transform="matrix(2.4583334,0,0,2.4583334,-16.500002,-16.250001)" />
 </svg>
