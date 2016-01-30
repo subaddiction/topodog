@@ -258,10 +258,13 @@ function topoDogLauncher(){
 	
 	topoDog.init();
 	scrollBars();
+	
+	topoDog.sumActions();
 
 }
 
 
+var scroll_scenarioForm;
 var scroll_newDog;
 var scroll_tessels
 var scroll_modeControlsBox;
@@ -272,8 +275,18 @@ function scrollBars(){
 
 	$('.iScrollLoneScrollbar').remove();
 	
+	scroll_scenarioForm = false;
+	scroll_scenarioForm = new IScroll('#scenarioForm', {
+		mouseWheel: true,
+		scrollbars: true,
+		bounce: false,
+		momentum: false,
+		deceleration:1,
+	});
+	
 	scroll_newDog = false;
 	scroll_newDog = new IScroll('#newDog', {
+		mouseWheel: true,
 		scrollbars: true,
 		bounce: false,
 		momentum: false,
@@ -339,4 +352,34 @@ function scrollBars(){
 	});
 	
 }
+
+
+
+
+function capturePhoto(){
+	navigator.camera.getPicture(
+		function(data){
+			
+			//console.log(data);
+			$('#photo').attr('src', 'data:image/jpeg;base64,'+data).on({
+				'loaded':function(){
+					scroll_newDog.refresh();
+				}
+			});
+			
+			
+			
+		}, function(){
+			console.log('FAIL');
+		}, {
+			quality:85,
+			encodingType:0, //JPEG
+			//encodingType:1, //PNG
+			destinationType:0,
+			targetWidth:36,
+			targetHeight:24,
+			//correctOrientation:1
+		});
+}
+
 

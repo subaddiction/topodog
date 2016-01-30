@@ -178,7 +178,11 @@ topoDog = {
 				tag += '<span class="flagHide glyphicon glyphicon-eye-close"></span>';
 			}
 			tag += '<span class="beingName">';
-			tag += currentBeing.name;
+				if(currentBeing.image != ''){
+					tag += '<img class="photo" src="'+currentBeing.image+'" />';
+				} else {
+					tag += currentBeing.name;
+				}
 			tag += '</span>';
 			tag +='</a>';
 			
@@ -388,6 +392,13 @@ topoDog = {
 			}
 		});
 		
+		$('#openScenarioForm').off();
+		$('#openScenarioForm').on({
+			'tap': function(){
+				topoDog.scenarioForm();
+			}
+		});
+		
 		$('#openNewDogForm').off();
 		$('#openNewDogForm').on({
 			'tap': function(){
@@ -527,9 +538,17 @@ topoDog = {
 		var showhide = '';
 		showhide += '<div id="presentationControls">';
 		
+		showhide += '<div id="play">';
+		showhide += '<a class="play" href="javascript:;" data-interval="2500">2.5</a>';
+		showhide += '<a class="play" href="javascript:;" data-interval="5000">5.0</a>';
+		showhide += '<a class="play" href="javascript:;" data-interval="10000">10</a>';
+		showhide += '<a class="play" href="javascript:;" data-interval="15000">15</span></a>';
+		showhide += '</div>';
+		
+		
 		showhide += '<div>';
 		showhide += '<a class="stepRew" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
-		showhide += '<a class="play" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
+		showhide += '<a class="showplay" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
 		showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
 		showhide += '<a class="stepFwd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
 		showhide += '</div>';
@@ -555,11 +574,19 @@ topoDog = {
 		$('#timelineBox').append(showhide);
 		
 		
+		$('.showplay').off();
+		$('.showplay').on({
+			'tap': function(e){
+				e.preventDefault();
+				$('#play').slideToggle();
+			}
+		});
+		
 		$('.play').off();
 		$('.play').on({
 			'tap': function(e){
 				e.preventDefault();
-				playPresentation(true);
+				playPresentation(true, $(this).attr('data-interval'));
 			}
 		});
 		
@@ -1265,6 +1292,7 @@ topoDog = {
 							
 							loql.del('object', objectID);
 							$(this).remove();
+							topoDog.sumActions();
 						//}
 					}
 				});
@@ -1280,6 +1308,7 @@ topoDog = {
 							loql.del('action', actionID);
 							$('#frame-'+actionID).remove();
 							$(this).remove();
+							topoDog.sumActions();
 						//}
 					}
 				});
@@ -1634,6 +1663,11 @@ topoDog = {
 	
 	},
 	
+	sumActions:function(){
+		var somma = loql.select('action');
+		$('#somma').html(somma.length - 1);
+	},
+	
 	addNote: function(actionID){
 		
 		var label = $('#action-'+actionID).children('.noteLabel').html();
@@ -1681,41 +1715,127 @@ topoDog = {
 	
 	},
 	
+	
+	scenarioForm:function(){
+		$('#modeControlsBox, #scenario, #bottomControls').hide(0);
+		$('#scenarioForm').show(0);
+		
+		var locationSettings = loql.select('locationSettings', 0) || {};
+		$('#scenario_name').val(locationSettings.name);
+		$('#scenario_data').val(locationSettings.data);
+		$('#scenario_setting').val(locationSettings.setting);
+		$('#scenario_evento').val(locationSettings.evento);
+		
+		scrollBars();
+		
+		
+		$('#submitScenarioForm').off();
+		$('#submitScenarioForm').on({
+			'tap': function(){
+				
+				theSettings = {
+					name: $('#scenario_name').val(),
+					data: $('#scenario_data').val(),
+					setting: $('#scenario_setting').val(),
+					evento: $('#scenario_evento').val(),
+				}
+				
+			
+				loql.set('locationSettings', '0', theSettings);
+				
+				$('#scenarioForm').hide(0);
+				$('#modeControlsBox, #scenario, #bottomControls').show(0);
+				
+			}
+		});
+		
+		$('#closeScenarioForm').off();
+		$('#closeScenarioForm').on({
+			'tap': function(){
+				$('#scenarioForm').hide(0);
+				$('#modeControlsBox, #scenario, #bottomControls').show(0);
+				scrollBars();
+			}
+		});
+		
+		
+	},
+	
 	newDogForm: function(){
+		
+		$('#newDog_castrato').hide();
+		$('#newDog_sterilizzata').hide();
 		
 		$('#newDog_color').val('');
 		$('#newDog_name').val('');
-		$('#newDog_type').val('');
 		$('#newDog_image').val('');
+		$('#photo').attr('src', '');
+		$('#newDog_eta').val('');
+		$('#newDog_peso').val('');
+		$('#newDog_razza').val('');
+		$('#newDog_prov').val('');
+		$('#newDog_status').val('');
+		$('#newDog_sesso').val('');
+		$('#newDog_castrato').val('');
+		$('#newDog_sterilizzata').val('');
+		$('#newDog_alimentazione').val('');
+		
 		
 		$('#modeControlsBox, #scenario, #bottomControls').hide(0);
 		$('#newDog').show(0);
+		
+		topoDog.dogFormFields();
+		
 		scrollBars();
 	},
 	
 	editDogForm: function(id){
 		
 		var theBeing = loql.select('beings', id);
-		
 		//console.log(theBeing);
 		
 		$('#newDog_color').val(theBeing.color);
 		$('#newDog_name').val(theBeing.name);
-		//$('#newDog_type').val('');
-		//$('#newDog_image').val('');
+		$('#photo').attr('src', theBeing.image);
+		
+		$('#newDog_eta').val(theBeing.eta);
+		$('#newDog_peso').val(theBeing.peso);
+		$('#newDog_razza').val(theBeing.razza);
+		$('#newDog_prov').val(theBeing.prov);
+		$('#newDog_status').val(theBeing.status);
+		$('#newDog_sesso').val(theBeing.sesso);
+		$('#newDog_castrato').val(theBeing.cast);
+		$('#newDog_sterilizzata').val(theBeing.ster);
+		$('#newDog_alimentazione').val(theBeing.alim);
+		
 		
 		//$('.colorSelect[data-color='+theBeing.color+']').click();
 		
-		
 		$('#submitNewDogForm').hide(0);
 		$('#submitEditDogForm').show(0);
+		
+		topoDog.dogFormFields();
 		
 		$('#submitEditDogForm').off();
 		$('#submitEditDogForm').on({
 			'tap': function(){
 				//topoDog.insertBeing();
-				theBeing.name = $('#newDog_name').val();
-				theBeing.color = $('#newDog_color').val();
+				
+				theBeing = {
+					id: id, 
+					color: $('#newDog_color').val(),
+					name: $('#newDog_name').val(),
+					image: $('#photo').attr('src'),
+					eta: $('#newDog_eta').val(),
+					peso: $('#newDog_peso').val(),
+					razza: $('#newDog_razza').val(),
+					prov: $('#newDog_prov').val(),
+					status: $('#newDog_status').val(),
+					sesso: $('#newDog_sesso').val(),
+					cast: $('#newDog_castrato').val(),
+					ster: $('#newDog_sterilizzata').val(),
+					alim: $('#newDog_alimentazione').val(),
+				}
 				
 				loql.set('beings', id, theBeing);
 				
@@ -1738,25 +1858,97 @@ topoDog = {
 		scrollBars();
 	},
 	
-	insertBeing:function(){
+	dogFormFields: function(){
+		
+		switch($('#newDog_sesso').val()){
+			case 'M':
+				$('#newDog_castrato').show();
+				$('#newDog_sterilizzata').hide();
+			break;
+			
+			case 'F':
+				$('#newDog_castrato').hide();
+				$('#newDog_sterilizzata').show();
+			break;
+			
+			default:
+				$('#newDog_castrato').hide();
+				$('#newDog_sterilizzata').hide();
+		
+		}
+		
+		
+		$('#newDog_sesso').off();
+		$('#newDog_sesso').on({
+			'change': function(){
+				
+				switch($(this).val()){
+					case 'M':
+						$('#newDog_castrato').show();
+						$('#newDog_sterilizzata').hide();
+					break;
+					
+					case 'F':
+						$('#newDog_castrato').hide();
+						$('#newDog_sterilizzata').show();
+					break;
+					
+					default:
+						$('#newDog_castrato').hide();
+						$('#newDog_sterilizzata').hide();
+				
+				}
+				
+				scroll_newDog.refresh();
+				
+			}
+		});
+		
+	},
 	
-		var color = $('#newDog_color').val();
-		var name = $('#newDog_name').val();
-		var type = $('#newDog_type').val();
-		var image= $('#newDog_image').val();
-		if(!name){
+	insertBeing:function(){
+		
+		newBeing = {
+			color: $('#newDog_color').val(),
+			name: $('#newDog_name').val(),
+			image: $('#photo').attr('src'),
+			eta: $('#newDog_eta').val(),
+			peso: $('#newDog_peso').val(),
+			razza: $('#newDog_razza').val(),
+			prov: $('#newDog_prov').val(),
+			status: $('#newDog_status').val(),
+			sesso: $('#newDog_sesso').val(),
+			cast: $('#newDog_castrato').val(),
+			ster: $('#newDog_sterilizzata').val(),
+			alim: $('#newDog_alimentazione').val(),
+		}
+		
+		
+		if(!newBeing.name){
 			alert('Please insert a name!');
 			return false;
 		}
-		if(!color){
+		if(!newBeing.color){
 			alert('Please select a color!');
 			return false;
 		}
+		
+		
 		$('#newDog').hide(0);
 		$('#modeControlsBox, #scenario, #bottomControls').show(0);
-		this.newBeingElement(color, name, type, image);
+		
+		
+		
+		var newBeingID = loql.insert('beings', newBeing);
+		this.loadBeings();
+		scrollBars();
+		return newBeingID;
+		
+		
+		//this.newBeingElement(color, name, type, image, eta, peso, razza);
 	},
 	
+	/*****
 	newBeingElement: function(color, name, type, image){
 		// insert new being in topoDog.beings
 	
@@ -1773,6 +1965,7 @@ topoDog = {
 		scrollBars();
 		return newBeingID;
 	},
+	*****/
 	
 	showBeing: function(id){
 		//$('#beings > a[data-id='+id+']').show();
@@ -1974,13 +2167,6 @@ topoDog = {
 		topoDogLauncher();
 		
 		
-		
-		
-		
-		
-		
-		
-		
 	},
 	
 	newItem: function(objectID,x,y,nodb){
@@ -2126,6 +2312,8 @@ topoDog = {
 		topoDog.lastID = theID;
 		//console.log(topoDog.lastID);
 		
+		topoDog.sumActions();
+		
 		return theID;
 	},
 	
@@ -2160,6 +2348,8 @@ topoDog = {
 			}
 			topoDog.deleteActionsById(next, bid);
 		}
+		
+		topoDog.sumActions();
 		
 	},
 	

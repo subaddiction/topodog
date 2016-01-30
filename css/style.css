@@ -468,7 +468,7 @@ position:absolute;
 }
 
 
-#configuration, #newDog
+#configuration, #scenarioForm, #newDog
 {
 display:none;
 width:100%;
@@ -482,18 +482,33 @@ overflow:hidden;
 z-index:99999;
 }
 
-#newDog form
+#newDog form, #scenarioForm form
 {
 padding:1em;
 }
 
-#newDog input[type=text]
+#newDog input[type=text], #newDog select,
+#scenarioForm input[type=text], #scenarioForm select
 {
+display:block;
 font-size:2.4em;
-width:400px;
+width:640px;
+margin:15px auto;
 }
 
-#newDog .glyphicon
+.dform
+{
+display:block;
+width:640px;
+margin:15px auto 5px;
+}
+
+#newDog_cast, #newDog_ster
+{
+display:none;
+}
+
+#newDog .glyphicon, #scenarioForm .glyphicon
 {
 font-size:2.4em;
 }
@@ -501,6 +516,11 @@ font-size:2.4em;
 #closeNewDogForm
 {
 margin-right:220px;
+}
+
+#submitNewDogForm, #submitEditDogForm, #submitScenarioForm
+{
+float:right;
 }
 
 .colorSelect
@@ -616,7 +636,7 @@ z-index:9999;
 margin-top:39px;
 }
 
-.makeSnapshot, .clearSnapshot, .showAllTimeline, .hideFromTimeline, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
+.makeSnapshot, .clearSnapshot, .showAllTimeline, .hideFromTimeline, .showplay, .play, .pause, .fwd, .rew, .stepFwd, .stepRew, .gotoStart, .gotoEnd
 {
 display:inline-block;
 font-size:28px;
@@ -639,9 +659,23 @@ transition:background .5s;
 display:none;
 }
 
-.play, .pause, .stepFwd, .stepRew, .fwd, .rew, .gotoStart, .gotoEnd
+.showplay, .play, .pause, .stepFwd, .stepRew, .fwd, .rew, .gotoStart, .gotoEnd
 {
 width:25%;
+}
+
+#play
+{
+display:none;
+}
+
+.play
+{
+font-size:15px;
+font-weight:bold;
+background:#ffffff;
+color:#000000!important;
+border-radius:50%;
 }
 
 #firstFrameFlag, #lastFrameFlag
@@ -695,4 +729,41 @@ z-index:999999;
 .action.forceShow
 {
 display:block!important;
+}
+
+body > video, body > button
+{
+position:fixed;
+z-index:9999999;
+top:0;
+left:0;
+}
+
+#photo-button
+{
+height:36px;
+line-height:36px;
+}
+
+#photo, .photo
+{
+width:42px;
+height:36px;
+border-radius:4px;
+}
+
+
+#somma
+{
+position:relative;
+display:block;
+font-size:10px;
+font-weight:bold;
+line-height:100%;
+width:100%;
+text-align:right;
+top:-55px;
+padding:1px;
+color:#888888;
+box-sizing:border-box;
 }

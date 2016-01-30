@@ -54,6 +54,7 @@
 			<a class="mode" data-mode="insertActions" href="javascript:;" title="Azioni: Seleziona un cane ed una azione, poi clicca e trascina sullo scenario per inserire ed orientare l'azione. I pulsanti delle azioni hanno lo sfondo del colore del cane selezionato.">
 				<span class="glyphicon glyphicon-screenshot"></span>
 			</a>
+			<span id="somma"></span>
 		</li>
 		<li>
 			<a class="mode" data-mode="moveActions" href="javascript:;" title="Muovi Azioni">
@@ -119,6 +120,12 @@
 		<li>
 			<a id="presentation" class="mode"  data-mode="view3d" href="javascript:;" title="Presentazione: Premi su un numero ID azione (riquadro colorato) per vedere le azioni fino ad essa. Premi su una data (riquadro nero) per vedere le azioni da essa in poi.">
 				<span class="glyphicon glyphicon-plane"></span>
+			</a>
+		</li>
+		
+		<li>
+			<a id="openScenarioForm" href="javascript:;">
+				<span class="glyphicon glyphicon-cog"></span>
 			</a>
 		</li>
 		
@@ -262,38 +269,136 @@
 </div>
 
 
+<div id="scenarioForm">
+	<form onsubmit="return false">
+		<h1 class="dform">Impostazioni scenario</h1>
+		
+		<h3 class="dform">Nome del luogo:</h3>
+		<input id="scenario_name" type="text" placeholder="Nome del luogo" />
+		
+		<h3 class="dform">Data evento:</h3>
+		<input id="scenario_data" type="text" placeholder="Data evento" />
+		
+		<select id="scenario_setting">
+		<option value="">Setting</option>
+		<option value="naturale">Setting naturale</option>
+		<option value="canile">Canile</option>
+		<option value="campo_educazione">Campo educazione</option>
+		</select>
+		
+		<select id="scenario_evento">
+		<option value="">Evento</option>
+		<option value="dimmi_chi_sei">Dimmi chi sei</option>
+		<option value="classe_comunicazione">Classe di comunicazione</option>
+		<option value="docenza">Docenza</option>
+		</select>
+		
+		
+		<div class="dform">
+		
+		<a id="closeScenarioForm" class="control" href="javascript:;">
+			<span class="glyphicon glyphicon-remove"></span>
+		</a>
+		
+		<a id="submitScenarioForm" class="control" href="javascript:;">
+			<span class="glyphicon glyphicon-ok"></span>
+		</a>
+		
+		</div>
+		
+		
+	</form>
+</div>
+
 
 <div id="newDog">
 	<form onsubmit="return false">
-		<h3>Nome:</h3>
+		<h3 class="dform">Nome:</h3>
 		<input id="newDog_name" type="text" placeholder="Nome del cane" />
-		<h3>Colore:</h3>
-		<span class="colorSelect" data-color="#ff0000"></span>
-		<span class="colorSelect" data-color="#00aa00"></span>
-		<span class="colorSelect" data-color="#0000ff"></span>
-		<span class="colorSelect" data-color="#ff9900"></span>
-		<span class="colorSelect" data-color="#009999"></span>
-		<span class="colorSelect" data-color="#ff00ff"></span>
-		<div class="clear"></div>
-		<span class="colorSelect" data-color="#990000"></span>
-		<span class="colorSelect" data-color="#006600"></span>
-		<span class="colorSelect" data-color="#000088"></span>
-		<span class="colorSelect" data-color="#996600"></span>
-		<span class="colorSelect" data-color="#006666"></span>
-		<span class="colorSelect" data-color="#990099"></span>
-		<div class="clear"></div>
-		<span class="colorSelect" data-color="#660000"></span>
-		<span class="colorSelect" data-color="#003300"></span>
-		<span class="colorSelect" data-color="#000055"></span>
-		<span class="colorSelect" data-color="#663300"></span>
-		<span class="colorSelect" data-color="#003333"></span>
-		<span class="colorSelect" data-color="#660066"></span>
-		<div class="clear"></div>
-		<div id="picker"></div>
+		<h3 class="dform">Colore:</h3>
+		
+		<div class="dform">
+			<span class="colorSelect" data-color="#ff0000"></span>
+			<span class="colorSelect" data-color="#00aa00"></span>
+			<span class="colorSelect" data-color="#0000ff"></span>
+			<span class="colorSelect" data-color="#ff9900"></span>
+			<span class="colorSelect" data-color="#009999"></span>
+			<span class="colorSelect" data-color="#ff00ff"></span>
+			
+			<span class="colorSelect" data-color="#990000"></span>
+			<span class="colorSelect" data-color="#006600"></span>
+			<span class="colorSelect" data-color="#000088"></span>
+			<div class="clear"></div>
+			<span class="colorSelect" data-color="#996600"></span>
+			<span class="colorSelect" data-color="#006666"></span>
+			<span class="colorSelect" data-color="#990099"></span>
+			
+			<span class="colorSelect" data-color="#660000"></span>
+			<span class="colorSelect" data-color="#003300"></span>
+			<span class="colorSelect" data-color="#000055"></span>
+			<span class="colorSelect" data-color="#663300"></span>
+			<span class="colorSelect" data-color="#003333"></span>
+			<span class="colorSelect" data-color="#660066"></span>
+			<div class="clear"></div>
+			<div id="picker"></div>
+		</div>
+		
 		<input id="newDog_color" type="hidden" />
-		<br /><br />
-		<input id="newDog_type" type="hidden" value="dog" />
-		<input id="newDog_image" type="hidden" value="" />
+		
+		<div class="dform">
+		<img id="photo" src="" />
+		<button id="photo-button" onclick="capturePhoto()">SCATTA FOTO</button>
+		</div>
+		
+		<h3 class="dform">Età:</h3>
+		<input id="newDog_eta" type="text" placeholder="Età del cane" />
+		
+		<h3 class="dform">Peso:</h3>
+		<input id="newDog_peso" type="text" placeholder="Peso del cane" />
+		
+		<h3 class="dform">Razza:</h3>
+		<input id="newDog_razza" type="text" placeholder="Razza del cane" />
+		
+		
+		<select id="newDog_prov">
+		<option value="">Provenienza</option>
+		<option value="cas">Prov. Casa</option>
+		<option value="can">Prov. Canile</option>
+		<option value="str">Prov. Strada</option>
+		<option value="all">Prov. Allevamento</option>
+		</select>
+		
+		<select id="newDog_status">
+		<option value="">Status</option>
+		<option value="can">Status Canile</option>
+		<option value="prop">Status Proprietario</option>
+		</select>
+		
+		<select id="newDog_sesso">
+		<option value="">Sesso</option>
+		<option value="M">Maschio</option>
+		<option value="F">Femmina</option>
+		</select>
+		
+		<select id="newDog_castrato">
+		<option value="">Non Castrato</option>
+		<option value="cast">Castrato</option>
+		</select>
+		
+		<select id="newDog_sterilizzata">
+		<option value="">Non sterilizzata</option>
+		<option value="ster">Sterilizzata</option>
+		</select>
+		
+		<select id="newDog_alimentazione">
+		<option value="">Alimentazione</option>
+		<option value="croc">Crocchette</option>
+		<option value="casa">Casalingo</option>
+		<option value="barf">BARF</option>
+		</select>
+		
+		
+		<div class="dform">
 		
 		<a id="closeNewDogForm" class="control" href="javascript:;">
 			<span class="glyphicon glyphicon-remove"></span>
@@ -306,6 +411,8 @@
 		<a id="submitEditDogForm" class="control" href="javascript:;">
 			<span class="glyphicon glyphicon-ok"></span>
 		</a>
+		
+		</div>
 		
 	</form>
 </div>
