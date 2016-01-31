@@ -1860,6 +1860,14 @@ topoDog = {
 	
 	dogFormFields: function(){
 		
+		$('select').off();
+		$('select').on({
+			'change': function(){
+			scroll_newDog.refresh();
+			}
+		
+		});
+		
 		switch($('#newDog_sesso').val()){
 			case 'M':
 				$('#newDog_castrato').show();
