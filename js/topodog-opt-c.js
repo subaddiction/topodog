@@ -436,7 +436,7 @@ topoDog = {
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
-				zoomField(2);
+				zoomField(1.1);
 			}
 		});
 		
@@ -446,7 +446,17 @@ topoDog = {
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
-				zoomField(.5);
+				zoomField(.9);
+			}
+		});
+		
+		$('#zoomReset').off();
+		$('#zoomReset').on({
+			'tap': function(){
+				if(topoDog.mode != 'view3d'){
+					$('#presentation').click();
+				}
+				zoomReset();
 			}
 		});
 		
@@ -757,7 +767,7 @@ topoDog = {
 		}
 		
 		if(this.isApp()){
-			$('.zoomMore, .zoomLess').addClass('hidden');
+			$('.zoomMore, .zoomLess, .zoomReset').addClass('hidden');
 		}
 		
 		this.startControls();
