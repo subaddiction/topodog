@@ -726,7 +726,7 @@ topoDog = {
 			//transform:'scale(4) rotate(0deg)',
 			opacity:0,
 		}, 1000, function(){
-			//$('#hl-'+id).remove();
+			$('#hl-'+id).remove();
 		});
 	},
 	
