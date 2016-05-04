@@ -382,4 +382,128 @@ function capturePhoto(){
 		});
 }
 
+function getTmpl(template, data, target, callback){
+	
+	$(target).addClass('loading');	
+	
+	$.get("./templates/"+template+".html", function(res){		
+		var tmpl = $.templates(res);
+		var htmlOutput = tmpl.render(data);
+		
+		$(target).html(htmlOutput);
+		$(target).removeClass('loading');
+		
+		if(callback){
+			callback();
+		}	
+		
+	});
+}
+
+
+function makeStats(){
+	
+	var beings = loql.select('beings');
+	var actions = loql.select('action');
+	var definedActions = loql.select('actions');
+	
+	
+	var theActions = [];
+	for(j in definedActions){
+		var theAction = loql.select('actions', definedActions[j]);
+		//console.log(theAction);
+		theActions[j] = theAction;
+		
+	}
+	
+	//Modello per serie azioni a zero
+	var defaultActions = [];
+	for(j in definedActions){
+		defaultActions[j] = 0;
+	}
+	
+	var beings_actions = {
+		actions:theActions,
+		data:[],
+		totals:$.makeArray(defaultActions),
+	};
+	
+	for(k in beings){
+		var currentBeing = loql.select('beings', beings[k]);
+		//console.log(currentBeing);
+		
+		beings_actions.data[k] = {
+			b:currentBeing,
+			actions:$.makeArray(defaultActions),
+		}
+	}
+	
+	for(i in actions){
+
+		if(i <= 0){
+			continue;
+		} else {
+			
+			var currentAction = loql.select('action', actions[i]);
+			//console.log(currentAction);
+			//console.log(parseInt(currentAction.aid));
+			//console.log(parseInt(currentAction.bid));
+		
+			//var currentBeing = loql.select('beings', currentAction.bid);
+		
+			for(a in definedActions){
+			
+				if(parseInt(currentAction.aid) == definedActions[a]){
+					
+					//console.log(i+': azione '+definedActions[a]+' a cane '+parseInt(currentAction.bid))
+					//console.log(beings_actions.data[parseInt(currentAction.bid)].actions);
+					beings_actions.data[parseInt(currentAction.bid)].actions[a]++;
+					beings_actions.totals[a]++;
+				}
+		
+			}
+		
+		}
+
+	
+	}
+	
+	return beings_actions;
+
+}
+
+
+
+var scroll_stats;
+
+function showStats(){
+
+	var stats = makeStats();
+	
+	getTmpl('stats', stats, '#statsContent', function(){
+		$('#stats').show();
+		
+		scroll_stats = false;
+		scroll_stats = new IScroll('#statsScroller', {
+			mouseWheel: true,
+			scrollbars: true,
+			scrollY: true,
+			scrollX: false,
+			bounce: false,
+			momentum: false,
+			deceleration:1,
+		});
+		
+		scroll_stats.refresh();
+		
+		$('#closeStats').off();
+		
+		$('#closeStats').on({
+			'tap':function(){
+				$('#stats').hide();
+			}
+		});
+	});
+
+}
 

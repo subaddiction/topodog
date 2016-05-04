@@ -123,7 +123,7 @@ topoDog = {
 			$('#itemsControls').width(itemsW+'px');
 			
 			$('#itemsControls a').on({
-				'mouseup touchend': function(){
+				'tap': function(){
 					topoDog.selectItem($(this).attr('data-id'));
 				}
 			});
@@ -179,9 +179,10 @@ topoDog = {
 			}
 			tag += '<span class="beingName">';
 				if(currentBeing.image != ''){
-					tag += '<img class="photo" src="'+currentBeing.image+'" />';
+					tag += '<div class="beingImg"><img class="photo" src="'+currentBeing.image+'" /></div>';
+					tag += '<div class="beingTxt">'+currentBeing.name+'</div>'
 				} else {
-					tag += currentBeing.name;
+					tag += '<div class="beingTxtOnly">'+currentBeing.name+'</div>';
 				}
 			tag += '</span>';
 			tag +='</a>';
@@ -367,7 +368,7 @@ topoDog = {
 		
 		var oneControlW = $('#modeControls li').width();
 		var oneControlM = parseInt($('#modeControls li').css('margin-right'));
-		var controlsW = (oneControlW + (4 * oneControlM)) * ($('#modeControls li').length);
+		var controlsW = ((oneControlW + (4 * oneControlM))) * ($('#modeControls li:not(.hidden)').length);
 		$('#modeControls').width(controlsW+'px');
 		
 		var oneTesselW = $('#tessels a').width();
@@ -419,6 +420,13 @@ topoDog = {
 					$(this).attr('data-switched', '0');
 					$(this).children('span').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
 				}
+			}
+		});
+		
+		$('#showStats').off();
+		$('#showStats').on({
+			'tap': function(){
+				showStats();
 			}
 		});
 		
@@ -708,7 +716,7 @@ topoDog = {
 			//transform:'scale(4) rotate(0deg)',
 			opacity:0,
 		}, 1000, function(){
-			$('#hl-'+id).remove();
+			//$('#hl-'+id).remove();
 		});
 	},
 	
@@ -748,6 +756,10 @@ topoDog = {
 			$('.time').remove();
 		}
 		
+		if(this.isApp()){
+			$('.zoomMore, .zoomLess').addClass('hidden');
+		}
+		
 		this.startControls();
 		this.modeControls();
 		
@@ -760,10 +772,6 @@ topoDog = {
 		this.drawItems();
 		this.drawActions();
 		
-		
-		if(this.isApp()){
-			$('#zoomMore, #zoomLess').hide();
-		}
 		
 		
 	},
@@ -872,6 +880,7 @@ topoDog = {
 				//$('#grid').off();
 				$('#grid').on({
 					'click': function(e){
+						
 						if(topoDog.selectedObject === false){
 							return;
 						}
@@ -885,7 +894,7 @@ topoDog = {
 						
 						} else {
 							var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
-							if(button==1){
+							if(button==0 || button==1){
 								var touch = e.originalEvent;
 								var X = touch.clientX - ($(this).offset().left);
 								var Y = touch.clientY - ($(this).offset().top);
@@ -2302,7 +2311,11 @@ topoDog = {
 		if(theBeing){
 			$('#action-'+theID).load('./svg/'+theAction.shape, function(){
 		
-				$('#action-'+theID).children('svg').css('transform', 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)');
+				$('#action-'+theID).children('svg').css(
+					{
+						'transform': 'scale('+topoDog.zoomFactor+') rotate('+rotation+'deg)',
+					}
+				);
 				//$('#action-'+theID+' svg path').css('fill', topoDog.activeBeing.color);
 				$('#action-'+theID+' svg path').css('fill', theBeing.color);
 				$('#action-'+theID).children('svg').attr('data-rot', rotation);

@@ -19,6 +19,7 @@
 
 <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
+<script type="text/javascript" src="js/jsrender.min.js"></script>
 
 <!--
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -83,16 +84,6 @@
 		</li>
 		
 	</ul>
-	<!--
-	<ul id="beingsControls">
-		<li>
-			<a href="javascript:;" onclick="topoDog.newDogForm();">
-				<span class="glyphicon glyphicon-plus-sign"></span>
-			</a>
-		</li>
-		
-	</ul>
-	-->
 	<ul id="viewControls">
 	
 		<li>
@@ -102,16 +93,22 @@
 		</li>
 		
 		<li>
+			<a id="showStats" href="javascript:;" title="Mostra le statistiche dello scenario" data-switched="0">
+				<span class="glyphicon glyphicon-stats"></span>
+			</a>
+		</li>
+		
+		<li>
 			<a id="inlineHelp" class="mode" data-mode="help" href="javascript:;" title="Tieni premuto un pulsante funzione per per leggere le istruzioni.">
 				<span class="glyphicon glyphicon-question-sign"></span>
 			</a>
 		</li>
-		<li>
+		<li class="zoomMore">
 			<a id="zoomMore" href="javascript:;">
 				<span class="glyphicon glyphicon-zoom-in"></span>
 			</a>
 		</li>
-		<li>
+		<li class="zoomLess">
 			<a id="zoomLess" href="javascript:;">
 				<span class="glyphicon glyphicon-zoom-out"></span>
 			</a>
@@ -415,6 +412,15 @@
 		</div>
 		
 	</form>
+</div>
+
+
+<div id="stats">
+	<div id="statsScroller">
+		<div id="statsContent">
+
+		</div>
+	</div>
 </div>
 
 </body>

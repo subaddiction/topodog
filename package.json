@@ -1,0 +1,14 @@
+{
+  "name": "TopoDog",
+  "description": "",
+  "version": "4.0.0",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 1024,
+    "height": 768
+  },
+  "scripts": {
+    "start": "nw ."
+  }
+}
