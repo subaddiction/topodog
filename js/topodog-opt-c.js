@@ -835,6 +835,8 @@ topoDog = {
 				
 				var gridCanvas = document.getElementById("bgCanvas");
 				var ctx = gridCanvas.getContext("2d");
+				ctx.lineCap = "round";
+				ctx.lineJoin = "round";
 				
 				var X;
 				var Y;
