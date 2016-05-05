@@ -836,6 +836,13 @@ topoDog = {
 				var gridCanvas = document.getElementById("bgCanvas");
 				var ctx = gridCanvas.getContext("2d");
 				
+				var X;
+				var Y;
+				var lastX;
+				var lastY;
+				
+				var restartPath = true;
+				
 				//$('#grid').off();
 				$('#grid').on({
 				
@@ -843,6 +850,8 @@ topoDog = {
 						
 						e.preventDefault();
 						
+						lastX = X;
+						lastY = Y;
 						
 						var tesselSize = topoDog.originalTileSize * topoDog.paintSize;
 						var tesselZoom = topoDog.tileSize * topoDog.paintSize;
@@ -851,30 +860,60 @@ topoDog = {
 							var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 							
 
-							var X = touch.pageX - ($(this).offset().left) - (tesselSize/2);
-							var Y = touch.pageY - ($(this).offset().top) - (tesselSize/2);
+							X = touch.pageX - ($(this).offset().left) - (tesselSize/2);
+							Y = touch.pageY - ($(this).offset().top) - (tesselSize/2);
 							
-							ctx.fillStyle = paintColor;
-							ctx.fillRect(X, Y, tesselSize, tesselSize);
+							//ctx.fillStyle = paintColor;
+							//ctx.fillRect(X, Y, tesselSize, tesselSize);
+							if(restartPath == false){
+								ctx.beginPath();
+								ctx.moveTo(lastX, lastY);
+								ctx.lineTo(X, Y);
+								ctx.closePath();
+								ctx.strokeStyle = paintColor;
+    								ctx.lineWidth   = tesselSize;
+								ctx.stroke();
+							} else {
+								restartPath = false;
+							}
 							
 						} else {
 							var button = (typeof(e.buttons) != "undefined") ? e.buttons : e.which;
 							if(button==1){
 							
-							var touch = e.originalEvent;
-							var X = touch.clientX - ($(this).offset().left) - (tesselSize/2);
-							var Y = touch.clientY - ($(this).offset().top) - (tesselSize/2);
+								var touch = e.originalEvent;
+								X = touch.clientX - ($(this).offset().left) - (tesselSize/2);
+								Y = touch.clientY - ($(this).offset().top) - (tesselSize/2);
 							
 							
 							
 							
-							ctx.fillStyle = paintColor;
-							ctx.fillRect(X, Y, tesselSize, tesselSize);
+								//ctx.fillStyle = paintColor;
+								//ctx.fillRect(X, Y, tesselSize, tesselSize);
+							
+								if(restartPath == false){
+									ctx.beginPath();
+									ctx.moveTo(lastX, lastY);
+									ctx.lineTo(X, Y);
+									ctx.closePath();
+									ctx.strokeStyle = paintColor;
+    									ctx.lineWidth   = tesselSize;
+									ctx.stroke();
+								} else {
+									restartPath = false;
+								}
 								
 							}
 						}
 						
 						
+						
+					},
+					
+					'mouseup touchend': function(e){
+						
+						e.preventDefault();
+						restartPath = true;
 						
 					}
 				});
