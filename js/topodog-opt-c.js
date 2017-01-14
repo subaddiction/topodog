@@ -123,7 +123,7 @@ topoDog = {
 			$('#itemsControls').width(itemsW+'px');
 			
 			$('#itemsControls a').on({
-				'tap': function(){
+				'click': function(){
 					topoDog.selectItem($(this).attr('data-id'));
 				}
 			});
@@ -205,18 +205,26 @@ topoDog = {
 		
 		$('#beings a').on({
 		
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				$('#actions a').css('background', $(this).attr('data-color'));
 				topoDog.activeBeing = loql.select('beings', $(this).attr('data-id'));
 			},
 			
-			'taphold': function(e){
+			'taphold dblclick': function(e){
 				e.preventDefault();
 				
 				//$(this).addClass('editing');
 				
 				$('#showBeing').remove();
+				
+				if($(this).hasClass('editing')){
+					$(this).removeClass('editing');
+					return;
+				} else {
+					$(this).addClass('editing');
+				}
+				
 				var id = $(this).attr('data-id');
 				var color = $(this).attr('data-color');
 				
@@ -235,7 +243,7 @@ topoDog = {
 				
 				
 				$('.deleteB').on({
-					'tap': function(){
+					'click': function(){
 						if(confirm("Sei sicuro di voler ELIMINARE questo cane?\nQuesta azione ELIMINA tutti i dati relativi al cane e NON può essere annullata!")){
 							
 							//topoDog.hideBeing(id);
@@ -251,7 +259,7 @@ topoDog = {
 				
 				
 				$('.editB').on({
-					'tap': function(){
+					'click': function(){
 						
 						topoDog.editDogForm(id);
 						//$('.being').removeClass('editing');
@@ -262,7 +270,7 @@ topoDog = {
 				
 				
 				$('.showB').on({
-					'tap': function(){
+					'click': function(){
 						
 						$(this).parent().parent().children('.flagHide').remove();
 						topoDog.showBeing(id);
@@ -271,7 +279,7 @@ topoDog = {
 					}
 				});
 				$('.hideB').on({
-					'tap': function(){
+					'click': function(){
 						$(this).parent().parent().children('.flagHide').remove();
 						$(this).parent().parent().prepend('<span class="flagHide glyphicon glyphicon-eye-close"></span>');
 						topoDog.hideBeing(id);
@@ -395,21 +403,21 @@ topoDog = {
 		
 		$('#openScenarioForm').off();
 		$('#openScenarioForm').on({
-			'tap': function(){
+			'click': function(){
 				topoDog.scenarioForm();
 			}
 		});
 		
 		$('#openNewDogForm').off();
 		$('#openNewDogForm').on({
-			'tap': function(){
+			'click': function(){
 				topoDog.newDogForm();
 			}
 		});
 		
 		$('#showAllPrevious').off();
 		$('#showAllPrevious').on({
-			'tap': function(){
+			'click': function(){
 				var switched = $(this).attr('data-switched');
 				if(switched == '0'){
 					$('.action').addClass('forceShow');
@@ -425,14 +433,14 @@ topoDog = {
 		
 		$('#showStats').off();
 		$('#showStats').on({
-			'tap': function(){
+			'click': function(){
 				showStats();
 			}
 		});
 		
 		$('#zoomMore').off();
 		$('#zoomMore').on({
-			'tap': function(){
+			'click': function(){
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
@@ -442,7 +450,7 @@ topoDog = {
 		
 		$('#zoomLess').off();
 		$('#zoomLess').on({
-			'tap': function(){
+			'click': function(){
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
@@ -452,7 +460,7 @@ topoDog = {
 		
 		$('#zoomReset').off();
 		$('#zoomReset').on({
-			'tap': function(){
+			'click': function(){
 				if(topoDog.mode != 'view3d'){
 					$('#presentation').click();
 				}
@@ -468,7 +476,7 @@ topoDog = {
 		
 		$('.colorSelect').off();
 		$('.colorSelect').on({
-			'tap': function(){
+			'click': function(){
 				$('.colorSelect').css('outline', '0');
 				$('.colorSelect').css('opacity', '0.6');
 				$('.colorSelect').css('box-shadow', 'none');
@@ -489,7 +497,7 @@ topoDog = {
 		
 		$('#closeNewDogForm').off();
 		$('#closeNewDogForm').on({
-			'tap': function(){
+			'click': function(){
 				$('#newDog').hide(0);
 				$('#modeControlsBox, #scenario, #bottomControls').show(0);
 				scrollBars();
@@ -498,21 +506,21 @@ topoDog = {
 		
 		$('#submitNewDogForm').off();
 		$('#submitNewDogForm').on({
-			'tap': function(){
+			'click': function(){
 				topoDog.insertBeing();
 			}
 		});
 		
 		$('#sizes a').off();
 		$('#sizes a').on({
-			'tap': function(){
+			'click': function(){
 				topoDog.setPaintSize($(this).attr('data-size'), $(this));
 			}
 		});
 		
 		$('#itemsSizes a').off();
 		$('#itemsSizes a').on({
-			'tap': function(){
+			'click': function(){
 				topoDog.setItemSize($(this).attr('data-size'), $(this));
 			}
 		});
@@ -533,7 +541,7 @@ topoDog = {
 	modeControls: function(){
 		$('a.mode').off();
 		$('a.mode').on({
-			'tap': function(){
+			'click': function(){
 				//zoomReset(); //Stucks all in cordova app!!!
 				topoDog.modeSwitch($(this).attr('data-mode'));
 				$('a.mode').css({
@@ -565,17 +573,17 @@ topoDog = {
 		
 		
 		showhide += '<div>';
-		showhide += '<a class="stepRew" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
-		showhide += '<a class="showplay" href="javascript:;"><span class="glyphicon glyphicon-play"></span></a>';
-		showhide += '<a class="pause" href="javascript:;"><span class="glyphicon glyphicon-pause"></span></a>';
-		showhide += '<a class="stepFwd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
+		showhide += '<a class="stepRew" href="javascript:;" title="Torna indietro di una azione"><span class="glyphicon glyphicon-step-backward"></span></a>';
+		showhide += '<a class="showplay" href="javascript:;" title="Play (selezionare intervallo di tempo tra una azione e la successiva)"><span class="glyphicon glyphicon-play"></span></a>';
+		showhide += '<a class="pause" href="javascript:;" title="Pausa"><span class="glyphicon glyphicon-pause"></span></a>';
+		showhide += '<a class="stepFwd" href="javascript:;" title="Vai avanti di una azione"><span class="glyphicon glyphicon-step-forward"></span></a>';
 		showhide += '</div>';
 		
 		showhide += '<div>';
-		showhide += '<a class="rew" href="javascript:;"><span class="glyphicon glyphicon-fast-backward"></span></a>';
-		showhide += '<a class="gotoStart" href="javascript:;"><span class="glyphicon glyphicon-step-backward"></span></a>';
-		showhide += '<a class="gotoEnd" href="javascript:;"><span class="glyphicon glyphicon-step-forward"></span></a>';
-		showhide += '<a class="fwd" href="javascript:;"><span class="glyphicon glyphicon-fast-forward"></span></a>';
+		showhide += '<a class="rew" href="javascript:;" title="Vai alla prima azione registrata"><span class="glyphicon glyphicon-fast-backward"></span></a>';
+		showhide += '<a class="gotoStart" href="javascript:;" title="Vai all\'azione selezionata come INIZIO"><span class="glyphicon glyphicon-step-backward"></span></a>';
+		showhide += '<a class="gotoEnd" href="javascript:;" title="Vai all\'azione selezionata come FINE"><span class="glyphicon glyphicon-step-forward"></span></a>';
+		showhide += '<a class="fwd" href="javascript:;" title="Vai all\'ultima azione registrata"><span class="glyphicon glyphicon-fast-forward"></span></a>';
 		
 		showhide += '</div>';
 		
@@ -583,8 +591,8 @@ topoDog = {
 		showhide += '<a class="showAllTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-open"></span></a>';
 		showhide += '<a class="hideFromTimeline" href="javascript:;"><span class="glyphicon glyphicon-eye-close"></span></a>';
 		
-		showhide += '<a class="makeSnapshot" href="javascript:;"><span class="glyphicon glyphicon-camera"></span></a>';
-		showhide += '<a class="clearSnapshot" href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a>';
+		showhide += '<a class="makeSnapshot" href="javascript:;" title="Crea una immagine in tasparenza delle azioni visibili."><span class="glyphicon glyphicon-camera"></span></a>';
+		showhide += '<a class="clearSnapshot" href="javascript:;" title="Elimina l\'immagine in trasparenza."><span class="glyphicon glyphicon-remove"></span></a>';
 		showhide += '</div>';
 		
 		showhide += '</div>';
@@ -594,7 +602,7 @@ topoDog = {
 		
 		$('.showplay').off();
 		$('.showplay').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				$('#play').slideToggle();
 			}
@@ -602,15 +610,16 @@ topoDog = {
 		
 		$('.play').off();
 		$('.play').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				playPresentation(true, $(this).attr('data-interval'));
+				$('#play').slideToggle();
 			}
 		});
 		
 		$('.pause').off();
 		$('.pause').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				playPresentation(false);
 			}
@@ -618,7 +627,7 @@ topoDog = {
 		
 		$('.fwd').off();
 		$('.fwd').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				presentationFwd();
 			}
@@ -626,7 +635,7 @@ topoDog = {
 		
 		$('.rew').off();
 		$('.rew').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				presentationRew();
 			}
@@ -634,7 +643,7 @@ topoDog = {
 		
 		$('.stepFwd').off();
 		$('.stepFwd').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				presentationStep();
 			}
@@ -642,7 +651,7 @@ topoDog = {
 		
 		$('.stepRew').off();
 		$('.stepRew').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				presentationStep("rew");
 			}
@@ -650,7 +659,7 @@ topoDog = {
 		
 		$('.gotoStart').off();
 		$('.gotoStart').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				gotoStart();
 			}
@@ -658,7 +667,7 @@ topoDog = {
 		
 		$('.gotoEnd').off();
 		$('.gotoEnd').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				gotoEnd();
 			}
@@ -666,7 +675,7 @@ topoDog = {
 		
 		$('.makeSnapshot').off();
 		$('.makeSnapshot').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				topoDog.snapShot();
 			}
@@ -675,7 +684,7 @@ topoDog = {
 		
 		$('.clearSnapshot').off();
 		$('.clearSnapshot').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				topoDog.clearSnapShot();
 			}
@@ -684,7 +693,7 @@ topoDog = {
 		
 		$('.showAllTimeline').off();
 		$('.showAllTimeline').on({
-			'tap': function(e){
+			'click': function(e){
 				e.preventDefault();
 				$('.time').attr('frame-hide', 'false');
 				scrollBars();
@@ -735,20 +744,30 @@ topoDog = {
 		var col = 0;
 
 		
-		$('#'+this.tilesId).width((this.w*this.tileSize)+'px');
-		$('#'+this.tilesId).height((this.h*this.tileSize)+'px');
+//		$('#'+this.tilesId).width((this.w*this.tileSize)+'px');
+//		$('#'+this.tilesId).height((this.h*this.tileSize)+'px');
+//		
+//		
+//		$('#bgCanvas').attr('width', (this.w*this.tileSize));
+//		$('#bgCanvas').attr('height', (this.h*this.tileSize));
+
+//		$('#bgCanvas').css('margin-bottom', -(this.h*this.tileSize));
+//		
+//		$('#snapshot').css('width', (this.w*this.tileSize));
+//		$('#snapshot').css('height', (this.h*this.tileSize));
+
+		$('#'+this.tilesId).css('width', '100vw');
+		$('#'+this.tilesId).css('height', '100vh');;
 		
-		//$('canvas').remove();
-		//$('#grid').prepend('<canvas id="bgCanvas"></canvas>');
 		
-		$('#bgCanvas').attr('width', (this.w*this.tileSize));
-		$('#bgCanvas').attr('height', (this.h*this.tileSize));
+		$('#bgCanvas, #svgCanvas').attr('width', ($('#'+this.tilesId).width()));
+		$('#bgCanvas, #svgCanvas').attr('height', ($('#'+this.tilesId).height()));
 		
-		$('#bgCanvas').css('margin-bottom', -(this.h*this.tileSize));
+			
+		$('#bgCanvas').css('margin-bottom', -($('#'+this.tilesId).height()));
 		
-		$('#snapshot').css('width', (this.w*this.tileSize));
-		$('#snapshot').css('height', (this.h*this.tileSize));
-		
+		$('#snapshot').css('width', ($('#'+this.tilesId).width()));
+		$('#snapshot').css('height', ($('#'+this.tilesId).height()));
 		
 		
 		
@@ -1137,7 +1156,7 @@ topoDog = {
 				//$('.action').off();
 				$('.action').on({
 					
-					'taphold':function(e){
+					'taphold dblclick':function(e){
 						
 						e.preventDefault();
 						
@@ -1344,7 +1363,7 @@ topoDog = {
 				
 				//$('.object').off();
 				$('.object').on({
-					'taphold': function(e){
+					'mouseup touchend': function(e){
 						e.preventDefault();
 						
 						var objectID = $(this).attr('data-id');
@@ -1359,7 +1378,7 @@ topoDog = {
 				
 				//$('.action').off();
 				$('.action').on({
-					'taphold': function(e){
+					'mouseup touchend': function(e){
 						e.preventDefault();
 						//alert('muovi,ruota,elimina');
 						var actionID = $(this).attr('data-id');
@@ -1392,6 +1411,14 @@ topoDog = {
 			
 			break;
 			
+			
+			case 'drawAreas':
+			
+				drawSvgPaths('grid', 'svgCanvas');
+			
+			break;
+			
+			
 			case 'view3d':
 				
 				
@@ -1409,7 +1436,7 @@ topoDog = {
 				//$('.action').off();
 				$('.action').on({
 					
-					'tap':function(){
+					'click':function(){
 						//console.log($(this).attr('data-id'));
 						if(closeNote == true){
 							$('#noteShow, #noteForm').remove();
@@ -1512,7 +1539,7 @@ topoDog = {
 				$('.time').off();
 				$('.time').on({
 					
-					'taphold': function(e){
+					'taphold dblclick': function(e){
 						e.preventDefault();
 						//console.log('start/stop here');
 						$('#stopHere').off();
@@ -1534,7 +1561,7 @@ topoDog = {
 						$(this).prepend(flagDialog);
 						
 						$('#startHere').on({
-							'tap': function(e){
+							'click': function(e){
 								e.preventDefault();
 								$('#flagStart').remove();
 								var flagStart = '';
@@ -1549,7 +1576,7 @@ topoDog = {
 						});
 						
 						$('#stopHere').on({
-							'tap': function(e){
+							'click': function(e){
 								e.preventDefault();
 								$('#flagStop').remove();
 								var flagStop = '';
@@ -1564,7 +1591,7 @@ topoDog = {
 						});
 						
 						$('#cancelStop').on({
-							'tap': function(e){
+							'click': function(e){
 									e.preventDefault();
 									$('#flagDialog').remove();
 								}
@@ -1654,7 +1681,7 @@ topoDog = {
 				$('#noteControls').removeClass('ctrlH');
 				//$('.action').off();
 				$('.action').on({
-					'taphold': function(e){
+					'mouseup touchend': function(e){
 						e.preventDefault();
 						$('#noteForm, #noteShow').remove();
 						$('.action').attr('data-note', false);
@@ -1701,7 +1728,7 @@ topoDog = {
 				$('#helpBox').removeClass('ctrlH');
 				$('a.mode').off();
 				$('a.mode').on({
-					'taphold': function(){
+					'taphold dblclick': function(){
 						$('#help').html($(this).attr('title'));
 					},
 					
@@ -1791,7 +1818,7 @@ topoDog = {
 		
 		$('#submitScenarioForm').off();
 		$('#submitScenarioForm').on({
-			'tap': function(){
+			'click': function(){
 				
 				theSettings = {
 					name: $('#scenario_name').val(),
@@ -1811,7 +1838,7 @@ topoDog = {
 		
 		$('#closeScenarioForm').off();
 		$('#closeScenarioForm').on({
-			'tap': function(){
+			'click': function(){
 				$('#scenarioForm').hide(0);
 				$('#modeControlsBox, #scenario, #bottomControls').show(0);
 				scrollBars();
@@ -1878,7 +1905,7 @@ topoDog = {
 		
 		$('#submitEditDogForm').off();
 		$('#submitEditDogForm').on({
-			'tap': function(){
+			'click': function(){
 				//topoDog.insertBeing();
 				
 				theBeing = {

@@ -36,7 +36,7 @@ overflow-x:hidden;
 overflow-y:hidden;
 width:100%;
 height:100%;
-background:#333333;
+background:#eeeeee;
 }
 
 #bgCanvas
@@ -52,7 +52,7 @@ opacity:0.25;
 
 #grid
 {
-background:#eeeeee;
+background:transparent;
 border:1px solid #cccccc;
 margin-top:0px;
 margin-left:0px;
@@ -116,6 +116,11 @@ left:100%;
 margin-left:-2em;
 border-radius:2em  0 0 2em;
 z-index:9999;
+}
+
+.pan
+{
+display:none!important;
 }
 
 .quadro
@@ -250,6 +255,12 @@ line-height:12px;
 height:12px;
 margin-top:-4px;
 text-align:center;
+}
+
+/***** AZIONI RIMOSSE DA NASCONDERE IN UX MA MANTENUTE PER RETROCOMPATIBILITA DATI *****/
+#actSelect-11, #actSelect-16, #actSelect-17 
+{
+display:none!important;
 }
 
 #beingsBox, #actionsBox, #tesselsBox, #sizesBox, #timelineBox

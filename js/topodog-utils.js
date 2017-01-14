@@ -499,7 +499,7 @@ function showStats(){
 		$('#closeStats').off();
 		
 		$('#closeStats').on({
-			'tap':function(){
+			'click':function(){
 				$('#stats').hide();
 			}
 		});

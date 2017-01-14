@@ -21,20 +21,21 @@
 <script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
 <script type="text/javascript" src="js/jsrender.min.js"></script>
 
-<!--
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
--->
 <script type="text/javascript" src="js/loql.js"></script>
-<!--<script type="text/javascript" src="js/raphael.min.js"></script>-->
-<!--<script type="text/javascript" src="js/raphael.polyline.js"></script>-->
+
+
+<script type="text/javascript" src="js/bowser.min.js"></script>
 <script type="text/javascript" src="js/jquerypp.min.js"></script>
 <script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="js/colpick.js"></script>
 <script type="text/javascript" src="js/topodog-assets.js"></script>
-<!--<script type="text/javascript" src="js/topodog-nogrid.js"></script>-->
+
 <script type="text/javascript" src="js/topodog-opt-c.js"></script>
 <script type="text/javascript" src="js/topodog-utils.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
+
+<script type="text/javascript" src="js/svgPath.js"></script>
+
 <script type="text/javascript" src="js/index.js"></script>
 </head>
 
@@ -77,6 +78,16 @@
 				<span class="glyphicon glyphicon-remove-circle"></span>
 			</a>
 		</li>
+		
+		<!--
+		<li>
+			<a class="mode" data-mode="drawAreas" href="javascript:;" title="Disegna aree">
+				<span class="glyphicon glyphicon-record"></span>
+			</a>
+		</li>
+		-->
+		
+		
 		<li>
 			<a class="mode" data-mode="manageData" href="javascript:;" title="Esporta, Importa, Pulizia, Reset: Premi sul dischetto con freccia in basso per esportare lo scenario attuale e sul dischetto con la freccia in alto per importare uno scenario. Premi su pulizia (frecce cerchio) per eliminare cani e azioni e mantenere lo scenario. Premi su Reset (fuoco) per eliminare tutto.">
 				<span class="glyphicon glyphicon-transfer"></span>
@@ -127,13 +138,13 @@
 		</li>
 		
 		<li>
-			<a id="openScenarioForm" href="javascript:;">
+			<a id="openScenarioForm" href="javascript:;" title="Impostazioni scenario">
 				<span class="glyphicon glyphicon-cog"></span>
 			</a>
 		</li>
 		
 		<li>
-			<a id="openNewDogForm" href="javascript:;">
+			<a id="openNewDogForm" href="javascript:;" title="Aggiungi cane">
 				<span class="glyphicon glyphicon-plus-sign"></span>
 			</a>
 		</li>
@@ -150,7 +161,9 @@
 	<a id="panleft"class="pan" data-panx="48" data-pany="0" href="javascript:;"></a>
 
 	<a id="panright" class="pan" data-panx="-48" data-pany="0" href="javascript:;"></a>
-
+	
+	<svg id="svgCanvas" width="500" height="500" style="position:fixed;top:0;left:0;border:1px solid #000000;"></svg>
+	
 	<div id="grid">
 	<canvas id="bgCanvas"></canvas>
 	<div id="snapshot"></div>
@@ -221,36 +234,36 @@
 	</div>
 	
 	<div id="dataControls" class="clear ctrlH">
-		<a id="timeShow" class="control" href="javascript:;" onclick="topoDog.timeShow()">
+		<a id="timeShow" class="control" href="javascript:;" onclick="topoDog.timeShow()" title="Mostra tutte le azioni, comprese quelle inserite fino a questo momento.">
 			<span class="glyphicon glyphicon-eye-open"></span>
 		</a>
-		<a id="timeHide" class="control" href="javascript:;" onclick="topoDog.timeHide()">
+		<a id="timeHide" class="control" href="javascript:;" onclick="topoDog.timeHide()" title="Nascondi tutte le azioni inserite fino a questo momento.">
 			<span class="glyphicon glyphicon-eye-close"></span>
 		</a>
-		<a id="export" class="control" href="javascript:;" onclick="topoDog.tdExport()">
+		<a id="export" class="control" href="javascript:;" onclick="topoDog.tdExport()" title="Esporta questo scenario e tutti i dati in un file che potrai successivamente importare in TopoDog.">
 			<span class="glyphicon glyphicon-floppy-save"></span>
 		</a>
-		<a id="exportData" class="control" href="" download="">
+		<a id="exportData" class="control" href="" download="" title="Esporta questo scenario e tutti i dati in un file che potrai successivamente importare in TopoDog.">
 			<span class="glyphicon glyphicon-floppy-save"></span>
 		</a>
 		
-		<a id="dataexport" class="control" href="javascript:;" onclick="topoDog.exportData()">
+		<a id="dataexport" class="control" href="javascript:;" onclick="topoDog.exportData()" title="Esporta questo scenario e tutti i dati in un file CSV che potrai successivamente aprrire in Excel/OpenOffice/LibreOffice.">
 			<span class="glyphicon glyphicon-th-list"></span>
 		</a>
-		<a id="dataexportData" class="control" href="" download="">
+		<a id="dataexportData" class="control" href="" download="" title="Esporta questo scenario e tutti i dati in un file CSV che potrai successivamente aprrire in Excel/OpenOffice/LibreOffice.">
 			<span class="glyphicon glyphicon-th-list"></span>
 		</a>
 		
-		<a id="import" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler IMPORTARE una nuova scena?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdImportDialog(); }">
+		<a id="import" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler IMPORTARE una nuova scena?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdImportDialog(); }" title="IMPORTA uno scenario da un file precedentemente esportato.">
 			<span class="glyphicon glyphicon-floppy-open"></span>
 		</a>
 		<input id="filechooser" type="file" style="display:none;" />
 		
-		<a id="eraseScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }">
+		<a id="eraseScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE la scena?\nQuesta azione ELIMINA i dati e MANTIENE lo scenario.')){ topoDog.tdReset(); }" title="Elimina tutti i dati registrati, mantenendo lo scenario disegnato.">
 			<span class="glyphicon glyphicon-refresh"></span>
 		</a>
 		
-		<a id="resetScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE TopoDog?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdReset(true); }">
+		<a id="resetScenario" class="control" href="javascript:;" onclick="if(confirm('Sei sicuro di voler RESETTARE TopoDog?\nQuesta azione ELIMINA i dati ed ELIMINA lo scenario.')){ topoDog.tdReset(true); }" title="Elimina tutti i dati ed anche lo scenario disegnato (RESET TOTALE).">
 			<span class="glyphicon glyphicon-fire"></span>
 		</a>
 		
@@ -318,33 +331,6 @@
 	<form onsubmit="return false">
 		<h3 class="dform">Nome:</h3>
 		<input id="newDog_name" type="text" placeholder="Nome del cane" />
-		<h3 class="dform">Colore:</h3>
-		
-		<div class="dform">
-			<span class="colorSelect" data-color="#ff0000"></span>
-			<span class="colorSelect" data-color="#00aa00"></span>
-			<span class="colorSelect" data-color="#0000ff"></span>
-			<span class="colorSelect" data-color="#ff9900"></span>
-			<span class="colorSelect" data-color="#009999"></span>
-			<span class="colorSelect" data-color="#ff00ff"></span>
-			
-			<span class="colorSelect" data-color="#990000"></span>
-			<span class="colorSelect" data-color="#006600"></span>
-			<span class="colorSelect" data-color="#000088"></span>
-			<div class="clear"></div>
-			<span class="colorSelect" data-color="#996600"></span>
-			<span class="colorSelect" data-color="#006666"></span>
-			<span class="colorSelect" data-color="#990099"></span>
-			
-			<span class="colorSelect" data-color="#660000"></span>
-			<span class="colorSelect" data-color="#003300"></span>
-			<span class="colorSelect" data-color="#000055"></span>
-			<span class="colorSelect" data-color="#663300"></span>
-			<span class="colorSelect" data-color="#003333"></span>
-			<span class="colorSelect" data-color="#660066"></span>
-			<div class="clear"></div>
-			<div id="picker"></div>
-		</div>
 		
 		<input id="newDog_color" type="hidden" />
 		
@@ -399,6 +385,34 @@
 		<option value="casa">Casalingo</option>
 		<option value="barf">BARF</option>
 		</select>
+		
+		<h3 class="dform">Colore:</h3>
+		
+		<div class="dform">
+			<span class="colorSelect" data-color="#ff0000"></span>
+			<span class="colorSelect" data-color="#00aa00"></span>
+			<span class="colorSelect" data-color="#0000ff"></span>
+			<span class="colorSelect" data-color="#ff9900"></span>
+			<span class="colorSelect" data-color="#009999"></span>
+			<span class="colorSelect" data-color="#ff00ff"></span>
+			
+			<span class="colorSelect" data-color="#990000"></span>
+			<span class="colorSelect" data-color="#006600"></span>
+			<span class="colorSelect" data-color="#000088"></span>
+			<div class="clear"></div>
+			<span class="colorSelect" data-color="#996600"></span>
+			<span class="colorSelect" data-color="#006666"></span>
+			<span class="colorSelect" data-color="#990099"></span>
+			
+			<span class="colorSelect" data-color="#660000"></span>
+			<span class="colorSelect" data-color="#003300"></span>
+			<span class="colorSelect" data-color="#000055"></span>
+			<span class="colorSelect" data-color="#663300"></span>
+			<span class="colorSelect" data-color="#003333"></span>
+			<span class="colorSelect" data-color="#660066"></span>
+			<div class="clear"></div>
+			<div id="picker"></div>
+		</div>
 		
 		
 		<div class="dform">

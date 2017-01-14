@@ -6,7 +6,11 @@
   "window": {
     "toolbar": false,
     "width": 1024,
-    "height": 768
+    "height": 768,
+    "min_width": 1024,
+    "min_height": 768,
+    "max_width": 1024,
+    "max_height": 768
   },
   "scripts": {
     "start": "nw ."

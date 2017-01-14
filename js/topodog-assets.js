@@ -142,7 +142,7 @@ function topoDogAssets(){
 	
 	
 	var spalle = {
-		'name':'spalle giu',
+		'name':'spalle', //'name':'spalle giu',
 		'size':'3',
 		'shape':'spalle.svg',
 	}
