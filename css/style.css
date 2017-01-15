@@ -30,6 +30,21 @@ font-size:2.4em;
 color:#000000;
 }
 
+.loading
+{
+background-image:url(../img/loading.gif);
+background-position:center center;
+background-repeat:no-repeat;
+background-size:32px 32px;
+min-width:32px;
+min-height:32px;
+}
+
+.loading > *
+{
+display:none!important;
+}
+
 #scenario
 {
 overflow-x:hidden;
@@ -369,7 +384,7 @@ padding-top:0.2em;
 color:#333333;
 }
 
-#moveControls, #rotateControls, #editControls, #noteControls
+#moveControls, #rotateControls, #editControls, #noteControls, #areaControls
 {
 /*display:none;*/
 text-align:center;
@@ -387,6 +402,37 @@ overflow:hidden;
 display:inline-block;
 margin:0.2em;
 padding:0 0.2em;
+}
+
+#areaControls
+{
+text-align:left;
+}
+
+#areaControlsButtons a, #areaColors a
+{
+display:inline-block;
+width:42px;
+height:42px;
+text-align:center;
+margin:5px;
+box-sizing:border-box;
+}
+
+#areaControls a.active
+{
+background:#ffffff;
+color:#000000;
+}
+
+.areaColor
+{
+border-radius:4px;
+}
+
+.areaColor.active
+{
+border:3px solid #ffffff;
 }
 
 .mapTile
@@ -777,13 +823,36 @@ top:0;
 left:0;
 }
 
-#photo-button
+#tmpPhoto, #resizeCanvas
 {
-height:36px;
-line-height:36px;
+display:none;
 }
 
-#photo, .photo
+#photo-button
+{
+display:block;
+margin:15px auto;
+height:36px;
+line-height:36px;
+text-align:center;
+}
+
+#photoContainer
+{
+height:320px;
+width:auto;
+}
+
+#photo
+{
+display:block;
+margin:15px auto;
+width:auto;
+height:320px;
+max-width:100%;
+}
+
+.photo
 {
 width:42px;
 height:36px;

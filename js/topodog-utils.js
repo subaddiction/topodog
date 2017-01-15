@@ -221,6 +221,7 @@ function topoDogLauncher(){
 	jQuery.event.swipe.max = 800;
 	//jQuery.event.swipe.delay = 1000;
 	
+	/*****
 	$('#picker').colpick({
 		flat:true,
 		layout:'hex',
@@ -229,16 +230,7 @@ function topoDogLauncher(){
 			$('#newDog_color').val('#'+hex);
 		}
 	});
-	
-	/***
-	//topoDog.w = ($(document).width()/topoDog.tileSize) -4;
-	//topoDog.h = (($(document).height() - $('#actionsControls').height() - $('#modeControls').height()) / topoDog.tileSize) -3;
-	
-	var userWidth = prompt('Insert field width');
-	var userHeight = prompt('Insert field height');
-	topoDog.w = userWidth;
-	topoDog.h = userHeight;
-	***/
+	*****/
 	
 	topoDog.w = 100;
 	topoDog.h = 100;
@@ -357,6 +349,9 @@ function scrollBars(){
 
 
 function capturePhoto(){
+
+
+	/*****
 	navigator.camera.getPicture(
 		function(data){
 			
@@ -379,7 +374,80 @@ function capturePhoto(){
 			targetWidth:36,
 			targetHeight:24,
 			//correctOrientation:1
-		});
+	});
+	*****/
+	
+	var prevImage = document.getElementById('photo-select').files[0];
+	
+	$('#photoContainer').addClass('loading');
+	
+	
+	$('#photo-select').off();
+	$('#photo-select').on({
+		'change':function(e){
+			
+			//console.log(this.files.length);
+			
+			var theImage = this.files[0];
+			
+			if(this.files.length === 0 || theImage === prevImage){
+				$('#photoContainer').removeClass('loading');
+				return;
+			}
+			
+			
+			var reader = new FileReader();
+			
+			reader.onload = (function(theFile) {
+				return function(evt) {
+					//console.log(evt.target.result);
+					$('#tmpPhoto').attr('src', evt.target.result);
+					
+					//var imageString = $('#photo').attr('src');
+					
+					var image = document.getElementById('tmpPhoto');
+					
+					var originalWidth = image.naturalWidth;
+					var originalHeight = image.naturalHeight;
+					
+					//force resize @ 320 Height
+					var newWidth;
+					var newHeight = 320;
+					// newWidth:newHeight = originalWidth:originalHeight;
+					newWidth = Math.floor((newHeight * originalWidth)/originalHeight);
+					
+					
+					var resizeCanvas = document.getElementById('resizeCanvas');
+					resizeCanvas.width = newWidth;
+					resizeCanvas.height = newHeight;
+					
+					image.onload = function(){
+						resizeCanvas.getContext('2d').drawImage(image, 0, 0, newWidth, newHeight);
+						setTimeout(function(){
+							$('#photo').attr('src', resizeCanvas.toDataURL("image/png"));
+							$('#photoContainer').removeClass('loading');
+						}, 1000);
+					}
+					
+					
+				}
+				
+			})(theImage);
+
+			reader.readAsDataURL(theImage);
+			
+		}
+	});
+	
+	$('#photo-select').click();
+	
+//	$('#photo').attr('src', 'data:image/jpeg;base64,'+data).on({
+//		'loaded':function(){
+//			scroll_newDog.refresh();
+//		}
+//	});
+	
+	
 }
 
 function getTmpl(template, data, target, callback){

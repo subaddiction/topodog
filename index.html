@@ -26,6 +26,7 @@
 
 <script type="text/javascript" src="js/bowser.min.js"></script>
 <script type="text/javascript" src="js/jquerypp.min.js"></script>
+<script type="text/javascript" src="js/moment-with-locales.js"></script>
 <script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="js/colpick.js"></script>
 <script type="text/javascript" src="js/topodog-assets.js"></script>
@@ -34,6 +35,7 @@
 <script type="text/javascript" src="js/topodog-utils.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 
+<script type="text/javascript" src="js/pathseg.js"></script>
 <script type="text/javascript" src="js/svgPath.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
@@ -79,13 +81,13 @@
 			</a>
 		</li>
 		
-		<!--
+		
 		<li>
 			<a class="mode" data-mode="drawAreas" href="javascript:;" title="Disegna aree">
 				<span class="glyphicon glyphicon-record"></span>
 			</a>
 		</li>
-		-->
+		
 		
 		
 		<li>
@@ -162,7 +164,7 @@
 
 	<a id="panright" class="pan" data-panx="-48" data-pany="0" href="javascript:;"></a>
 	
-	<svg id="svgCanvas" width="500" height="500" style="position:fixed;top:0;left:0;border:1px solid #000000;"></svg>
+	<svg id="svgCanvas" width="0" height="0" style="position:fixed;top:0;left:0;"></svg>
 	
 	<div id="grid">
 	<canvas id="bgCanvas"></canvas>
@@ -270,6 +272,40 @@
 		
 	</div>
 	
+	<div id="areaControls" class="clear ctrlH">
+		
+		<div id="areaControlsButtons">
+			<a id="areaDraw" class="control" href="javascript:;" title="Disegna area">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+		
+			<a id="areaNote" class="control" href="javascript:;" title="Inserici nota su area">
+				<span class="glyphicon glyphicon-comment"></span>
+			</a>
+		
+			<a id="areaDelete" class="control" href="javascript:;" title="Elimina Area">
+				<span class="glyphicon glyphicon-remove-circle"></span>
+			</a>
+		</div>
+		
+		<div id="areaColors">
+		
+			<a class="areaColor" data-color="#ff0000" href="javascript:;">
+				
+			</a>
+			
+			<a class="areaColor" data-color="#00ff00" href="javascript:;">
+				
+			</a>
+			
+			<a class="areaColor" data-color="#0000ff" href="javascript:;">
+				
+			</a>
+		
+		</div>
+	
+	</div>
+	
 	<div id="timelineBox" class="clear ctrlH">
 		<div id="timeline">
 		</div>
@@ -334,10 +370,24 @@
 		
 		<input id="newDog_color" type="hidden" />
 		
+		<!--
 		<div class="dform">
 		<img id="photo" src="" />
 		<button id="photo-button" onclick="capturePhoto()">SCATTA FOTO</button>
 		</div>
+		-->
+		
+		
+		<div class="dform">
+		<img id="tmpPhoto" />
+		<canvas id="resizeCanvas"></canvas>
+		<div id="photoContainer">
+			<img id="photo" src="img/defaultDog.png" />
+		</div>
+		<input type="file" id="photo-select" style="display:none;" />
+		<button id="photo-button" onclick="capturePhoto();">CARICA FOTO</button>
+		</div>
+
 		
 		<h3 class="dform">Età:</h3>
 		<input id="newDog_eta" type="text" placeholder="Età del cane" />

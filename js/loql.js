@@ -12,7 +12,7 @@ loql = {
 	drop: function(table){
 		var records = this.select(table);
 		if(records){
-			for(i=0;i<records.length;i++){
+			for(i in records){
 				loql.del(table, records[i]);
 			}
 		}

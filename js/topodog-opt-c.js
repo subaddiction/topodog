@@ -370,6 +370,34 @@ topoDog = {
 	
 	},
 	
+	
+	drawAreas:function(){
+			var thePath;
+			var theArea;
+	
+			var areas = loql.select('areas');
+	
+			for(i in areas){
+	
+				theArea = loql.select('areas', areas[i]);
+	
+				thePath = null;
+				thePath = createSvgElement("path");
+				thePath.setAttribute("fill", theArea.color);
+				thePath.setAttribute("shape-rendering", "geometricPrecision");
+				thePath.setAttribute("stroke-linejoin", "round");
+				thePath.setAttribute("stroke", theArea.color);
+				thePath.setAttribute("style", "opacity:0.25;");
+		
+				thePath.setAttribute("d", theArea.path);
+				thePath.setAttribute("data-id", areas[i]);
+				thePath.setAttribute("data-note", (areas[i].n == null)?'':areas[i].n);
+		
+				document.getElementById('svgCanvas').appendChild(thePath);
+		
+			}
+	},
+	
 	startControls: function(){
 		
 		$('.flagHide').remove();
@@ -543,6 +571,9 @@ topoDog = {
 		$('a.mode').on({
 			'click': function(){
 				//zoomReset(); //Stucks all in cordova app!!!
+				
+				//console.log('modeSwitch');
+				
 				topoDog.modeSwitch($(this).attr('data-mode'));
 				$('a.mode').css({
 					'background':'#000000',
@@ -800,6 +831,7 @@ topoDog = {
 		
 		this.drawItems();
 		this.drawActions();
+		this.drawAreas();
 		
 		
 		
@@ -837,9 +869,13 @@ topoDog = {
 		$('#editControls').addClass('ctrlH');
 		$('#noteControls').addClass('ctrlH');
 		$('#dataControls').addClass('ctrlH');
+		$('#areaControls').addClass('ctrlH');
 		$('#timelineBox').addClass('ctrlH');
 		$('#helpBox').addClass('ctrlH');
 		
+		
+		
+		$('#svgCanvas').css('z-index', 0);
 	
 		
 		switch(topoDog.mode){
@@ -1413,8 +1449,111 @@ topoDog = {
 			
 			
 			case 'drawAreas':
-			
-				drawSvgPaths('grid', 'svgCanvas');
+				
+				$('#areaControls').removeClass('ctrlH');
+				
+				$('#svgCanvas').css('z-index', 9);
+				
+				
+				$('.areaColor').each(function(){
+					$(this).css('background', $(this).attr('data-color'));
+				});
+				
+				$('.areaColor[data-color='+currentAreaColor+']').addClass('active');
+				
+				$('#areaDraw').off();
+				$('#areaDraw').on({
+					'click':function(){
+					
+						$('#areaControlsButtons a').removeClass('active');
+						$(this).addClass('active');
+						
+						unbindDrawSvgPaths('svgCanvas', 'svgCanvas');
+						drawSvgPaths('svgCanvas', 'svgCanvas');
+						
+						$('.areaColor').off();
+						$('.areaColor').on({
+							'click':function(){
+								$('.areaColor').removeClass('active');
+								$(this).addClass('active');
+								
+								currentAreaColor = $(this).attr('data-color');
+							}
+							
+							
+						});
+						
+					}
+				});
+				
+				$('#areaNote').off();
+				$('#areaNote').on({
+					'click':function(){
+						
+						unbindDrawSvgPaths('svgCanvas', 'svgCanvas');
+						
+						$('#areaControlsButtons a').removeClass('active');
+						$(this).addClass('active');
+					
+						//drawSvgPaths('svgCanvas', 'svgCanvas');
+						
+						
+						$('#svgCanvas path').off();
+						$('#svgCanvas path').on({
+							'click':function(e){
+								
+								areaID = $(this).attr('data-id');
+								var theArea = loql.select('areas', areaID);
+							
+								var noteForm = '<div id="noteForm">';
+								noteForm += '<textarea rows="3" cols="24">'+theArea.n+'</textarea>';
+								noteForm += '<a id="saveNote" href="javascript:;" data-id="'+areaID+'">';
+								noteForm += '<span class="glyphicon glyphicon-ok"></span>';
+								noteForm += '</a>';
+								noteForm += '</div>';
+						
+								//$('#action-'+actionID).prepend(noteForm);
+								$('#areaControls').prepend(noteForm);
+						
+								$('#saveNote').on({
+									'click touchstart':function(){
+										topoDog.addAreaNote(areaID);
+										//$('.action').attr('data-note', false);
+									}
+								});
+							}
+						});
+						
+					}
+				});
+				
+				$('#areaDelete').off();
+				$('#areaDelete').on({
+					'click':function(){
+						
+						unbindDrawSvgPaths('svgCanvas', 'svgCanvas');
+						
+						$('#areaControlsButtons a').removeClass('active');
+						$(this).addClass('active');
+				
+						$('#svgCanvas path').off();
+						$('#svgCanvas path').on({
+							'click':function(e){
+								loql.del('areas', $(this).attr('data-id'));
+								$(this).remove();
+							}
+						});
+					}
+				});
+				
+				
+
+				
+				
+				
+				//bindAreaActions();
+				
+				
 			
 			break;
 			
@@ -1774,6 +1913,26 @@ topoDog = {
 		$('#noteForm').remove();
 	},
 	
+	
+	addAreaNote: function(areaID){
+		
+//		var label = $('# path[data-id='+areaID+']').children('.noteLabel').html();
+//		if(!label){
+//			$('#action-'+actionID).prepend('<span class="noteLabel glyphicon glyphicon-comment"></span>');
+//		}
+		
+		var noteArea = loql.select('areas', areaID);
+		noteArea.n = $('#noteForm textarea').val();
+		
+//		if(!noteArea.n){
+//			$('# path[data-id='+areaID+']').children('.noteLabel').remove();
+//		}
+		
+		//console.log(noteAction);
+		loql.set('areas', areaID, noteArea);
+		$('#noteForm').remove();
+	},
+	
 	setPaintSize: function(size, elem){
 		topoDog.paintSize = size;
 		$('#sizes a').css('border', '3px solid #000000');
@@ -1856,7 +2015,7 @@ topoDog = {
 		$('#newDog_color').val('');
 		$('#newDog_name').val('');
 		$('#newDog_image').val('');
-		$('#photo').attr('src', '');
+		$('#photo').attr('src', 'img/defaultDog.png');
 		$('#newDog_eta').val('');
 		$('#newDog_peso').val('');
 		$('#newDog_razza').val('');
@@ -2146,6 +2305,7 @@ topoDog = {
 		var filename = 'scenario-'+now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.json';
 		
 		
+		/*****
 		if (typeof window.requestFileSystem != 'undefined') {
 				//alert(cordova.file.externalRootDirectory);
 				//var sdCardPath = cordova.file.externalRootDirectory;
@@ -2164,7 +2324,7 @@ topoDog = {
 				
 
 		} else {
-				//Assuming we are in a browser
+			//Assuming we are in a browser
 			$('#export').hide('0');
 			$('#exportData').show('0');
 			$('#exportData').attr('download', filename);
@@ -2180,6 +2340,21 @@ topoDog = {
 			//alert('NO FS');
 		
 		}
+		*****/
+		
+		//Always assuming we are in a browser
+		$('#export').hide('0');
+		$('#exportData').show('0');
+		$('#exportData').attr('download', filename);
+		$('#exportData').attr('href', uriContent);
+		$('#exportData').off();
+		$('#exportData').on({
+			'click': function(){
+				$('#exportData').hide(0);
+				$('#export').show(0);
+			}
+		
+		});
 		
 	
 	},
@@ -2534,6 +2709,7 @@ topoDog = {
 		var filename = 'dati-'+now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.csv';
 		
 		
+		/*****
 		if (typeof window.requestFileSystem != 'undefined') {
 				//alert(cordova.file.externalRootDirectory);
 				//var sdCardPath = cordova.file.externalRootDirectory;
@@ -2567,6 +2743,21 @@ topoDog = {
 			});
 			//alert('NO FS');
 		}
+		*****/
+		
+		//Always assuming we are in a browser
+		$('#dataexport').hide('0');
+		$('#dataexportData').show('0');
+		$('#dataexportData').attr('download', filename);
+		$('#dataexportData').attr('href', uriContent);
+		$('#dataexportData').off();
+		$('#dataexportData').on({
+			'click': function(){
+				$('#dataexportData').hide(0);
+				$('#dataexport').show(0);
+			}
+		
+		});
 		
 		
 		
