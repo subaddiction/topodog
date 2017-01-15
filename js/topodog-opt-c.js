@@ -1461,6 +1461,13 @@ topoDog = {
 				
 				$('.areaColor[data-color='+currentAreaColor+']').addClass('active');
 				
+				$('#svgCanvas').off();
+				$('#svgCanvas').on({
+					'mousemove touchmove':function(e){
+						e.preventDefault();
+					}
+				});
+				
 				$('#areaDraw').off();
 				$('#areaDraw').on({
 					'click':function(){
@@ -2422,6 +2429,8 @@ topoDog = {
 		//Elimino tutti i beings e tutte le actions dalla DOM
 		$('.object').remove();
 		$('.action').remove();
+		
+		$('#svgCanvas path').remove();
 		
 		
 		
