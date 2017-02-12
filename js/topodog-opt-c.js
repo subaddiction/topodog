@@ -506,7 +506,7 @@ topoDog = {
 		$('.colorSelect').on({
 			'click': function(){
 				$('.colorSelect').css('outline', '0');
-				$('.colorSelect').css('opacity', '0.6');
+				//$('.colorSelect').css('opacity', '0.6');
 				$('.colorSelect').css('box-shadow', 'none');
 				$('#newDog_color').val($(this).attr('data-color'));
 				$(this).css('outline', '8px solid #000000');
