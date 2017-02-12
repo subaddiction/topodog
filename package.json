@@ -1,16 +1,16 @@
 {
   "name": "TopoDog",
   "description": "",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "main": "index.html",
   "window": {
     "toolbar": false,
     "width": 1024,
     "height": 768,
     "min_width": 1024,
-    "min_height": 768,
+    "min_height": 680,
     "max_width": 1024,
-    "max_height": 768
+    "max_height": 680
   },
   "scripts": {
     "start": "nw ."
