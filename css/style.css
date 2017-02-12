@@ -578,6 +578,7 @@ display:block;
 font-size:2.4em;
 width:640px;
 margin:15px auto;
+clear:both;
 }
 
 .dform
@@ -585,6 +586,7 @@ margin:15px auto;
 display:block;
 width:640px;
 margin:15px auto 5px;
+clear:both;
 }
 
 #newDog_cast, #newDog_ster

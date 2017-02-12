@@ -2371,33 +2371,32 @@ topoDog = {
 		
 		var fileData = '';
 		
-		if (typeof window.requestFileSystem != 'undefined') {
+//		if (typeof window.requestFileSystem != 'undefined') {
+//		
+//			window.plugins.mfilechooser.open([], function (uri) {
+//				
+//				//alert(uri);
+//				
+//				GapFile.readFile(uri, true, function(data){
+//				
+//					fileData = data;
+//					//alert(fileData);
+//					topoDog.tdImport(fileData);
+//				}, function(){
+//					alert('Non riesco a leggere questo file.');
+//				});
+//			}, function (error) {
+//				alert(error);
+//			});
+//		} else {
+//			//Assuming we are in a browser
+//			//alert('NO FS');
+//			$('#filechooser').click();
+//		}
 		
-			window.plugins.mfilechooser.open([], function (uri) {
-				
-				//alert(uri);
-				
-				GapFile.readFile(uri, true, function(data){
-				
-					fileData = data;
-					//alert(fileData);
-					topoDog.tdImport(fileData);
-
-				}, function(){
-					alert('Non riesco a leggere questo file.');
-				});
-
-			}, function (error) {
-
-				alert(error);
-
-			});
-
-		} else {
-			//Assuming we are in a browser
-			//alert('NO FS');
-			$('#filechooser').click();
-		}
+		//Always assuming we are in a browser
+		//alert('NO FS');
+		$('#filechooser').click();
 		
 
 	
@@ -2772,6 +2771,113 @@ topoDog = {
 		
 	},
 	
+	
+	exportStats: function(){
+	
+		var actionsTable = loql.select('actions');
+		var actionsData = [];
+
+		for(i in actionsTable){
+			var theAction = loql.select('actions', actionsTable[i]);
+			actionsData.push(
+				{
+					//id: theAction.id,
+					name: theAction.name,
+					f_int: 0,
+					f_ster: 0,
+					m_int: 0,
+					m_cast: 0,
+					tot: 0,
+				}
+			);
+		}
+		
+
+
+		
+		var actions = loql.select('action');
+		var output = "azione,femmina_int,femmina_ster,maschio_int,maschio_castr,totale";
+		
+		for(i=0;i<actions.length;i++){
+			var action = loql.select('action', actions[i]);
+			var being = loql.select('beings', action.bid);
+			//var theAction = loql.select('actions', action.aid);
+			
+			if(!being || !being.sesso){
+				continue;
+			}
+			
+			if(being.sesso == 'F'){
+				if(being.ster == ''){
+					actionsData[action.aid].f_int++;
+				} else if(being.ster == 'ster'){
+					actionsData[action.aid].f_ster++;
+				}
+			}
+		
+			if(being.sesso == 'M'){
+				if(being.cast == ''){
+					actionsData[action.aid].m_int++;
+				} else if(being.cast == 'cast'){
+					actionsData[action.aid].m_cast++;
+				}
+			}
+			
+			actionsData[action.aid].tot++;
+		}
+		
+		//console.log(actionsData);
+		
+		for(i in actionsData){
+			if(actionsData[i].name != 'dummy' && theAction.name != 'area' && theAction.name != 'possessivita'){
+				output += "\n"+
+				actionsData[i].name+","+
+				actionsData[i].f_int+","+
+				actionsData[i].f_ster+","+
+				actionsData[i].m_int+","+
+				actionsData[i].m_cast+","+
+				actionsData[i].tot+",";
+			}
+			
+		}
+		
+		//////////////////////////////////////////////////////////////////////////
+		
+		uriContent = "data:application/octet-stream," + encodeURIComponent(output);
+		
+		var now = new Date();
+		var filename = 'statistiche-'+now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'.csv';
+		
+		
+		//Always assuming we are in a browser
+//		$('#statsexport').hide('0');
+//		$('#statsexportData').show('0');
+//		$('#statsexportData').attr('download', filename);
+//		$('#statsexportData').attr('href', uriContent);
+//		$('#statsexportData').off();
+//		$('#statsexportData').on({
+//			'click': function(){
+//				$('#statsexportData').hide(0);
+//				$('#statsexport').show(0);
+//			}
+//		
+//		});
+
+		//Always assuming we are in a browser
+		$('#dataexport').hide('0');
+		$('#dataexportData').show('0');
+		$('#dataexportData').attr('download', filename);
+		$('#dataexportData').attr('href', uriContent);
+		$('#dataexportData').off();
+		$('#dataexportData').on({
+			'click': function(){
+				$('#dataexportData').hide(0);
+				$('#dataexport').show(0);
+			}
+		
+		});
+
+	}
 	
 	
 }

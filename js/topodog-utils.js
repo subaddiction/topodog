@@ -525,8 +525,13 @@ function makeStats(){
 					
 					//console.log(i+': azione '+definedActions[a]+' a cane '+parseInt(currentAction.bid))
 					//console.log(beings_actions.data[parseInt(currentAction.bid)].actions);
-					beings_actions.data[parseInt(currentAction.bid)].actions[a]++;
-					beings_actions.totals[a]++;
+					
+					if(beings_actions.data[parseInt(currentAction.bid)] != undefined){
+					
+						beings_actions.data[parseInt(currentAction.bid)].actions[a]++;
+						beings_actions.totals[a]++;
+						
+					}
 				}
 		
 			}
