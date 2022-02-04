@@ -10,18 +10,18 @@
 	{{/for}}
 </div>
 
-{{for data}}
-	<div class="stats-row" style="background:{{:#data.b.color}}">
+{{props data}}
+	<div class="stats-row" style="background:{{:prop.b.color}}">
 		<div class="stats-column stats-column-name">
-		{{:#data.b.name}}
+		{{:prop.b.name}}
 		</div>
-		{{for #data.actions}}
+		{{for prop.actions}}
 			<div class="stats-column stats-col-{{:#index}}">
 			{{:#data}}
 			</div>
 		{{/for}}
 	</div>
-{{/for}}
+{{/props}}
 
 <div id="stats-footer">
 	<div class="stats-column stats-column-name">

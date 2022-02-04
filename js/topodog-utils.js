@@ -492,7 +492,7 @@ function makeStats(){
 	
 	var beings_actions = {
 		actions:theActions,
-		data:[],
+		data:{},
 		totals:$.makeArray(defaultActions),
 	};
 	
@@ -500,7 +500,7 @@ function makeStats(){
 		var currentBeing = loql.select('beings', beings[k]);
 		//console.log(currentBeing);
 		
-		beings_actions.data[k] = {
+		beings_actions.data[currentBeing.id] = {
 			b:currentBeing,
 			actions:$.makeArray(defaultActions),
 		}
@@ -526,7 +526,7 @@ function makeStats(){
 					//console.log(i+': azione '+definedActions[a]+' a cane '+parseInt(currentAction.bid))
 					//console.log(beings_actions.data[parseInt(currentAction.bid)].actions);
 					
-					if(beings_actions.data[parseInt(currentAction.bid)] != undefined){
+					if(beings_actions.data[currentAction.bid] != undefined){
 					
 						beings_actions.data[parseInt(currentAction.bid)].actions[a]++;
 						beings_actions.totals[a]++;
