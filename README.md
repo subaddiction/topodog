@@ -14,5 +14,6 @@ php -S 127.0.0.1:8000
 - load and position image into canvas background
 
 ## Suggested enhancements
+- migrate localstorage to indexeddb with https://localforage.github.io/localForage/
 - pinch zoom
 - two finger / left mouse button panning
